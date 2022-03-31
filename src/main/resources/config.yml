@@ -1,0 +1,192 @@
+#MinerExpansion 1.0.1 Plugin
+#Turning these value to true or false will enable these features.
+# written by: MinerCoffee
+vaultbal: true
+grappinghook: true
+throwingaxe: true
+nightvision: true #nightvision toggle cmd
+requiresop: false #chuck visualizer permissions toggled
+#rtp_settings-------------------------------------------------------------------------------#
+rtp: true
+world-border: true #True if you want to limit how far it teleports players
+border: 5000 #If no world border, limit is automatically 50,000 blocks
+cooldowntimer: 20 #cooldown timer for the rtp cmd.
+#elytra_settings----------------------------------------------------------------------------#
+elytra: true
+crafting: #You can change the material used.
+#FULL BLOCK NAME LIST: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+#You may have to restart the server to update ingredients.
+elytra_top: 'NETHERITE_INGOT'
+elytra_mid: 'ELYTRA'
+elytra_bot: 'DRAGON_BREATH'
+shape:
+  - ' N '
+  - ' E '
+  - ' D '
+NoRenameLore: #Custom Items that can't be renamed.
+  - Night's Sky! #elytra
+#silk_spawners_settings---------------------------------------------------------------------#
+#set to Air if you don't want to check for that material.
+Ore-alerts: true
+ore_check_material_1: 'SPAWNER'
+ore_check_material_2: 'DIAMOND_ORE'
+ore_check_material_3: 'GOLD_ORE'
+ore_check_material_4: 'DEEPSLATE_GOLD_ORE'
+ore_check_material_5: 'DEEPSLATE_DIAMOND_ORE'
+ore_check_material_6: 'ANCIENT_DEBRIS'
+ore_check_material_7: 'AIR'
+ore_check_material_8: 'AIR'
+ore_check_material_9: 'AIR'
+ore_check_material_10: 'AIR'
+dropChance: 50.0 #Chance for silk touch spawners to drop.
+#Custom_recipes----------------------------------------------------------------------------#
+#You can change the material used.
+#FULL BLOCK NAME LIST: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+#You may have to restart the server to update ingredients.
+leather_recipe:
+leather_ingredient: 'ROTTEN_FLESH' #The ingredient R.
+shape1:
+  - 'RRR'
+  - 'RRR'
+  - 'RRR'
+bell_recipe:
+bell_ingredient_1: 'STICK' #The ingredient S.
+bell_ingredient_2: 'GOLD_INGOT' #The ingredient G.
+shape2:
+  - 'SSS'
+  - ' G '
+  - 'GGG'
+nametagrecipe:
+nametag_ingredient_1: 'PAPER' #The ingredient P.
+nametag_ingredient_2: 'STRING' #The ingredient S.
+shape3:
+  - 'PPS'
+  - 'PPP'
+  - 'PPP'
+throwingaxerecipe:
+throwingaxe_ingredient_1: 'OAK_PLANKS' #The ingredient W.
+throwingaxe_ingredient_2: 'STICK' #The ingredient S.
+throwingaxe_ingredient_3: 'NETHERITE_INGOT' #The ingredient G.
+shape4:
+  - 'WW '
+  - 'WS '
+  - 'GGG'
+grappinghookrecipe:
+grappinghook_ingredient_1: 'STRING' #The ingredient S.
+grappinghook_ingredient_2: 'STICK' #The ingredient W.
+grappinghook_ingredient_3: 'IRON_INGOT' #The ingredient I.
+shape5:
+  - 'SS '
+  - 'SW '
+  - '  I'
+cobwebrecipe:
+cobweb_ingredient_1: 'STRING' #The ingredient S.
+shape6:
+  - 'SSS'
+  - 'SSS'
+  - 'SSS'
+#staff_homes_settings-------------------------------------------------------------------------#
+enable: true
+savedlocations: #staff homes from staff members
+##MESSAGES##
+set-message: '&aSetting a temporary home at: &7' #end color code for coords color
+override-message: '&aOverriding current home @: &7'
+return-message: '&aReturned to former location.'
+#launchpad_settings--------------------------------------------------------------------------#
+launchpad: true
+#FULL BLOCK NAME LIST: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+top-block: 'LIGHT_WEIGHTED_PRESSURE_PLATE' #typically a pressure plate or carpet
+middle-block: 'REDSTONE_BLOCK'
+under-block: 'REDSTONE_BLOCK'
+disable-fall-damage: true
+message: true #have a message sent when they launch
+launch-message: '&9Whooooosh!!'
+#envoys_settings------------------------------------------------------------------------------#
+#
+# Placeholders:
+#  %dropName%
+#  %envoyName%
+# Info:
+#  'DropAtMaxHeight' will start the supply drop at the build height,
+#   but if set to false, the drop will instead start at the specified drop height.
+Options:
+DropAtMaxHeight: false
+DropHeight: 5
+SpawnTorchesAround: true
+EnableGlider: false
+SupplyDropName: "&f&lSupply Drop: &8&l&o%dropName%"
+SupplyDropFireworkType: "BURST"
+SupplyDropParticle1: "HEART"
+SupplyDropParticle2: "END_ROD"
+Messages:
+  InsufficientPermissions: "&c&lInsufficient permissions."
+  InsufficientPermissionsPerDrop: "&c&lInsufficient permissions for supply drop: &4&l&o%dropName%"
+  SpecifyDropName: "&c&lPlease specify a drop name."
+  SpecifyValidDropName: "&c&lPlease specify a valid drop name."
+  SavedDrop: "&a&lSuccessfully saved drop: &2&l&o%dropName%"
+  DeleteDrop: "&a&lSuccessfully deleted drop: &2&l&o%dropName%"
+  NotOnGroundError: "&c&lYou can not request supply drops while in the air."
+  NoFlatAreaError: "&c&lPlease move to a flat location (3x3 area)."
+  NoSpaceAboveError: "&c&lPlease move to a location with space above."
+  RequestedDrop: "&f&lDropping supply drop: &7&l&o%dropName%"
+  SpecifyEnvoyName: "&c&lPlease specify an envoy name."
+  SpecifyValidEnvoyName: "&c&lPlease specify a valid envoy name."
+  SpecifyAddDropArgs: "&c&lPlease specify envoy name, drop name, and drop chance."
+  SpecifyRemoveDropArgs: "&c&lPlease specify envoy name and drop name."
+  SpecifySetLengthArgs: "&c&lPlease specify envoy name and a number for the length of the envoy."
+  SpecifyDropCountArgs: "&c&lPlease specify envoy name and a number for the drop count of the envoy."
+  SpecifyBothBoundaryPos: "&c&lPlease specify both boundary positions for the envoy before starting."
+  SpecifyEnvoyDrops: "&c&lPlease specify some drops for the envoy before starting."
+  SpecifyValidPercentForChance: "&c&lPlease specify a valid percent for the drop chance."
+  SpecifyValidNumberForLength: "&c&lPlease specify a valid number for the envoy length."
+  SpecifyValidNumberForDropCount: "&c&lPlease specify a valid number for the drop count of the envoy."
+  SpecifyValidEnvoySubcommand: "&c&lPlease specify a valid envoy command: &4&l/envoy help"
+  CreatedEnvoy: "&a&lSuccessfully created new envoy: &2&l&o%envoyName%"
+  AddedFirstEnvoyPos: "&a&lSuccessfully added first position for envoy: &2&l&o%envoyName%"
+  AddedSecondEnvoyPos: "&a&lSuccessfully added second position for envoy:  &2&l&o%envoyName%"
+  AddedDropToEnvoy: "&a&lSuccessfully added drop: &2&l&o%dropName%&r &a&lto envoy: &2&l&o%envoyName%"
+  RemovedDropFromEnvoy: "&a&lSuccessfully removed drop: &2&l&o%dropName%&r &a&lfrom envoy: &2&l&o%envoyName%"
+  SetLengthOfEnvoy: "&a&lSuccessfully set the length of envoy: &2&l&o%envoyName%"
+  SetDropCountForEnvoy: "&a&lSuccessfully set the drop count of envoy: &2&l&o%envoyName%"
+  StartedEnvoy: "&a&lSuccessfully started envoy: &2&l&o%envoyName%"
+  DeletedEnvoy: "&a&lSuccessfully deleted envoy: &2&l&o%envoyName%"
+#Slots_settings-------------------------------------------------------------------------------#
+#Changing the amount requires the server to restart.
+slots: true #lotty system for rewards! It uses diamonds for its currency.
+fee: 'DIAMOND'
+fee_amount: 5
+reward1: 'COARSE_DIRT'
+reward1_amount: 32
+reward2: 'DIAMOND'
+reward2_amount: 3
+reward3: 'NETHERITE_SCRAP'
+reward3_amount: 2
+reward4: 'GOLDEN_APPLE'
+reward4_amount: 1
+reward5: 'IRON_HORSE_ARMOR'
+reward5_amount: 1
+reward6: 'DIAMOND'
+reward6_amount: 3
+reward7: 'WITHER_SKELETON_SKULL'
+reward7_amount: 1
+reward8: 'ENCHANTED_GOLDEN_APPLE'
+reward8_amount: 1
+reward9: 'WHEAT'
+reward9_amount: 24
+reward10: 'EXPERIENCE_BOTTLE'
+reward10_amount: 12
+reward11: 'STONE'
+reward11_amount: 12
+reward12: 'QUARTZ'
+reward12_amount: 16
+reward13: 'COOKED_BEEF'
+reward13_amount: 15
+reward14: 'STICK'
+reward14_amount: 8
+#admin_settings--------------------------------------------------------------------------------#
+bStats: true
+unfreeze: true
+freeze: true
+beta: false #beta features
+supplydrop_border: 500
+#------------------------------------------------------------------------------------------------#
