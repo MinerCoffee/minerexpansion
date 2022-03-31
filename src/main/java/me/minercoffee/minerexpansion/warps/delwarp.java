@@ -8,11 +8,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class delwarp implements CommandExecutor {
-   private final MinerExpansion plugin;
+    private final MinerExpansion plugin;
 
     public delwarp(MinerExpansion plugin) {
         this.plugin = plugin;
+        Objects.requireNonNull(plugin.getCommand("delwarp")).setExecutor(this);
     }
 
     @Override
@@ -31,16 +34,17 @@ public class delwarp implements CommandExecutor {
             return false;
         }
         String name = strings[0].toLowerCase();
-        if (plugin.getConfig().get(name) == null) {
+        if (plugin.getConfig().get("warps." + name) == null) {
             p.sendMessage(Color("&cThere is no warp with this name!"));
-            return  false;
+            return false;
         }
-        plugin.getConfig().set(name, null);
+        plugin.getConfig().set("warps." + name, null);
         plugin.saveConfig();
         p.sendMessage(Color("&aWarp &b" + name + " &asuccessfully deleted!"));
         return true;
     }
-    private String Color (String s) {
+
+    private String Color(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 }

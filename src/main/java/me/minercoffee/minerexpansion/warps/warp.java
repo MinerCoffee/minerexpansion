@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class warp implements CommandExecutor {
-   private final MinerExpansion plugin;
+    private final MinerExpansion plugin;
 
     public warp(MinerExpansion plugin) {
         this.plugin = plugin;
@@ -32,24 +32,26 @@ public class warp implements CommandExecutor {
             return false;
         }
         String name = strings[0].toLowerCase();
-        if (plugin.getConfig().get(name) == null) {
+        if (plugin.getConfig().get("warps." + name) == null) {
             p.sendMessage(Color("&cNo warp with that name!"));
             return false;
         }
         Location loc;
-        double x = plugin.getConfig().getDouble(name + ".X");
-        double y = plugin.getConfig().getDouble(name + ".Y");
-        double z = plugin.getConfig().getDouble(name + ".Z");
-        float yaw = (float) plugin.getConfig().getDouble(name + ".Yaw");
-        float pitch = (float) plugin.getConfig().getDouble(name + ".Pitch");
-        String world = plugin.getConfig().getString(name + ".World");
-        loc = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
-        p.teleport(loc);
+        double x = plugin.getConfig().getDouble("warps." + name + ".X");
+        double y = plugin.getConfig().getDouble("warps." + name + ".Y");
+        double z = plugin.getConfig().getDouble("warps." + name + ".Z");
+        float yaw = (float) plugin.getConfig().getDouble("warps." + name + ".Yaw");
+        float pitch = (float) plugin.getConfig().getDouble("warps." + name + ".Pitch");
+        String world = plugin.getConfig().getString("warps." + name + ".World");
+        if (world != null) {
+            loc = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+            p.teleport(loc);
+        }
         p.sendMessage(Color("&aYou've been teleported to &b" + name));
         return true;
     }
 
-    private String Color (String s) {
+    private String Color(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 }

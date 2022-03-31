@@ -3,7 +3,6 @@ package me.minercoffee.minerexpansion;
 import com.jeff_media.updatechecker.UpdateCheckSource;
 import com.jeff_media.updatechecker.UpdateChecker;
 import com.jeff_media.updatechecker.UserAgentBuilder;
-import me.kodysimpson.simpapi.menu.PlayerMenuUtility;
 import me.minercoffee.minerexpansion.Files.DataManager;
 import me.minercoffee.minerexpansion.Items.ThrowingAxe;
 import me.minercoffee.minerexpansion.Items.itemscreation;
@@ -49,8 +48,6 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
 
     public MinerExpansion() {
     }
-
-    private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
     private static final int SPIGOT_RESOURCE_ID = 100584;
     private static final Logger log = Logger.getLogger("Minecraft");
     private static Economy economy = null;
@@ -62,11 +59,6 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     public ArrayList<Player> ore_players = new ArrayList<>();
     @Override
     public void onEnable() {
-        if (!setupEconomy()) {
-            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
         getServer().getPluginManager().registerEvents(new UpdateCheckListener(this), this);
         new UpdateChecker(this, UpdateCheckSource.CUSTOM_URL, "https://github.com/MinerCoffee/MinerExpansion/blob/master/src/main/resources/latestversion.txt")
                 .setDownloadLink("https://www.spigotmc.org/resources/minerexpansion.100584/")
@@ -309,20 +301,6 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     public void onDisable() {
         this.getServer().getConsoleSender().sendMessage(ChatUtils.colour("&9MinerExpansion v1.0 beta has been disabled"));
     }
-    public static PlayerMenuUtility getPlayerMenuUtility(Player p) {
-        PlayerMenuUtility playerMenuUtility;
-        if (!(playerMenuUtilityMap.containsKey(p))) { //See if the player has a playermenuutility "saved" for them
-
-            //This player doesn't. Make one for them add add it to the hashmap
-            playerMenuUtility = new PlayerMenuUtility(p);
-            playerMenuUtilityMap.put(p, playerMenuUtility);
-
-            return playerMenuUtility;
-        } else {
-            return playerMenuUtilityMap.get(p); //Return the object by using the provided player
-        }
-    }
-
     public static MinerExpansion getPlugin() {
         return plugin;
     }

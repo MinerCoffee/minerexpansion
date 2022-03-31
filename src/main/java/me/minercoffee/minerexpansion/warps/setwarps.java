@@ -39,14 +39,16 @@ public class setwarps implements CommandExecutor {
             return false;
         }
         Location loc = p.getLocation();
-        plugin.getConfig().set(name + ".World", loc.getWorld().getName());
-        plugin.getConfig().set(name + ".X", loc.getX());
-        plugin.getConfig().set(name + ".Y", loc.getY());
-        plugin.getConfig().set(name + ".Z", loc.getZ());
-        plugin.getConfig().set(name + ".Pitch", loc.getPitch());
-        plugin.getConfig().set(name + ".Yaw", loc.getYaw());
-        plugin.saveConfig();
-        p.sendMessage(Color("&aWarp set!"));
+            plugin.getConfig().isConfigurationSection("warps.");
+            plugin.getConfig().set("warps." + name + ".World", Objects.requireNonNull(loc.getWorld()).getName());
+            plugin.getConfig().set("warps." + name + ".X", loc.getX());
+            plugin.getConfig().set("warps." + name + ".Y", loc.getY());
+            plugin.getConfig().set("warps." + name + ".Z", loc.getZ());
+            plugin.getConfig().set("warps." + name + ".Pitch", loc.getPitch());
+            plugin.getConfig().set("warps." + name + ".Yaw", loc.getYaw());
+            plugin.saveConfig();
+            p.sendMessage(Color("&aWarp set!"));
+
         return true;
     }
 

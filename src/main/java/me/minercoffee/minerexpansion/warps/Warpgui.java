@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,6 +23,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+
 public class Warpgui implements Listener, CommandExecutor {
     MinerExpansion plugin;
     public Warpgui(MinerExpansion plugin) {
@@ -29,7 +32,7 @@ public class Warpgui implements Listener, CommandExecutor {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         Objects.requireNonNull(plugin.getCommand("warpgui")).setExecutor(this);
     }
-
+    public String name;
     private Inventory maingui;
     private Inventory warplistngui;
     public void WarpMainGui(Player p) {
@@ -41,7 +44,8 @@ public class Warpgui implements Listener, CommandExecutor {
                 meta0.setDisplayName("Basic Facts");
             }
         List<String> lore = new ArrayList<>();
-            lore.add("§6Your XP" + " " + "§2" + p.getLevel() + " " + p.getExp());
+            lore.add("§6Your Level" + " " + "§2" + p.getLevel());
+            lore.add("§6Your XP" + " " + p.getExp());
             lore.add("§cYour Health" + " " + "§4" + p.getHealth());
         if (meta0 != null) {
             meta0.setLore(lore);
@@ -69,22 +73,20 @@ public class Warpgui implements Listener, CommandExecutor {
     }
     public void WarpListGui(Player p) {
         warplistngui = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, (ChatUtils.colour("&l&eWarp List!")));
-
-        ItemStack warps = new ItemStack(Material.GOLDEN_APPLE, 1);
-        ItemMeta meta1 = warps.getItemMeta();
-        if (meta1 != null) {
-            meta1.setDisplayName(ChatColor.DARK_BLUE + "Warp names!");
-        }
-        warps.setItemMeta(meta1);
-        warplistngui.setItem(1, warps);
-        warplistngui.setItem(2, warps);
-        ItemStack item2 = new ItemStack(Material.BARRIER, 1);
-        ItemMeta meta2 = item2.getItemMeta();
-        if (meta2 != null) {
-            meta2.setDisplayName(ChatColor.RED + "Go back!");
-        }
-        item2.setItemMeta(meta2);
-        warplistngui.setItem(8, item2);
+            ItemStack warps = new ItemStack(Material.GOLDEN_APPLE, 1);
+            ItemMeta meta1 = warps.getItemMeta();
+            if (meta1 != null) {
+                meta1.setDisplayName(ChatColor.DARK_BLUE + "Warp names!");
+            }
+            warps.setItemMeta(meta1);
+            warplistngui.setItem(0, warps);
+            ItemStack item2 = new ItemStack(Material.BARRIER, 1);
+            ItemMeta meta2 = item2.getItemMeta();
+            if (meta2 != null) {
+                meta2.setDisplayName(ChatColor.RED + "Go back!");
+            }
+            item2.setItemMeta(meta2);
+            warplistngui.setItem(8, item2);
 
         p.openInventory(warplistngui);
     }
@@ -111,25 +113,17 @@ public class Warpgui implements Listener, CommandExecutor {
         }
     }
     @EventHandler
-    public void WarpList(InventoryClickEvent e) {
+    public void WarpTPList(InventoryClickEvent e) {
+
         if (!e.getInventory().equals(warplistngui)) {
             return;
         }
         e.setCancelled(true);
         Player p = (Player) e.getWhoClicked();
-
         switch (e.getSlot()) {
-            case 1: {
-                String name = toString();
-                Location loc;
-                double x = plugin.getConfig().getDouble(name + ".X");
-                double y = plugin.getConfig().getDouble(name + ".Y");
-                double z = plugin.getConfig().getDouble(name + ".Z");
-                float yaw = (float) plugin.getConfig().getDouble(name + ".Yaw");
-                float pitch = (float) plugin.getConfig().getDouble(name + ".Pitch");
-                String world = plugin.getConfig().getString(name + ".World");
-                loc = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
-                p.teleport(loc);
+            case 0: {
+                onWarp(p);
+                break;
             }
             case 8: {
                 WarpMainGui(p);
@@ -139,12 +133,36 @@ public class Warpgui implements Listener, CommandExecutor {
         }
     }
 
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
-            Player p = (Player) sender;
-            WarpMainGui(p);
+            if (plugin.getConfig().getBoolean("beta")) {
+                Player p = (Player) sender;
+                WarpMainGui(p);
+            }
         }
         return true;
+    }
+    private void onWarp(Player p) {
+        ConfigurationSection sec = MinerExpansion.getPlugin().getConfig().getConfigurationSection("warps.");
+        if (sec != null) {
+            for (String key : sec.getKeys(false)) {
+                String name = MinerExpansion.getPlugin().getConfig().getString("warps." + key);
+                Location loc;
+            plugin.getConfig().get("warps." + name);
+                double x = plugin.getConfig().getDouble("warps." + name + ".X");
+                double y = plugin.getConfig().getDouble("warps." + name + ".Y");
+                double z = plugin.getConfig().getDouble("warps." + name + ".Z");
+                float yaw = (float) plugin.getConfig().getDouble("warps." + name + ".Yaw");
+                float pitch = (float) plugin.getConfig().getDouble("warps." + name + ".Pitch");
+                String world = plugin.getConfig().getString("warps." + name + ".World");
+                if (world != null) {
+                    loc = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+                    p.teleport(loc);
+                }
+
+            }
+        }
     }
 }

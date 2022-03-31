@@ -19,7 +19,7 @@ public class UpdateCheckListener implements Listener {
         if(event.getRequesters()==null) return;
 
         for(CommandSender sender : event.getRequesters()) {
-            plugin.getLogger().info(sender.getName() + " has requested an update check, aaaaaaaand...");
+            plugin.getLogger().info(sender.getName() + " has requested an update check!");
         }
 
         if(event.getSuccess() == UpdateCheckSuccess.FAIL) {

@@ -10,7 +10,7 @@ load: POSTWORLD
 description: All in one plugin. Some it's features are better elytras, custom recipes, nightvision, custom tools, and more.
 commands:
   warpgui:
-    description: lists all warps!
+    description: Warp gui!
   updatechecker:
     description: "Checks for updates"
     usage: "/<command> [players|all]"
