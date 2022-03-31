@@ -4,6 +4,7 @@ import me.minercoffee.minerexpansion.MinerExpansion;
 import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -75,8 +76,8 @@ public class Warpgui implements Listener, CommandExecutor {
             meta1.setDisplayName(ChatColor.DARK_BLUE + "Warp names!");
         }
         warps.setItemMeta(meta1);
-
         warplistngui.setItem(1, warps);
+        warplistngui.setItem(2, warps);
         ItemStack item2 = new ItemStack(Material.BARRIER, 1);
         ItemMeta meta2 = item2.getItemMeta();
         if (meta2 != null) {
@@ -118,6 +119,18 @@ public class Warpgui implements Listener, CommandExecutor {
         Player p = (Player) e.getWhoClicked();
 
         switch (e.getSlot()) {
+            case 1: {
+                String name = toString();
+                Location loc;
+                double x = plugin.getConfig().getDouble(name + ".X");
+                double y = plugin.getConfig().getDouble(name + ".Y");
+                double z = plugin.getConfig().getDouble(name + ".Z");
+                float yaw = (float) plugin.getConfig().getDouble(name + ".Yaw");
+                float pitch = (float) plugin.getConfig().getDouble(name + ".Pitch");
+                String world = plugin.getConfig().getString(name + ".World");
+                loc = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+                p.teleport(loc);
+            }
             case 8: {
                 WarpMainGui(p);
                 p.sendMessage("Going back to the Main Menu!");
