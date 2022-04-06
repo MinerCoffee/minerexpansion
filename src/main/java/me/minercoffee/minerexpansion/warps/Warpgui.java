@@ -122,7 +122,8 @@ public class Warpgui implements Listener, CommandExecutor {
         Player p = (Player) e.getWhoClicked();
         switch (e.getSlot()) {
             case 0: {
-                onWarp(p);
+                p.performCommand("warp" + name);
+              //  onWarp(p);//
                 break;
             }
             case 8: {

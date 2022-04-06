@@ -5,11 +5,14 @@ import com.jeff_media.updatechecker.UpdateChecker;
 import com.jeff_media.updatechecker.UserAgentBuilder;
 import me.minercoffee.minerexpansion.Files.DataManager;
 import me.minercoffee.minerexpansion.Items.ThrowingAxe;
+import me.minercoffee.minerexpansion.Items.doubledrops;
 import me.minercoffee.minerexpansion.Items.itemscreation;
 import me.minercoffee.minerexpansion.chuck.seechucks;
 import me.minercoffee.minerexpansion.commands.*;
 import me.minercoffee.minerexpansion.elyra.utils.events.ElytraEvent;
 import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
+import me.minercoffee.minerexpansion.enchantments.CustomEnchants;
+import me.minercoffee.minerexpansion.enchantments.Telepathy;
 import me.minercoffee.minerexpansion.grapplinghook.GrapplingHook;
 import me.minercoffee.minerexpansion.grapplinghook.GrapplingHookCooldown;
 import me.minercoffee.minerexpansion.rtp.*;
@@ -32,7 +35,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
@@ -50,7 +52,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     }
     private static final int SPIGOT_RESOURCE_ID = 100584;
     private static final Logger log = Logger.getLogger("Minecraft");
-    private static Economy economy = null;
+    private static final Economy economy = null;
     public static MinerExpansion plugin;
     public DataManager data;
     public static ArrayList<Player> viewers = new ArrayList<>();
@@ -72,7 +74,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         this.data = new DataManager(this);
         Objects.requireNonNull(getCommand("mereload")).setExecutor(new reload());
         plugin = this;
-        getLogger().info("Miner Expansion  v1.0 beta has loaded in!");
+        getLogger().info("Miner Expansion has loaded in!");
         this.getServer().getPluginManager().registerEvents(new BlockAlerts(), this);
         this.getServer().getPluginManager().registerEvents(new ElytraEvent(), this);
         Objects.requireNonNull(getCommand("nv")).setExecutor(new NightVisionManager());
@@ -86,11 +88,15 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         saveConfig();
         itemscreation.init();
         loadConfig();
+        CustomEnchants.register();
+        new doubledrops(this);
         new Warpgui(this);
         new warp(this);
         new setwarps(this);
         new delwarp(this);
         new UpdateCheckCommand(this);
+        Objects.requireNonNull(plugin.getCommand("telepathy")).setExecutor(new Telepathy());
+        getServer().getPluginManager().registerEvents(new Telepathy(), this);
         getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
         getServer().getPluginManager().registerEvents(new SpawnerListeners(), this);
         getServer().getPluginManager().registerEvents(new ThrowingAxe(this), this);
@@ -279,18 +285,6 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     public void loadConfig() {
         getConfig().options().copyDefaults(true);
         saveConfig();
-    }
-
-    private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        economy = rsp.getProvider();
-        return true;
     }
 
     public static Economy getEconomy() {

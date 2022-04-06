@@ -1,5 +1,5 @@
 name: MinerExpansion
-version: ${project.version}
+version: 1.0.5
 main: me.minercoffee.minerexpansion.MinerExpansion
 api-version: 1.18
 authors: [ MinerCoffee ]
@@ -9,6 +9,8 @@ loadbefore: [Vault]
 load: POSTWORLD
 description: All in one plugin. Some it's features are better elytras, custom recipes, nightvision, custom tools, and more.
 commands:
+  telepathy:
+    description: custom enchantment
   warpgui:
     description: Warp gui!
   updatechecker:

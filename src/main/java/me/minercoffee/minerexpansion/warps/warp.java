@@ -14,6 +14,7 @@ import java.util.Objects;
 
 public class warp implements CommandExecutor {
     private final MinerExpansion plugin;
+    public String name;
 
     public warp(MinerExpansion plugin) {
         this.plugin = plugin;
@@ -31,7 +32,8 @@ public class warp implements CommandExecutor {
             p.sendMessage(Color("&cPlease provide a warp name!"));
             return false;
         }
-        String name = strings[0].toLowerCase();
+
+         name = strings[0].toLowerCase();
         if (plugin.getConfig().get("warps." + name) == null) {
             p.sendMessage(Color("&cNo warp with that name!"));
             return false;

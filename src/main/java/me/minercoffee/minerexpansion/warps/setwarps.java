@@ -12,6 +12,7 @@ import java.util.Objects;
 
 public class setwarps implements CommandExecutor {
     private final MinerExpansion plugin;
+    public String name;
 
     public setwarps(MinerExpansion plugin) {
         this.plugin = plugin;
@@ -33,7 +34,7 @@ public class setwarps implements CommandExecutor {
             p.sendMessage(Color("&cYou need to give me a name"));
             return false;
         }
-        String name = strings[0].toLowerCase();
+        name = strings[0].toLowerCase();
         if (plugin.getConfig().get(name) != null) {
             p.sendMessage(Color("&cThere is already a warp with that name!"));
             return false;
