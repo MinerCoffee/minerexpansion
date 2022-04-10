@@ -11,8 +11,7 @@ import me.minercoffee.minerexpansion.chuck.seechucks;
 import me.minercoffee.minerexpansion.commands.*;
 import me.minercoffee.minerexpansion.elyra.utils.events.ElytraEvent;
 import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
-import me.minercoffee.minerexpansion.enchantments.CustomEnchants;
-import me.minercoffee.minerexpansion.enchantments.Telepathy;
+import me.minercoffee.minerexpansion.enchantments.*;
 import me.minercoffee.minerexpansion.grapplinghook.GrapplingHook;
 import me.minercoffee.minerexpansion.grapplinghook.GrapplingHookCooldown;
 import me.minercoffee.minerexpansion.rtp.*;
@@ -61,7 +60,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     public ArrayList<Player> ore_players = new ArrayList<>();
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(new UpdateCheckListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new UpdateCheckListener(this), this);
         new UpdateChecker(this, UpdateCheckSource.CUSTOM_URL, "https://github.com/MinerCoffee/MinerExpansion/blob/master/src/main/resources/latestversion.txt")
                 .setDownloadLink("https://www.spigotmc.org/resources/minerexpansion.100584/")
                 .setChangelogLink(SPIGOT_RESOURCE_ID)
@@ -88,15 +87,14 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         saveConfig();
         itemscreation.init();
         loadConfig();
-        CustomEnchants.register();
+        loadEnchantment();
+        loadEnvoy();
         new doubledrops(this);
         new Warpgui(this);
         new warp(this);
         new setwarps(this);
         new delwarp(this);
         new UpdateCheckCommand(this);
-        Objects.requireNonNull(plugin.getCommand("telepathy")).setExecutor(new Telepathy());
-        getServer().getPluginManager().registerEvents(new Telepathy(), this);
         getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
         getServer().getPluginManager().registerEvents(new SpawnerListeners(), this);
         getServer().getPluginManager().registerEvents(new ThrowingAxe(this), this);
@@ -105,20 +103,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new GrapplingHook(), this);
         Objects.requireNonNull(getCommand("givegrapplinghook")).setExecutor(new GrapplingHookcmd());
         GrapplingHookCooldown.setupCooldown();
-        SupplyDropsDataManager.saveDefaultConfig();
-        EnvoysDataManager.saveDefaultConfig();
-        getServer().getPluginManager().registerEvents(new CommandEditSupplyDrop(), this);
-        getServer().getPluginManager().registerEvents(new CommandDeleteSupplyDrop(), this);
-        getServer().getPluginManager().registerEvents(new CommandEnvoy(), this);
         getServer().getPluginManager().registerEvents(new launchpads(this), this);
-        Objects.requireNonNull(this.getCommand("supplydrop")).setExecutor(new CommandSupplyDrop());
-        Objects.requireNonNull(this.getCommand("editsupplydrop")).setExecutor(new CommandEditSupplyDrop());
-        Objects.requireNonNull(this.getCommand("deletesupplydrop")).setExecutor(new CommandDeleteSupplyDrop());
-        Objects.requireNonNull(this.getCommand("envoy")).setExecutor(new CommandEnvoy());
-        Objects.requireNonNull(this.getCommand("supplydrop")).setTabCompleter(new CommandSupplyDrop());
-        Objects.requireNonNull(this.getCommand("editsupplydrop")).setTabCompleter(new CommandEditSupplyDrop());
-        Objects.requireNonNull(this.getCommand("deletesupplydrop")).setTabCompleter(new CommandDeleteSupplyDrop());
-        Objects.requireNonNull(this.getCommand("envoy")).setTabCompleter(new CommandEnvoy());
         Objects.requireNonNull(this.getCommand("chunkvisualizer")).setExecutor(new seechucks());
         Objects.requireNonNull(getCommand("staffhome")).setExecutor(new staffhomecmd(this));
         NamespacedKey elytra = new NamespacedKey(this, "minerexpansion_elytra");
@@ -278,9 +263,35 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         }
         plugin.getServer().addRecipe(cobwebrecipe);
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
-        },20, 20);
+        }, 20, 20);
     }
 
+    public void loadEnchantment(){
+        VeinMinerUtilsII.register();
+        VeinMinerUtilsI.register();
+        TelepathyUtils.register();
+        Objects.requireNonNull(getCommand("veinminerII")).setExecutor(new VeinMinerII());
+        getServer().getPluginManager().registerEvents(new VeinMinerII(), this);
+        Objects.requireNonNull(getCommand("veinminerI")).setExecutor(new VeinMinerI());
+        getServer().getPluginManager().registerEvents(new VeinMinerI(), this);
+        Objects.requireNonNull(this.getCommand("telepathy")).setExecutor(new Telepathy());
+        getServer().getPluginManager().registerEvents(new Telepathy(), this);
+    }
+    public void loadEnvoy(){
+        Objects.requireNonNull(this.getCommand("supplydrop")).setExecutor(new CommandSupplyDrop());
+        Objects.requireNonNull(this.getCommand("editsupplydrop")).setExecutor(new CommandEditSupplyDrop());
+        Objects.requireNonNull(this.getCommand("deletesupplydrop")).setExecutor(new CommandDeleteSupplyDrop());
+        Objects.requireNonNull(this.getCommand("envoy")).setExecutor(new CommandEnvoy());
+        Objects.requireNonNull(this.getCommand("supplydrop")).setTabCompleter(new CommandSupplyDrop());
+        Objects.requireNonNull(this.getCommand("editsupplydrop")).setTabCompleter(new CommandEditSupplyDrop());
+        Objects.requireNonNull(this.getCommand("deletesupplydrop")).setTabCompleter(new CommandDeleteSupplyDrop());
+        Objects.requireNonNull(this.getCommand("envoy")).setTabCompleter(new CommandEnvoy());
+        SupplyDropsDataManager.saveDefaultConfig();
+        EnvoysDataManager.saveDefaultConfig();
+        getServer().getPluginManager().registerEvents(new CommandEditSupplyDrop(), this);
+        getServer().getPluginManager().registerEvents(new CommandDeleteSupplyDrop(), this);
+        getServer().getPluginManager().registerEvents(new CommandEnvoy(), this);
+    }
 
     public void loadConfig() {
         getConfig().options().copyDefaults(true);

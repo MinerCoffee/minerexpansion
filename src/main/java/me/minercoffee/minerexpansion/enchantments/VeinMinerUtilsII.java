@@ -8,16 +8,15 @@ import java.util.stream.Collectors;
 
 import static org.bukkit.Bukkit.getLogger;
 
-public class CustomEnchants {
+public class VeinMinerUtilsII {
 
-    public static final Enchantment TELEPATHY = new EnchantmentWrapper("telepathy", "Telepathy", 1);
+    public static final Enchantment VEINMINERII = new EnchantmentWrapper("veinminer", "VEINMINER", 2);
 
     public static void register() {
-        boolean registered = Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(TELEPATHY);
-        if(!registered)
-            registerEnchantment(TELEPATHY);
+        boolean registered = Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(VEINMINERII);
+        if (!registered)
+            registerEnchantment(VEINMINERII);
     }
-
 
     public static void registerEnchantment(Enchantment enchantment) {
         boolean registered = true;
@@ -27,13 +26,14 @@ public class CustomEnchants {
             f.set(null, true);
             Enchantment.registerEnchantment(enchantment);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             registered = false;
             e.printStackTrace();
         }
-        if(registered){
+        if (registered) {
             //send message to console
-            getLogger().info("Telepathy Enchantment has loaded in!");
+            getLogger().info("Veinminer II Enchantment has loaded in!");
         }
     }
+
 }

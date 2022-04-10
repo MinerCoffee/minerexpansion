@@ -9,6 +9,10 @@ loadbefore: [Vault]
 load: POSTWORLD
 description: All in one plugin. Some it's features are better elytras, custom recipes, nightvision, custom tools, and more.
 commands:
+  veinminerII:
+    description: custom enchantment
+  veinminerI:
+    description: custom enchantment
   telepathy:
     description: custom enchantment
   warpgui:

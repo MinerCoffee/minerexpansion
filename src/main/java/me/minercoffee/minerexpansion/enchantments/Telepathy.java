@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 
 public class Telepathy implements Listener, CommandExecutor {
@@ -30,13 +31,13 @@ public class Telepathy implements Listener, CommandExecutor {
         PlayerInventory inventory = player.getInventory();
         ItemStack item = inventory.getItemInMainHand();
         Block block = event.getBlock();
+        GameMode gamemode = player.getGameMode();
 
         if (item == null)
             return;
-        if (!item.hasItemMeta() || !item.getItemMeta().hasEnchant(CustomEnchants.TELEPATHY))
+        if (!item.hasItemMeta() || !Objects.requireNonNull(item.getItemMeta()).hasEnchant(TelepathyUtils.TELEPATHY))
             return;
-        //you could also do GameMode gamemode = player.getGameMode() here and then just use gamemode instead of player.getGameMode()
-        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR)
+        if (gamemode == GameMode.CREATIVE || gamemode == GameMode.SPECTATOR)
             return;
         if (inventory.firstEmpty() == -1)
             return;
@@ -56,27 +57,23 @@ public class Telepathy implements Listener, CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        if (s.equalsIgnoreCase("telepathy")) {
-            if (!(commandSender instanceof Player)) {
-                return true;
-            }
+        if (commandSender instanceof Player) {
             Player p = (Player) commandSender;
-            if (strings.length > 1 && p.hasPermission("miner.staff")) {
-                ItemStack item = new ItemStack((Material.DIAMOND_PICKAXE));
-                item.addUnsafeEnchantment(CustomEnchants.TELEPATHY, 1);
-                ItemMeta meta = item.getItemMeta();
-                List<String> lore = new ArrayList<>();
-                lore.add(ChatColor.GRAY + "Telepathy I");
-                if (meta.hasLore())
-                    for (String l : meta.getLore()) {
-                        lore.add(l);
+                if (command.getName().equalsIgnoreCase("telepathy")) {
+                    ItemStack item = new ItemStack((Material.DIAMOND_PICKAXE));
+                    item.addUnsafeEnchantment(TelepathyUtils.TELEPATHY, 1);
+                    ItemMeta meta = item.getItemMeta();
+                    List<String> lore = new ArrayList<>();
+                    lore.add(ChatColor.GRAY + "Telepathy I");
+                    if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
+                    if (meta != null) {
+                        meta.setLore(lore);
                     }
-                meta.setLore(lore);
-
-                item.setItemMeta(meta);
-                p.getInventory().addItem(item);
+                    item.setItemMeta(meta);
+                    p.getInventory().addItem(item);
+                }
             }
-        }
+
         return true;
     }
 }

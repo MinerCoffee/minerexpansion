@@ -6,7 +6,7 @@
 
     <groupId>me.MinerCoffee</groupId>
     <artifactId>MinerExpansion</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.5</version>
     <packaging>jar</packaging>
 
     <name>MinerExpansion</name>

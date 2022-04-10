@@ -4,12 +4,12 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 
 public class EnchantmentWrapper extends Enchantment {
     private final String name;
     private final int maxLvl;
-
 
     public EnchantmentWrapper(String namespace, String name, int lvl) {
         super(NamespacedKey.minecraft(namespace));
@@ -18,7 +18,7 @@ public class EnchantmentWrapper extends Enchantment {
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return name;
     }
 
@@ -29,17 +29,17 @@ public class EnchantmentWrapper extends Enchantment {
 
     @Override
     public int getStartLevel() {
-        return 0;
+        return 1;
     }
 
     @Override
-    public EnchantmentTarget getItemTarget() {
+    public @NotNull EnchantmentTarget getItemTarget() {
         return null;
     }
 
     @Override
     public boolean isTreasure() {
-        return false;
+        return true;
     }
 
     @Override
@@ -48,12 +48,12 @@ public class EnchantmentWrapper extends Enchantment {
     }
 
     @Override
-    public boolean conflictsWith(Enchantment enchantment) {
+    public boolean conflictsWith(@NotNull Enchantment enchantment) {
         return false;
     }
 
     @Override
-    public boolean canEnchantItem(ItemStack itemStack) {
-        return false;
+    public boolean canEnchantItem(@NotNull ItemStack itemStack) {
+        return true;
     }
 }
