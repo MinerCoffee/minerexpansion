@@ -5,7 +5,7 @@ import com.jeff_media.updatechecker.UpdateChecker;
 import com.jeff_media.updatechecker.UserAgentBuilder;
 import me.minercoffee.minerexpansion.Files.DataManager;
 import me.minercoffee.minerexpansion.Items.ThrowingAxe;
-import me.minercoffee.minerexpansion.Items.doubledrops;
+import me.minercoffee.minerexpansion.enchantments.doubledrops;
 import me.minercoffee.minerexpansion.Items.itemscreation;
 import me.minercoffee.minerexpansion.chuck.seechucks;
 import me.minercoffee.minerexpansion.commands.*;

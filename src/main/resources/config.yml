@@ -187,7 +187,30 @@ reward14_amount: 8
 bStats: true
 unfreeze: true
 freeze: true
-beta: false #beta features
+beta: true #beta features
 supplydrop_border: 500
+#warp_settings----------------------------------------------------------------------------------#
 warps:
+#warpgui names for your custom names
+warp_1: 'a'
+warp_2: 'a'
+warp_3: 'a'
+warp_4: 'a'
+warp_5: 'a'
+warp_6: 'a'
+warp_7: 'a'
+warp_8: 'a'
+warp_9: 'a'
+warp_10: 'a'
+warp_11: 'a'
+warp_12: 'a'
+warp_13: 'a'
+warp_14: 'a'
+warp_15: 'a'
+warp_16: 'a'
+warp_17: 'a'
+warp_18: 'a'
+warp_19: 'a'
+warp_20: 'a'
+warp_21: 'a'
 #------------------------------------------------------------------------------------------------#
