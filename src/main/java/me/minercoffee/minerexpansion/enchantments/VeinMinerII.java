@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static me.minercoffee.minerexpansion.MinerExpansion.plugin;
+
 public class VeinMinerII implements Listener, CommandExecutor {
     @EventHandler
     public void onBreakBlock(BlockBreakEvent e) {
@@ -30,8 +33,6 @@ public class VeinMinerII implements Listener, CommandExecutor {
         Block block = e.getBlock();
         GameMode gamemode = player.getGameMode();
 
-        if (item == null)
-            return;
         if (!item.hasItemMeta() || !Objects.requireNonNull(item.getItemMeta()).hasEnchant(VeinMinerUtilsII.VEINMINERII))
             return;
         if (gamemode == GameMode.CREATIVE || gamemode == GameMode.SPECTATOR)
@@ -39,6 +40,25 @@ public class VeinMinerII implements Listener, CommandExecutor {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "VeinMiner II");
         breakBlocks(getNearbyBlocks(block, 1, true, true), player);
+    }
+    @EventHandler
+    public void anvilEvent(PrepareAnvilEvent e){
+        if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
+        if (Objects.requireNonNull(e.getInventory().getItem(1)).containsEnchantment(VeinMinerUtilsII.VEINMINERII)){
+            ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
+            a.addUnsafeEnchantment(VeinMinerUtilsII.VEINMINERII, Objects.requireNonNull(e.getInventory().getItem(1)).getEnchantmentLevel(VeinMinerUtilsII.VEINMINERII));
+            ItemMeta meta = a.getItemMeta();
+            List<String> lore = new ArrayList<>();
+            lore.add (ChatColor.GRAY + "VeinMiner II");
+            assert meta != null;
+            if (meta.hasLore())
+                lore.addAll(Objects.requireNonNull(meta.getLore()));
+            meta.setLore(lore);
+            a.setItemMeta(meta);
+            e.getInventory().setRepairCost(40);
+            e.setResult(a);
+            plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(40));
+        }
     }
     public List<Block> getNearbyBlocks(Block origin, int radius, boolean ignoreFirst, boolean sameType) {
         List<Block> blocks = new ArrayList<>();
@@ -74,7 +94,7 @@ public class VeinMinerII implements Listener, CommandExecutor {
         if (commandSender instanceof Player) {
             Player p = (Player) commandSender;
             if (command.getName().equalsIgnoreCase("veinminerII")) {
-                ItemStack item = new ItemStack((Material.DIAMOND_PICKAXE));
+                ItemStack item = new ItemStack((Material.ENCHANTED_BOOK));
                 item.addUnsafeEnchantment(VeinMinerUtilsII.VEINMINERII, 2);
                 ItemMeta meta = item.getItemMeta();
                 List<String> lore = new ArrayList<>();
@@ -85,6 +105,8 @@ public class VeinMinerII implements Listener, CommandExecutor {
                 }
                 item.setItemMeta(meta);
                 p.getInventory().addItem(item);
+                p.closeInventory();
+                p.updateInventory();
             }
         }
         return true;

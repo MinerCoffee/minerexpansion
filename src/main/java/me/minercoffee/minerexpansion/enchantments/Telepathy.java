@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+
+import static me.minercoffee.minerexpansion.MinerExpansion.plugin;
 
 
 public class Telepathy implements Listener, CommandExecutor {
@@ -33,8 +36,6 @@ public class Telepathy implements Listener, CommandExecutor {
         Block block = event.getBlock();
         GameMode gamemode = player.getGameMode();
 
-        if (item == null)
-            return;
         if (!item.hasItemMeta() || !Objects.requireNonNull(item.getItemMeta()).hasEnchant(TelepathyUtils.TELEPATHY))
             return;
         if (gamemode == GameMode.CREATIVE || gamemode == GameMode.SPECTATOR)
@@ -54,23 +55,44 @@ public class Telepathy implements Listener, CommandExecutor {
             return;
         inventory.addItem(drops.iterator().next());
     }
+    @EventHandler
+    public void anvilEvent(PrepareAnvilEvent e){
+        if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
+        if (Objects.requireNonNull(e.getInventory().getItem(1)).containsEnchantment(TelepathyUtils.TELEPATHY)){
+            ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
+            a.addUnsafeEnchantment(TelepathyUtils.TELEPATHY, Objects.requireNonNull(e.getInventory().getItem(1)).getEnchantmentLevel(TelepathyUtils.TELEPATHY));
+            ItemMeta meta = a.getItemMeta();
+            List<String> lore = new ArrayList<>();
+            lore.add (ChatColor.GRAY + "Telepathy I");
+            assert meta != null;
+            if (meta.hasLore())
+                lore.addAll(Objects.requireNonNull(meta.getLore()));
+            meta.setLore(lore);
+            a.setItemMeta(meta);
+            e.getInventory().setRepairCost(35);
+            e.setResult(a);
+            plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(35));
+        }
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender instanceof Player) {
             Player p = (Player) commandSender;
                 if (command.getName().equalsIgnoreCase("telepathy")) {
-                    ItemStack item = new ItemStack((Material.DIAMOND_PICKAXE));
-                    item.addUnsafeEnchantment(TelepathyUtils.TELEPATHY, 1);
-                    ItemMeta meta = item.getItemMeta();
+                    ItemStack book = new ItemStack((Material.ENCHANTED_BOOK), 1);
+                    book.addUnsafeEnchantment(TelepathyUtils.TELEPATHY, 1);
                     List<String> lore = new ArrayList<>();
                     lore.add(ChatColor.GRAY + "Telepathy I");
+                    ItemMeta meta = book.getItemMeta();
                     if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
                     if (meta != null) {
                         meta.setLore(lore);
                     }
-                    item.setItemMeta(meta);
-                    p.getInventory().addItem(item);
+                    book.setItemMeta(meta);
+                    p.getInventory().addItem(book);
+                    p.closeInventory();
+                    p.updateInventory();
                 }
             }
 
