@@ -1,41 +1,35 @@
 package me.minercoffee.minerexpansion.elyra.utils.events;
 
-import me.minercoffee.minerexpansion.MinerExpansion;
 import me.minercoffee.minerexpansion.elyra.utils.ChargeBar;
 import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
+import me.minercoffee.minerexpansion.elyra.utils.RecipeUtils;
 import me.minercoffee.minerexpansion.elyra.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.Statistic;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerStatisticIncrementEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.AnvilInventory;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
+import static me.minercoffee.minerexpansion.MinerExpansion.plugin;
 
-public class ElytraEvent implements Listener {
+public class Elytra implements Listener {
     private final List<Player> sneakingPlayers = new ArrayList<>();
     private final List<Player> chargingPlayers = new ArrayList<>();
     private final HashMap<Player, Long> cooldowns = new HashMap<>();
-
-    public ElytraEvent() {
-    }
 
     private boolean isHoldingSneak(Player p) {
         return this.sneakingPlayers.contains(p);
@@ -92,7 +86,7 @@ public class ElytraEvent implements Listener {
         if (Utils.hasElytra(p)) {
             if (e.isSneaking()) {
                 this.sneakingPlayers.add(p);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(MinerExpansion.plugin, () -> ElytraEvent.this.sneakingPlayers.remove(p), 1L);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> Elytra.this.sneakingPlayers.remove(p), 1L);
                 if (!p.getLocation().subtract(0.0D, 1.0D, 0.0D).getBlock().getType().isAir()) {
                     p.getLocation().getBlock();
                     if (p.getLocation().getBlock().getType() != Material.WATER) {
@@ -118,7 +112,7 @@ public class ElytraEvent implements Listener {
         if (e.getEntity() instanceof Player) {
             Player p = (Player) e.getEntity();
             if (Utils.hasElytra(p)) {
-                if (e.getCause().equals(DamageCause.FLY_INTO_WALL) || (e.getCause().equals(DamageCause.FALL))){
+                if (e.getCause().equals(EntityDamageEvent.DamageCause.FLY_INTO_WALL) || (e.getCause().equals(EntityDamageEvent.DamageCause.FALL))) {
                     e.setCancelled(true);
                 }
             }
@@ -139,15 +133,15 @@ public class ElytraEvent implements Listener {
             if (lore != null) {
                 Iterator var7 = lore.iterator();
                 label33:
-                while(true) {
-                    while(true) {
+                while (true) {
+                    while (true) {
                         if (!var7.hasNext()) {
                             break label33;
                         }
 
-                        String line = (String)var7.next();
+                        String line = (String) var7.next();
 
-                        for (String keyword : MinerExpansion.plugin.getConfig().getStringList("NoRenameLore")) {
+                        for (String keyword : plugin.getConfig().getStringList("NoRenameLore")) {
                             if (line.contains(keyword)) {
                                 cantBeRenamed = true;
                                 break;
@@ -173,6 +167,50 @@ public class ElytraEvent implements Listener {
                 }
                 result.setItemMeta(resultMeta);
                 event.setResult(result);
+            }
+        }
+    }
+
+    @EventHandler
+    public void canEnchant(PrepareAnvilEvent e) {
+        Player player = (Player) e.getView().getPlayer();
+        if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
+            ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
+            ItemMeta meta = a.getItemMeta();
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.GRAY + "Miner's Plane!");
+            assert meta != null;
+            if (meta.hasLore())
+                lore.addAll(Objects.requireNonNull(meta.getLore()));
+            meta.setLore(lore);
+            a.setItemMeta(meta);
+            e.getInventory().setRepairCost(999999);
+            e.setResult(null);
+            player.updateInventory();
+            plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(999999));
+        }
+
+    @EventHandler
+    public void PreventAnvilUse(InventoryClickEvent e, PrepareAnvilEvent ev) {
+        Player p = (Player) e.getWhoClicked();
+        Inventory inv = e.getInventory();
+        if (inv instanceof AnvilInventory) {
+            InventoryView view = e.getView();
+            int rawSlot = e.getRawSlot();
+            if (rawSlot == view.convertSlot(rawSlot)) {
+                if (rawSlot == 2) {
+                    for (ItemStack item : p.getInventory().getContents()) {
+                        if (item == null)
+                            return;
+                        System.out.println("test_3");
+                        if (item.isSimilar(RecipeUtils.getElytra()) || item.isSimilar(RecipeUtils.getElytra()) ) {
+                            System.out.println("test_4");
+                            e.setCancelled(true);
+                            p.closeInventory();
+                            p.sendMessage("You must drop the elytra in order to use the anvil");
+                        }
+                    }
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-package me.minercoffee.minerexpansion.grapplinghook;
+package me.minercoffee.minerexpansion.supplydrop.commands.grapplinghook;
 
 import me.minercoffee.minerexpansion.Items.itemscreation;
 import org.bukkit.ChatColor;

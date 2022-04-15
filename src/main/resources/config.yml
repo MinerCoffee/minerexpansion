@@ -24,7 +24,7 @@ shape:
   - ' E '
   - ' D '
 NoRenameLore: #Custom Items that can't be renamed.
-  - Night's Sky! #elytra
+  - Miner's Plane! #elytra
 #silk_spawners_settings---------------------------------------------------------------------#
 #set to Air if you don't want to check for that material.
 Ore-alerts: true

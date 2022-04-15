@@ -43,6 +43,7 @@ public class VeinMinerII implements Listener, CommandExecutor {
     }
     @EventHandler
     public void anvilEvent(PrepareAnvilEvent e){
+        Player player = (Player) e.getView().getPlayer();
         if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
         if (Objects.requireNonNull(e.getInventory().getItem(1)).containsEnchantment(VeinMinerUtilsII.VEINMINERII)){
             ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
@@ -57,6 +58,7 @@ public class VeinMinerII implements Listener, CommandExecutor {
             a.setItemMeta(meta);
             e.getInventory().setRepairCost(40);
             e.setResult(a);
+            player.updateInventory();
             plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(40));
         }
     }
