@@ -23,10 +23,6 @@ public class warp implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] strings) {
-        if (!(commandSender instanceof Player)) {
-            commandSender.sendMessage("Player only command!");
-            return false;
-        }
         Player p = (Player) commandSender;
         if (strings.length == 0) {
             p.sendMessage(Color("&cPlease provide a warp name!"));

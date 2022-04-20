@@ -3,6 +3,7 @@ package me.minercoffee.minerexpansion.elyra.utils;
 import me.minercoffee.minerexpansion.MinerExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public class ChargeBar {
     }
 
     public static void run(Player p) {
-        chargeBar = Bukkit.createBossBar("", BarColor.BLUE, BarStyle.SOLID);
+        chargeBar = Bukkit.createBossBar("", BarColor.PURPLE, BarStyle.SOLID, BarFlag.DARKEN_SKY);
         chargeBar.setProgress(0.0D);
         chargeBar.setVisible(true);
         chargeBar.addPlayer(p);
@@ -43,12 +44,12 @@ public class ChargeBar {
                 ChargeBar.chargeBar.setProgress(this.progress);
                 this.progress += 0.025D;
                 if (this.progress >= 1.0D) {
+                    progress = progress - time;
                     Bukkit.getScheduler().cancelTask(ChargeBar.task);
                     ChargeBar.chargeBar.setProgress(1.0D);
                     ChargeBar.charged.add(p);
                     ChargeBar.runWhenFull(p);
                 }
-
             }
         }, 0L, 1L);
     }

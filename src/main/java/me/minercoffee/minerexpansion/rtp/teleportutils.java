@@ -10,8 +10,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Random;
 
+import static me.minercoffee.minerexpansion.MinerExpansion.plugin;
+
 public class teleportutils {
-    static MinerExpansion plugin;
     public static HashSet<Material> bad_blocks = new HashSet<>();
     static{
         bad_blocks.add(Material.LAVA);

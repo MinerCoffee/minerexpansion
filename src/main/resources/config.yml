@@ -1,13 +1,13 @@
 #MinerExpansion 1.0.1 Plugin
 #Turning these value to true or false will enable these features.
 # written by: MinerCoffee
-vaultbal: true
-grappinghook: true
-throwingaxe: true
-nightvision: true #nightvision toggle cmd
+vaultbal: false
+grappinghook: false
+throwingaxe: false
+nightvision: false #nightvision toggle cmd
 requiresop: false #chuck visualizer permissions toggled
 #rtp_settings-------------------------------------------------------------------------------#
-rtp: true
+rtp: false
 world-border: true #True if you want to limit how far it teleports players
 border: 5000 #If no world border, limit is automatically 50,000 blocks
 cooldowntimer: 20 #cooldown timer for the rtp cmd.
@@ -16,18 +16,18 @@ elytra: true
 crafting: #You can change the material used.
 #FULL BLOCK NAME LIST: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
 #You may have to restart the server to update ingredients.
-elytra_top: 'NETHERITE_INGOT'
-elytra_mid: 'ELYTRA'
-elytra_bot: 'DRAGON_BREATH'
+D: 'DRAGON_BREATH'
+N: 'NETHERITE_INGOT'
+E: 'ELYTRA'
 shape:
-  - ' N '
-  - ' E '
-  - ' D '
+  - 'DND'
+  - 'NEN'
+  - 'DND'
 NoRenameLore: #Custom Items that can't be renamed.
   - Miner's Plane! #elytra
 #silk_spawners_settings---------------------------------------------------------------------#
 #set to Air if you don't want to check for that material.
-Ore-alerts: true
+Ore-alerts: false
 ore_check_material_1: 'SPAWNER'
 ore_check_material_2: 'DIAMOND_ORE'
 ore_check_material_3: 'GOLD_ORE'
@@ -93,7 +93,7 @@ set-message: '&aSetting a temporary home at: &7' #end color code for coords colo
 override-message: '&aOverriding current home @: &7'
 return-message: '&aReturned to former location.'
 #launchpad_settings--------------------------------------------------------------------------#
-launchpad: true
+launchpad: false
 #FULL BLOCK NAME LIST: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
 top-block: 'LIGHT_WEIGHTED_PRESSURE_PLATE' #typically a pressure plate or carpet
 middle-block: 'REDSTONE_BLOCK'
@@ -192,11 +192,11 @@ supplydrop_border: 500
 #warp_settings----------------------------------------------------------------------------------#
 warps:
 #warpgui names for your custom names
-warp_1: 'a'
-warp_2: 'a'
-warp_3: 'a'
-warp_4: 'a'
-warp_5: 'a'
+warp_1: 'spawn'
+warp_2: 'pvp'
+warp_3: 'shopping_district'
+warp_4: 'lobby'
+warp_5: 'end'
 warp_6: 'a'
 warp_7: 'a'
 warp_8: 'a'

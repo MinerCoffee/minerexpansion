@@ -2,21 +2,17 @@ package me.minercoffee.minerexpansion.elyra.utils.events;
 
 import me.minercoffee.minerexpansion.elyra.utils.ChargeBar;
 import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
-import me.minercoffee.minerexpansion.elyra.utils.RecipeUtils;
 import me.minercoffee.minerexpansion.elyra.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerStatisticIncrementEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.AnvilInventory;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -36,11 +32,11 @@ public class Elytra implements Listener {
     }
 
     private static int getCooldown() {
-        return 4000;
+        return 5000;
     }
 
     private float getVelocityMultiplier() {
-        return 2.3F;
+        return 1.5F;
     }
 
     @EventHandler
@@ -72,7 +68,7 @@ public class Elytra implements Listener {
                     if (this.chargingPlayers.contains(p) && ChargeBar.charged.contains(p)) {
                         ChargeBar.chargeBar.removePlayer(p);
                         p.setVelocity(p.getLocation().getDirection().multiply(1).setY(5));
-                        p.playSound(p.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_CHARGE, 10.0F, 3.0F);
+                        p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 10.0F, 1.0F);
                     }
 
                 }
@@ -167,6 +163,10 @@ public class Elytra implements Listener {
                 }
                 result.setItemMeta(resultMeta);
                 event.setResult(result);
+                event.getInventory().setRepairCost(999999);
+                Player player = (Player) event.getView().getPlayer();
+                player.updateInventory();
+                plugin.getServer().getScheduler().runTask(plugin, () -> event.getInventory().setRepairCost(999999));
             }
         }
     }
@@ -184,34 +184,9 @@ public class Elytra implements Listener {
                 lore.addAll(Objects.requireNonNull(meta.getLore()));
             meta.setLore(lore);
             a.setItemMeta(meta);
-            e.getInventory().setRepairCost(999999);
+            //e.getInventory().setRepairCost(999999);
             e.setResult(null);
             player.updateInventory();
-            plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(999999));
+         //   plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(999999));
         }
-
-    @EventHandler
-    public void PreventAnvilUse(InventoryClickEvent e, PrepareAnvilEvent ev) {
-        Player p = (Player) e.getWhoClicked();
-        Inventory inv = e.getInventory();
-        if (inv instanceof AnvilInventory) {
-            InventoryView view = e.getView();
-            int rawSlot = e.getRawSlot();
-            if (rawSlot == view.convertSlot(rawSlot)) {
-                if (rawSlot == 2) {
-                    for (ItemStack item : p.getInventory().getContents()) {
-                        if (item == null)
-                            return;
-                        System.out.println("test_3");
-                        if (item.isSimilar(RecipeUtils.getElytra()) || item.isSimilar(RecipeUtils.getElytra()) ) {
-                            System.out.println("test_4");
-                            e.setCancelled(true);
-                            p.closeInventory();
-                            p.sendMessage("You must drop the elytra in order to use the anvil");
-                        }
-                    }
-                }
-            }
-        }
-    }
 }

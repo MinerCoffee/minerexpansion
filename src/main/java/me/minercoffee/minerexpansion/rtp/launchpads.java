@@ -14,7 +14,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import java.util.Objects;
 
-public class launchpads implements Listener {
+public class launchpads implements Listener  {
     MinerExpansion plugin;
 
     public launchpads(MinerExpansion plugin) {
@@ -43,7 +43,7 @@ public class launchpads implements Listener {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 64 , 10, false, false, false));
                     if (plugin.getConfig().getBoolean("message")){
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("launch-message"))));
-                        p.sendMessage(ChatColor.AQUA + "New Coordinates: " + ChatColor.LIGHT_PURPLE + spawn.getX() + " " + spawn.getY() + " " + spawn.getZ());
+                       p.sendMessage(ChatColor.AQUA + "New Coordinates: " + ChatColor.LIGHT_PURPLE + spawn.getX() + " " + spawn.getY() + " " + spawn.getZ());
                     }
                 }
             }

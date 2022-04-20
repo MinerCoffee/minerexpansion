@@ -9,8 +9,8 @@ loadbefore: [Vault]
 load: POSTWORLD
 description: All in one plugin. Some it's features are better elytras, custom recipes, nightvision, custom tools, and more.
 commands:
-  elytra:
-    description: rank cmd for elytra
+  rtp:
+    description: teleports the player to a random location.
   veinminerII:
     description: custom enchantment
   veinminerI:
@@ -35,7 +35,7 @@ commands:
   nv:
     description: nightvision for player.
     usage: /<command>
-  slots:
+  megamillion:
     description: Slots rewards.
     usage: /<command>
   vaultbal:
@@ -44,9 +44,6 @@ commands:
   admin:
     description: Admin cmds
     usage: /<command> args
-  rtp:
-    description: random teleport the player.
-    usage: /<command>
   givethrowingaxe:
     description: gives throwingaxe to the player.
     usage: /<command>

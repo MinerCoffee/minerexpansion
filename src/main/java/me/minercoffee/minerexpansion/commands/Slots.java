@@ -36,7 +36,7 @@ public class Slots implements CommandExecutor, Listener {
     public boolean onCommand(@NotNull CommandSender sender,@NotNull Command command,@NotNull String label,@NotNull String[] args) {
 
         //System.out.println("slots");
-        if (label.equalsIgnoreCase("slots")) {
+        if (label.equalsIgnoreCase("megamillion")) {
             if (!(sender instanceof Player)) {
                 sender.sendMessage("No gambling for the console :(");
                 return true;

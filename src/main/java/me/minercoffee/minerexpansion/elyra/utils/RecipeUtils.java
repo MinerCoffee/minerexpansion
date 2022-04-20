@@ -18,6 +18,7 @@ public class RecipeUtils {
         if (meta != null) {
             meta.setDamage(100);
             meta.setCustomModelData(1234567);
+            meta.setUnbreakable(true);
             meta.setLore(lore);
             meta.setDisplayName(ChatUtils.colour("&6&lCharcoal Elytra"));
             Elytra.setItemMeta(meta);

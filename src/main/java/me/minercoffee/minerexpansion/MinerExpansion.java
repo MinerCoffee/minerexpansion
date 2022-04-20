@@ -5,27 +5,33 @@ import com.jeff_media.updatechecker.UpdateChecker;
 import com.jeff_media.updatechecker.UserAgentBuilder;
 import me.minercoffee.minerexpansion.Files.DataManager;
 import me.minercoffee.minerexpansion.Items.ThrowingAxe;
-import me.minercoffee.minerexpansion.elyra.utils.events.Elytra;
-import me.minercoffee.minerexpansion.elyra.utils.rankelytra;
-import me.minercoffee.minerexpansion.enchantments.doubledrops;
 import me.minercoffee.minerexpansion.Items.itemscreation;
 import me.minercoffee.minerexpansion.chuck.seechucks;
 import me.minercoffee.minerexpansion.commands.*;
 import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
+import me.minercoffee.minerexpansion.elyra.utils.events.Elytra;
+import me.minercoffee.minerexpansion.elyra.utils.events.PreventAnvilUse;
 import me.minercoffee.minerexpansion.enchantments.*;
-import me.minercoffee.minerexpansion.supplydrop.commands.grapplinghook.GrapplingHook;
-import me.minercoffee.minerexpansion.supplydrop.commands.grapplinghook.GrapplingHookCooldown;
-import me.minercoffee.minerexpansion.rtp.*;
+import me.minercoffee.minerexpansion.rtp.launchpads;
+import me.minercoffee.minerexpansion.rtp.rtpcmd;
 import me.minercoffee.minerexpansion.silktouchspawners.BlockAlerts;
 import me.minercoffee.minerexpansion.silktouchspawners.BreakBlockListener;
 import me.minercoffee.minerexpansion.silktouchspawners.SpawnerListeners;
 import me.minercoffee.minerexpansion.staffhomes.staffhomecmd;
-import me.minercoffee.minerexpansion.supplydrop.commands.*;
+import me.minercoffee.minerexpansion.supplydrop.commands.CommandDeleteSupplyDrop;
+import me.minercoffee.minerexpansion.supplydrop.commands.CommandEditSupplyDrop;
+import me.minercoffee.minerexpansion.supplydrop.commands.CommandEnvoy;
+import me.minercoffee.minerexpansion.supplydrop.commands.CommandSupplyDrop;
+import me.minercoffee.minerexpansion.supplydrop.commands.grapplinghook.GrapplingHook;
+import me.minercoffee.minerexpansion.supplydrop.commands.grapplinghook.GrapplingHookCooldown;
 import me.minercoffee.minerexpansion.supplydrop.utils.EnvoysDataManager;
 import me.minercoffee.minerexpansion.supplydrop.utils.SupplyDropsDataManager;
 import me.minercoffee.minerexpansion.utils.UpdateCheckCommand;
 import me.minercoffee.minerexpansion.utils.UpdateCheckListener;
-import me.minercoffee.minerexpansion.warps.*;
+import me.minercoffee.minerexpansion.warps.Warpgui;
+import me.minercoffee.minerexpansion.warps.delwarp;
+import me.minercoffee.minerexpansion.warps.setwarps;
+import me.minercoffee.minerexpansion.warps.warp;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,7 +43,10 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -48,17 +57,26 @@ import static org.spigotmc.SpigotConfig.config;
 
 public final class MinerExpansion extends JavaPlugin implements Listener {
 
-    public MinerExpansion() {
-    }
     private static final int SPIGOT_RESOURCE_ID = 100584;
     private static final Logger log = Logger.getLogger("Minecraft");
     private static final Economy economy = null;
     public static MinerExpansion plugin;
-    public DataManager data;
     public static ArrayList<Player> viewers = new ArrayList<>();
     public static ArrayList<Location> viewerslocs = new ArrayList<>();
+    public DataManager data;
     public ArrayList<Player> launchpad_players = new ArrayList<>();
     public ArrayList<Player> ore_players = new ArrayList<>();
+    public MinerExpansion() {
+    }
+
+    public static Economy getEconomy() {
+        return economy;
+    }
+
+    public static MinerExpansion getPlugin() {
+        return plugin;
+    }
+
     @Override
     public void onEnable() {
         this.getServer().getPluginManager().registerEvents(new UpdateCheckListener(this), this);
@@ -76,18 +94,17 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         plugin = this;
         getLogger().info("Miner Expansion has loaded in!");
         this.getServer().getPluginManager().registerEvents(new BlockAlerts(), this);
+        Objects.requireNonNull(getCommand("rtp")).setExecutor(new rtpcmd());
         Objects.requireNonNull(getCommand("nv")).setExecutor(new NightVisionManager());
         Objects.requireNonNull(getCommand("admin")).setExecutor(new AdminCommandManager());
         Objects.requireNonNull(this.getCommand("vaultbal")).setExecutor(new vaultbal());
-        Objects.requireNonNull(this.getCommand("slots")).setExecutor(new Slots());
+        Objects.requireNonNull(this.getCommand("megamillion")).setExecutor(new Slots());
         this.getServer().getPluginManager().registerEvents(new Slots(), this);
-        Objects.requireNonNull(getCommand("rtp")).setExecutor(new rtpcmd());
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
         saveConfig();
         itemscreation.init();
         loadConfig();
-        loadElytra();
         loadEnchantment();
         loadEnvoy();
         new doubledrops(this);
@@ -96,6 +113,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         new setwarps(this);
         new delwarp(this);
         new UpdateCheckCommand(this);
+        getServer().getPluginManager().registerEvents(new PreventAnvilUse(), this);
         getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
         getServer().getPluginManager().registerEvents(new SpawnerListeners(), this);
         getServer().getPluginManager().registerEvents(new ThrowingAxe(this), this);
@@ -123,7 +141,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
 
         //next custom recipe item starts here //
         List<String> shape = config.isSet("shape") ? config.getStringList("shape")
-                : Arrays.asList(" N ", " E ", " D ");
+                : Arrays.asList("DND", "NEN", "DND");
         elytracraft.shape(shape.toArray(new String[3]));
         if (config.isSet("crafting")) {
             for (String key : Objects.requireNonNull(config.getConfigurationSection("crafting")).getKeys(false)) {
@@ -136,9 +154,9 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
                 }
             }
         } else {
-            elytracraft.setIngredient('N', Material.valueOf(plugin.getConfig().getString("elytra_top")));
-            elytracraft.setIngredient('E', Material.valueOf(plugin.getConfig().getString("elytra_mid")));
-            elytracraft.setIngredient('D', Material.valueOf(plugin.getConfig().getString("elytra_bot")));
+            elytracraft.setIngredient('D', Material.valueOf(plugin.getConfig().getString("D")));
+            elytracraft.setIngredient('N', Material.valueOf(plugin.getConfig().getString("N")));
+            elytracraft.setIngredient('E', Material.valueOf(plugin.getConfig().getString("E")));
             plugin.saveConfig();
         }
         plugin.getServer().addRecipe(elytracraft);
@@ -264,11 +282,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         plugin.getServer().addRecipe(cobwebrecipe);
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
         }, 20, 20);
-    }
-    public void loadElytra(){
         getServer().getPluginManager().registerEvents(new Elytra(), this);
-        Objects.requireNonNull(this.getCommand("giveelytra")).setExecutor(new elytracmd());
-        Objects.requireNonNull(this.getCommand("elytra")).setExecutor(new rankelytra());
     }
 
     public void loadEnchantment(){
@@ -282,6 +296,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         Objects.requireNonNull(this.getCommand("telepathy")).setExecutor(new Telepathy());
         getServer().getPluginManager().registerEvents(new Telepathy(), this);
     }
+
     public void loadEnvoy(){
         Objects.requireNonNull(this.getCommand("supplydrop")).setExecutor(new CommandSupplyDrop());
         Objects.requireNonNull(this.getCommand("editsupplydrop")).setExecutor(new CommandEditSupplyDrop());
@@ -303,15 +318,8 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         saveConfig();
     }
 
-    public static Economy getEconomy() {
-        return economy;
-    }
-
     @Override
     public void onDisable() {
         this.getServer().getConsoleSender().sendMessage(ChatUtils.colour("&9MinerExpansion v1.0 beta has been disabled"));
-    }
-    public static MinerExpansion getPlugin() {
-        return plugin;
     }
 }
