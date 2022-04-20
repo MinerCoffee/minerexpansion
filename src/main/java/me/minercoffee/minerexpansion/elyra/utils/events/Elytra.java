@@ -36,7 +36,7 @@ public class Elytra implements Listener {
     }
 
     private float getVelocityMultiplier() {
-        return 1.5F;
+        return 1.9F;
     }
 
     @EventHandler
@@ -64,10 +64,10 @@ public class Elytra implements Listener {
         Player p = e.getPlayer();
         if (Utils.hasElytra(p)) {
             if (e.getStatistic().equals(Statistic.JUMP)) {
-                if (!(p.getLocation().getPitch() < 80.0F)) {
+                if (!(p.getLocation().getPitch() < -90.0F)) {
                     if (this.chargingPlayers.contains(p) && ChargeBar.charged.contains(p)) {
                         ChargeBar.chargeBar.removePlayer(p);
-                        p.setVelocity(p.getLocation().getDirection().multiply(1).setY(5));
+                        p.setVelocity(p.getLocation().getDirection().multiply(2).setY(8));
                         p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 10.0F, 1.0F);
                     }
 

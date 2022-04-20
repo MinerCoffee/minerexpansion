@@ -26,20 +26,21 @@ public class setwarps implements CommandExecutor {
             return false;
         }
         Player p = (Player) commandSender;
-        if (!p.hasPermission("warp.setwarp")) {
-            p.sendMessage(Color("&cYou don't have enough permissions!"));
-            return false;
-        }
-        if (strings.length == 0) {
-            p.sendMessage(Color("&cYou need to give me a name"));
-            return false;
-        }
-        name = strings[0].toLowerCase();
-        if (plugin.getConfig().get(name) != null) {
-            p.sendMessage(Color("&cThere is already a warp with that name!"));
-            return false;
-        }
-        Location loc = p.getLocation();
+        if (plugin.getConfig().getBoolean("warp")) {
+            if (!p.hasPermission("warp.setwarp")) {
+                p.sendMessage(Color("&cYou don't have enough permissions!"));
+                return false;
+            }
+            if (strings.length == 0) {
+                p.sendMessage(Color("&cYou need to give me a name"));
+                return false;
+            }
+            name = strings[0].toLowerCase();
+            if (plugin.getConfig().get(name) != null) {
+                p.sendMessage(Color("&cThere is already a warp with that name!"));
+                return false;
+            }
+            Location loc = p.getLocation();
             plugin.getConfig().isConfigurationSection("warps.");
             plugin.getConfig().set("warps." + name + ".World", Objects.requireNonNull(loc.getWorld()).getName());
             plugin.getConfig().set("warps." + name + ".X", loc.getX());
@@ -49,7 +50,7 @@ public class setwarps implements CommandExecutor {
             plugin.getConfig().set("warps." + name + ".Yaw", loc.getYaw());
             plugin.saveConfig();
             p.sendMessage(Color("&aWarp set!"));
-
+        }
         return true;
     }
 

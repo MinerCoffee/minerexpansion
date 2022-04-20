@@ -190,6 +190,7 @@ freeze: true
 beta: true #beta features
 supplydrop_border: 500
 #warp_settings----------------------------------------------------------------------------------#
+warp: true
 warps:
 #warpgui names for your custom names
 warp_1: 'spawn'
