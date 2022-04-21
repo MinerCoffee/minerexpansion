@@ -8,10 +8,13 @@ import me.minercoffee.minerexpansion.Items.ThrowingAxe;
 import me.minercoffee.minerexpansion.Items.itemscreation;
 import me.minercoffee.minerexpansion.chuck.seechucks;
 import me.minercoffee.minerexpansion.commands.*;
+import me.minercoffee.minerexpansion.elyra.utils.Bar;
 import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
 import me.minercoffee.minerexpansion.elyra.utils.events.Elytra;
 import me.minercoffee.minerexpansion.elyra.utils.events.PreventAnvilUse;
 import me.minercoffee.minerexpansion.enchantments.*;
+import me.minercoffee.minerexpansion.grapplinghook.GrapplingHook;
+import me.minercoffee.minerexpansion.grapplinghook.GrapplingHookCooldown;
 import me.minercoffee.minerexpansion.rtp.launchpads;
 import me.minercoffee.minerexpansion.rtp.rtpcmd;
 import me.minercoffee.minerexpansion.silktouchspawners.BlockAlerts;
@@ -22,8 +25,6 @@ import me.minercoffee.minerexpansion.supplydrop.commands.CommandDeleteSupplyDrop
 import me.minercoffee.minerexpansion.supplydrop.commands.CommandEditSupplyDrop;
 import me.minercoffee.minerexpansion.supplydrop.commands.CommandEnvoy;
 import me.minercoffee.minerexpansion.supplydrop.commands.CommandSupplyDrop;
-import me.minercoffee.minerexpansion.supplydrop.commands.grapplinghook.GrapplingHook;
-import me.minercoffee.minerexpansion.supplydrop.commands.grapplinghook.GrapplingHookCooldown;
 import me.minercoffee.minerexpansion.supplydrop.utils.EnvoysDataManager;
 import me.minercoffee.minerexpansion.supplydrop.utils.SupplyDropsDataManager;
 import me.minercoffee.minerexpansion.utils.UpdateCheckCommand;
@@ -66,6 +67,8 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     public DataManager data;
     public ArrayList<Player> launchpad_players = new ArrayList<>();
     public ArrayList<Player> ore_players = new ArrayList<>();
+    public Bar bar;
+
     public MinerExpansion() {
     }
 
@@ -113,6 +116,11 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         new setwarps(this);
         new delwarp(this);
         new UpdateCheckCommand(this);
+//        bar = new Bar(this);;
+//        if (Bukkit.getOnlinePlayers().size() > 0){
+//            for (Player on : Bukkit.getOnlinePlayers())
+//                Bar.addPlayer(on);
+//        }
         getServer().getPluginManager().registerEvents(new PreventAnvilUse(), this);
         getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
         getServer().getPluginManager().registerEvents(new SpawnerListeners(), this);

@@ -1,4 +1,4 @@
-package me.minercoffee.minerexpansion.supplydrop.commands.grapplinghook;
+package me.minercoffee.minerexpansion.grapplinghook;
 
 import org.bukkit.entity.Player;
 

@@ -20,7 +20,7 @@ public class ChargeBar {
 
     public static void run(Player p) {
         chargeBar = Bukkit.createBossBar("", BarColor.PURPLE, BarStyle.SOLID, BarFlag.DARKEN_SKY);
-        chargeBar.setProgress(0.0D);
+        chargeBar.setProgress(1D);
         chargeBar.setVisible(true);
         chargeBar.addPlayer(p);
         charge(p);
@@ -37,21 +37,22 @@ public class ChargeBar {
 
     private static void charge(final Player p) {
         task = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinerExpansion.plugin, new Runnable() {
-            double progress = 0.0D;
+            double progress = 1.0D;
             final double time = 0.025D;
+            int count = +1;
 
             public void run() {
                 ChargeBar.chargeBar.setProgress(this.progress);
                 this.progress += 0.025D;
                 if (this.progress >= 1.0D) {
-                    progress = progress - time;
+                    count++;
                     Bukkit.getScheduler().cancelTask(ChargeBar.task);
                     ChargeBar.chargeBar.setProgress(1.0D);
                     ChargeBar.charged.add(p);
                     ChargeBar.runWhenFull(p);
                 }
             }
-        }, 0L, 1L);
+        }, 0, 20);
     }
 
     private static void runWhenFull(Player p) {

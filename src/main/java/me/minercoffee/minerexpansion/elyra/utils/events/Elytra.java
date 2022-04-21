@@ -67,7 +67,7 @@ public class Elytra implements Listener {
                 if (!(p.getLocation().getPitch() < -90.0F)) {
                     if (this.chargingPlayers.contains(p) && ChargeBar.charged.contains(p)) {
                         ChargeBar.chargeBar.removePlayer(p);
-                        p.setVelocity(p.getLocation().getDirection().multiply(2).setY(8));
+                        p.setVelocity(p.getLocation().getDirection().multiply(2).setY(10));
                         p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 10.0F, 1.0F);
                     }
 
