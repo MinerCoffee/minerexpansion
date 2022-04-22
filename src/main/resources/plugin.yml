@@ -9,6 +9,8 @@ loadbefore: [Vault]
 load: POSTWORLD
 description: All in one plugin. Some it's features are better elytras, custom recipes, nightvision, custom tools, and more.
 commands:
+  doubledrops:
+    description: gives double drops on ores.
   rtp:
     description: teleports the player to a random location.
   veinminerII:

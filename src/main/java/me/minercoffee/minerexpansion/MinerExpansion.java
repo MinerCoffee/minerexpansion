@@ -110,7 +110,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         loadConfig();
         loadEnchantment();
         loadEnvoy();
-        new doubledrops(this);
+        new DoubleDrops(this);
         new Warpgui(this);
         new warp(this);
         new setwarps(this);
@@ -294,9 +294,12 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     }
 
     public void loadEnchantment(){
+        DoubleDropsUtils.register();
         VeinMinerUtilsII.register();
         VeinMinerUtilsI.register();
         TelepathyUtils.register();
+        Objects.requireNonNull(getCommand("doubledrops")).setExecutor(new DoubleDrops(this));
+        getServer().getPluginManager().registerEvents(new DoubleDrops(this), this);
         Objects.requireNonNull(getCommand("veinminerII")).setExecutor(new VeinMinerII());
         getServer().getPluginManager().registerEvents(new VeinMinerII(), this);
         Objects.requireNonNull(getCommand("veinminerI")).setExecutor(new VeinMinerI());

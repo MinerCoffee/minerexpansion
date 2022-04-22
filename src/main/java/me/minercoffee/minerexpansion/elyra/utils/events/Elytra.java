@@ -3,6 +3,7 @@ package me.minercoffee.minerexpansion.elyra.utils.events;
 import me.minercoffee.minerexpansion.elyra.utils.ChargeBar;
 import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
 import me.minercoffee.minerexpansion.elyra.utils.Utils;
+import me.minercoffee.minerexpansion.grapplinghook.GrapplingHookCooldown;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -63,11 +64,12 @@ public class Elytra implements Listener {
     public void launch(PlayerStatisticIncrementEvent e) {
         Player p = e.getPlayer();
         if (Utils.hasElytra(p)) {
+            GrapplingHookCooldown.setCooldown(p, 60);
             if (e.getStatistic().equals(Statistic.JUMP)) {
                 if (!(p.getLocation().getPitch() < -90.0F)) {
                     if (this.chargingPlayers.contains(p) && ChargeBar.charged.contains(p)) {
                         ChargeBar.chargeBar.removePlayer(p);
-                        p.setVelocity(p.getLocation().getDirection().multiply(2).setY(10));
+                        p.setVelocity(p.getLocation().getDirection().multiply(1).setY(7));
                         p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 10.0F, 1.0F);
                     }
 
