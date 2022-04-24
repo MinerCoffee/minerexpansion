@@ -8,7 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,18 +17,16 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
-public class CommandEditSupplyDrop implements CommandExecutor, Listener, TabCompleter {
+public class CommandEditSupplyDrop implements CommandExecutor, Listener {
     public CommandEditSupplyDrop() {
     }
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (sender instanceof Player) {
-            Player p = (Player) sender;
-            if (p.hasPermission("miner.staff")) {
+            Player p = (Player)sender;
+            if (p.hasPermission("supplydrop.admin")) {
                 if (args.length == 0) {
                     SendInfoMessages.sendInfoMessage(p, "SpecifyDropName");
                     return false;
@@ -40,6 +37,7 @@ public class CommandEditSupplyDrop implements CommandExecutor, Listener, TabComp
                 SendInfoMessages.sendInfoMessage(p, "InsufficientPermissions");
             }
         }
+
         return false;
     }
 
@@ -50,7 +48,7 @@ public class CommandEditSupplyDrop implements CommandExecutor, Listener, TabComp
                 Inventory loadedDropInv = InventorySerializer.fromBase64(SupplyDropsDataManager.getSupplyDropsData().getString("drops." + supplyDropName));
                 ItemStack[] dropInvItems = loadedDropInv.getContents();
 
-                for (int i = 0; i < dropInvItems.length; ++i) {
+                for(int i = 0; i < dropInvItems.length; ++i) {
                     if (dropInvItems[i] != null) {
                         inv.setItem(i, dropInvItems[i]);
                     }
@@ -70,29 +68,14 @@ public class CommandEditSupplyDrop implements CommandExecutor, Listener, TabComp
 
     @EventHandler
     public void leave(InventoryCloseEvent e) {
-        Player p = (Player) e.getPlayer();
-        String editorName = ChatColor.stripColor(p.getOpenInventory().getTitle());
+        Player p = (Player)e.getPlayer();
+        String editorName = ChatColor.stripColor(String.valueOf(e.getInventory()));
         if (editorName.startsWith("Editor:")) {
             String[] parts = editorName.split(":");
             String dropName = parts[1];
             SendInfoMessages.sendInfoMessage(p, "SavedDrop", dropName.trim(), "");
             this.saveSupplyDrop(dropName.trim(), e.getInventory());
         }
-    }
 
-    @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (command.getName().equals("supplydrop")) {
-            if (args.length == 1) {
-                List<String> playerNames = new ArrayList<>();
-                Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
-                Bukkit.getServer().getOnlinePlayers().toArray(players);
-                for (Player player : players) {
-                    playerNames.add(player.getName());
-                }
-                return playerNames;
-            }
-        }
-        return null;
     }
 }

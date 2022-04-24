@@ -9,9 +9,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-
-import static me.minercoffee.minerexpansion.MinerExpansion.plugin;
-
 public class delwarp implements CommandExecutor {
     private final MinerExpansion plugin;
     public String name;

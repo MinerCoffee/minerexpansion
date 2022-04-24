@@ -15,24 +15,23 @@ import org.bukkit.util.EulerAngle;
 
 
 public class DropGlider {
-    private final HashMap<String, ArmorStand> parts = new HashMap<>();
+    private final HashMap<String, ArmorStand> parts = new HashMap();
 
-    @SuppressWarnings("deprecation")
     public DropGlider(World world, double x, double y, double z) {
-        Location loc = new Location(world, x + 0.5D, y, z + 0.5D);
-        ArmorStand leftSide = makeNewArmorStand(loc.getWorld(), loc.getX() - 0.32D, loc.getY() + 0.93D, loc.getZ());
-        leftSide.setHeadPose(new EulerAngle(0.0D, Math.toRadians(270.0D), Math.toRadians(251.0D)));
+        Location loc = new Location(world, x + 0.5, y, z + 0.5);
+        ArmorStand leftSide = makeNewArmorStand(loc.getWorld(), loc.getX() - 0.32, loc.getY() + 0.93, loc.getZ());
+        leftSide.setHeadPose(new EulerAngle(0.0, Math.toRadians(270.0), Math.toRadians(251.0)));
         leftSide.setHelmet(new ItemStack(Material.BLACK_BANNER));
-        ArmorStand middle = makeNewArmorStand(loc.getWorld(), loc.getX() + 1.345D, loc.getY() + 0.76D, loc.getZ());
-        middle.setHeadPose(new EulerAngle(0.0D, Math.toRadians(270.0D), Math.toRadians(270.0D)));
+        ArmorStand middle = makeNewArmorStand(loc.getWorld(), loc.getX() + 1.345, loc.getY() + 0.76, loc.getZ());
+        middle.setHeadPose(new EulerAngle(0.0, Math.toRadians(270.0), Math.toRadians(270.0)));
         middle.setHelmet(new ItemStack(Material.BLACK_BANNER));
-        ArmorStand rightSide = makeNewArmorStand(loc.getWorld(), loc.getX() + 0.32D, loc.getY() + 0.93D, loc.getZ());
-        rightSide.setHeadPose(new EulerAngle(0.0D, Math.toRadians(90.0D), Math.toRadians(109.0D)));
+        ArmorStand rightSide = makeNewArmorStand(loc.getWorld(), loc.getX() + 0.32, loc.getY() + 0.93, loc.getZ());
+        rightSide.setHeadPose(new EulerAngle(0.0, Math.toRadians(90.0), Math.toRadians(109.0)));
         rightSide.setHelmet(new ItemStack(Material.BLACK_BANNER));
-        ArmorStand leftStick = makeNewArmorStand(loc.getWorld(), loc.getX() + 0.62D, loc.getY() - 0.55D, loc.getZ() + 0.28D);
+        ArmorStand leftStick = makeNewArmorStand(loc.getWorld(), loc.getX() + 0.62, loc.getY() - 0.55, loc.getZ() + 0.28);
         leftStick.setHelmet(new ItemStack(Material.STICK));
-        ArmorStand rightStick = makeNewArmorStand(loc.getWorld(), loc.getX() - 0.62D, loc.getY() + 0.92D, loc.getZ() - 0.28D);
-        rightStick.setHeadPose(new EulerAngle(0.0D, Math.toRadians(180.0D), Math.toRadians(180.0D)));
+        ArmorStand rightStick = makeNewArmorStand(loc.getWorld(), loc.getX() - 0.62, loc.getY() + 0.92, loc.getZ() - 0.28);
+        rightStick.setHeadPose(new EulerAngle(0.0, Math.toRadians(180.0), Math.toRadians(180.0)));
         rightStick.setHelmet(new ItemStack(Material.STICK));
         this.parts.put("leftSide", leftSide);
         this.parts.put("middle", middle);
@@ -46,12 +45,12 @@ public class DropGlider {
             public void run() {
                 String part;
                 Iterator var2;
-                if (DropGlider.this.parts.get("middle").getLocation().getY() > finalY + 1.0D) {
+                if (DropGlider.this.parts.get("middle").getLocation().getY() > finalY + 1.0) {
                     var2 = DropGlider.this.parts.keySet().iterator();
 
                     while(var2.hasNext()) {
                         part = (String)var2.next();
-                        DropGlider.this.parts.get(part).teleport(DropGlider.this.parts.get(part).getLocation().subtract(0.0D, 1.0D, 0.0D));
+                        DropGlider.this.parts.get(part).teleport(DropGlider.this.parts.get(part).getLocation().subtract(0.0, 1.0, 0.0));
                     }
                 } else {
                     var2 = DropGlider.this.parts.keySet().iterator();

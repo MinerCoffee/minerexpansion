@@ -92,9 +92,6 @@ permissions:
   miner.staff:
     description: Access to reload config, withdraw, and deposit, freeze, and unfreeze.
     default: op
-  miner.silk:
-    description: Access to silk touch spawners.
-    default: op
   chunkvisualizer.view:
     description: Gives/Grant access to chunk visualization.
     default: op

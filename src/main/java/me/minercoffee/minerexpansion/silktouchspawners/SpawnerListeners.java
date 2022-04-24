@@ -15,24 +15,26 @@ public class SpawnerListeners implements Listener {
 
     @EventHandler
     public void onSpawnerBreak(SpawnerBreakEvent e) {
-        CreatureSpawner cs = (CreatureSpawner) e.getSpawner().getState();
-        ItemStack spawner = new ItemStack(cs.getType());
-        BlockStateMeta meta = (BlockStateMeta) spawner.getItemMeta();
-        CreatureSpawner css = null;
-        if (meta != null) {
-            css = (CreatureSpawner) meta.getBlockState();
-        }
-        if (css != null) {
-            css.setSpawnedType(cs.getSpawnedType());
-        }
-        if (meta != null) {
-            meta.setBlockState(css);
-        }
-        spawner.setItemMeta(meta);
-        double chance = plugin.getConfig().getDouble("dropChance",50)/100;
-        if(random.nextDouble()<= chance){
-            e.getBreaker().sendMessage("You have silk touched a spawner.");
-            e.getBreaker().getInventory().addItem(spawner);
+        if (plugin.getConfig().getBoolean("SilkSpawners")) {
+            CreatureSpawner cs = (CreatureSpawner) e.getSpawner().getState();
+            ItemStack spawner = new ItemStack(cs.getType());
+            BlockStateMeta meta = (BlockStateMeta) spawner.getItemMeta();
+            CreatureSpawner css = null;
+            if (meta != null) {
+                css = (CreatureSpawner) meta.getBlockState();
+            }
+            if (css != null) {
+                css.setSpawnedType(cs.getSpawnedType());
+            }
+            if (meta != null) {
+                meta.setBlockState(css);
+            }
+            spawner.setItemMeta(meta);
+            double chance = plugin.getConfig().getDouble("dropChance", 0) / 100;
+            if (random.nextDouble() <= chance) {
+                e.getBreaker().sendMessage("You have silk touched a spawner.");
+                e.getBreaker().getInventory().addItem(spawner);
+            }
         }
     }
 }

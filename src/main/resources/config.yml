@@ -38,7 +38,8 @@ ore_check_material_7: 'AIR'
 ore_check_material_8: 'AIR'
 ore_check_material_9: 'AIR'
 ore_check_material_10: 'AIR'
-dropChance: 50.0 #Chance for silk touch spawners to drop.
+SilkSpawners: false
+dropChance: 0.0 #Chance for silk touch spawners to drop.
 #Custom_recipes----------------------------------------------------------------------------#
 #You can change the material used.
 #FULL BLOCK NAME LIST: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html

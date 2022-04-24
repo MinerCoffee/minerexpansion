@@ -31,7 +31,7 @@ public class SupplyDropsDataManager {
 
         try {
             customConfig.load(customConfigFile);
-        } catch (InvalidConfigurationException | IOException var1) {
+        } catch (IOException | InvalidConfigurationException var1) {
             var1.printStackTrace();
         }
 

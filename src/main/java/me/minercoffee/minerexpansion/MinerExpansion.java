@@ -29,10 +29,7 @@ import me.minercoffee.minerexpansion.supplydrop.utils.EnvoysDataManager;
 import me.minercoffee.minerexpansion.supplydrop.utils.SupplyDropsDataManager;
 import me.minercoffee.minerexpansion.utils.UpdateCheckCommand;
 import me.minercoffee.minerexpansion.utils.UpdateCheckListener;
-import me.minercoffee.minerexpansion.warps.Warpgui;
-import me.minercoffee.minerexpansion.warps.delwarp;
-import me.minercoffee.minerexpansion.warps.setwarps;
-import me.minercoffee.minerexpansion.warps.warp;
+import me.minercoffee.minerexpansion.warps.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -65,6 +62,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     public static ArrayList<Player> viewers = new ArrayList<>();
     public static ArrayList<Location> viewerslocs = new ArrayList<>();
     public DataManager data;
+    public EnvoysDataManager envoysDataManager;
     public ArrayList<Player> launchpad_players = new ArrayList<>();
     public ArrayList<Player> ore_players = new ArrayList<>();
     public Bar bar;
@@ -92,6 +90,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
                 .setColoredConsoleOutput(true)
                 .checkEveryXHours(24)
                 .checkNow();
+        envoysDataManager = new EnvoysDataManager(this);
         this.data = new DataManager(this);
         Objects.requireNonNull(getCommand("mereload")).setExecutor(new reload());
         plugin = this;
@@ -116,11 +115,6 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         new setwarps(this);
         new delwarp(this);
         new UpdateCheckCommand(this);
-//        bar = new Bar(this);;
-//        if (Bukkit.getOnlinePlayers().size() > 0){
-//            for (Player on : Bukkit.getOnlinePlayers())
-//                Bar.addPlayer(on);
-//        }
         getServer().getPluginManager().registerEvents(new PreventAnvilUse(), this);
         getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
         getServer().getPluginManager().registerEvents(new SpawnerListeners(), this);
@@ -309,19 +303,14 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     }
 
     public void loadEnvoy(){
+        Bukkit.getServer().getPluginManager().registerEvents(new CommandEditSupplyDrop(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new CommandEnvoy(), this);
         Objects.requireNonNull(this.getCommand("supplydrop")).setExecutor(new CommandSupplyDrop());
         Objects.requireNonNull(this.getCommand("editsupplydrop")).setExecutor(new CommandEditSupplyDrop());
         Objects.requireNonNull(this.getCommand("deletesupplydrop")).setExecutor(new CommandDeleteSupplyDrop());
         Objects.requireNonNull(this.getCommand("envoy")).setExecutor(new CommandEnvoy());
-        Objects.requireNonNull(this.getCommand("supplydrop")).setTabCompleter(new CommandSupplyDrop());
-        Objects.requireNonNull(this.getCommand("editsupplydrop")).setTabCompleter(new CommandEditSupplyDrop());
-        Objects.requireNonNull(this.getCommand("deletesupplydrop")).setTabCompleter(new CommandDeleteSupplyDrop());
-        Objects.requireNonNull(this.getCommand("envoy")).setTabCompleter(new CommandEnvoy());
         SupplyDropsDataManager.saveDefaultConfig();
         EnvoysDataManager.saveDefaultConfig();
-        getServer().getPluginManager().registerEvents(new CommandEditSupplyDrop(), this);
-        getServer().getPluginManager().registerEvents(new CommandDeleteSupplyDrop(), this);
-        getServer().getPluginManager().registerEvents(new CommandEnvoy(), this);
     }
 
     public void loadConfig() {
@@ -331,6 +320,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        plugin = null;
         this.getServer().getConsoleSender().sendMessage(ChatUtils.colour("&9MinerExpansion v1.0 beta has been disabled"));
     }
 }
