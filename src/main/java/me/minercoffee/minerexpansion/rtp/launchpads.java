@@ -15,10 +15,11 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Objects;
 
 public class launchpads implements Listener  {
-    MinerExpansion plugin;
+   private final MinerExpansion plugin;
 
     public launchpads(MinerExpansion plugin) {
         this.plugin = plugin;
+        this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler

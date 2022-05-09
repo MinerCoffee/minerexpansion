@@ -81,6 +81,7 @@ public class Telepathy implements Listener, CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender instanceof Player) {
             Player p = (Player) commandSender;
+            if (p.hasPermission("miner.staff")) {
                 if (command.getName().equalsIgnoreCase("telepathy")) {
                     ItemStack book = new ItemStack((Material.ENCHANTED_BOOK), 1);
                     book.addUnsafeEnchantment(TelepathyUtils.TELEPATHY, 1);
@@ -97,6 +98,7 @@ public class Telepathy implements Listener, CommandExecutor {
                     p.updateInventory();
                 }
             }
+        }
 
         return true;
     }

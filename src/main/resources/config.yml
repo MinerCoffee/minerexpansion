@@ -1,4 +1,4 @@
-#MinerExpansion 1.0.1 Plugin
+#MinerExpansion 1.0.6 Plugin
 #Turning these value to true or false will enable these features.
 # written by: MinerCoffee
 vaultbal: false
@@ -24,7 +24,7 @@ shape:
   - 'NEN'
   - 'DND'
 NoRenameLore: #Custom Items that can't be renamed.
-  - Miner's Plane! #elytra
+  - IllusiveMC's Owner! #elytra
 #silk_spawners_settings---------------------------------------------------------------------#
 #set to Air if you don't want to check for that material.
 Ore-alerts: false

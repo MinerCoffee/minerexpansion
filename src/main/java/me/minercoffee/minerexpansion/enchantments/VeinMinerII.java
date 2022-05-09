@@ -95,20 +95,22 @@ public class VeinMinerII implements Listener, CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender instanceof Player) {
             Player p = (Player) commandSender;
-            if (command.getName().equalsIgnoreCase("veinminerII")) {
-                ItemStack item = new ItemStack((Material.ENCHANTED_BOOK));
-                item.addUnsafeEnchantment(VeinMinerUtilsII.VEINMINERII, 2);
-                ItemMeta meta = item.getItemMeta();
-                List<String> lore = new ArrayList<>();
-                lore.add(ChatColor.GRAY + "VeinMiner II");
-                if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
-                if (meta != null) {
-                    meta.setLore(lore);
+            if (p.hasPermission("miner.staff")) {
+                if (command.getName().equalsIgnoreCase("veinminerII")) {
+                    ItemStack item = new ItemStack((Material.ENCHANTED_BOOK));
+                    item.addUnsafeEnchantment(VeinMinerUtilsII.VEINMINERII, 2);
+                    ItemMeta meta = item.getItemMeta();
+                    List<String> lore = new ArrayList<>();
+                    lore.add(ChatColor.GRAY + "VeinMiner II");
+                    if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
+                    if (meta != null) {
+                        meta.setLore(lore);
+                    }
+                    item.setItemMeta(meta);
+                    p.getInventory().addItem(item);
+                    p.closeInventory();
+                    p.updateInventory();
                 }
-                item.setItemMeta(meta);
-                p.getInventory().addItem(item);
-                p.closeInventory();
-                p.updateInventory();
             }
         }
         return true;

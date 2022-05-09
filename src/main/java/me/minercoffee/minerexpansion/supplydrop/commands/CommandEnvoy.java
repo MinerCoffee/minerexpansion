@@ -194,7 +194,7 @@ import java.util.*;
                                 assert worldName != null;
 
                                 final World world = Bukkit.getWorld(worldName);
-                                final ArrayList<RandomDrop> randomDrops = new ArrayList();
+                                 final ArrayList<RandomDrop> randomDrops = new ArrayList();
 
                                 for (String key : Objects.requireNonNull(this.envoyCfg.getConfigurationSection("envoys." + args[1] + ".drops")).getKeys(false)) {
                                     int val = this.envoyCfg.getInt("envoys." + args[1] + ".drops." + key);
@@ -314,18 +314,16 @@ import java.util.*;
             return r.nextInt(mx + 1 - mn) + mn;
         }
 
-        public ArrayList onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
             if (command.getName().equals("supplydrop")) {
-                ArrayList arguments;
+                List<String> arguments = new ArrayList<>();
                 if (args.length == 0) {
-                    arguments = new ArrayList();
                     arguments.add("create");
                     arguments.add("help");
                     return arguments;
                 }
 
                 if (args.length == 1) {
-                    arguments = new ArrayList();
                     arguments.add("create");
                     arguments.add("delete");
                     arguments.add("pos1");
@@ -335,7 +333,6 @@ import java.util.*;
                 }
 
                 if (args.length == 3) {
-                    arguments = new ArrayList();
                     arguments.add("setdropcount");
                     arguments.add("removedrop");
                     arguments.add("setlength");
@@ -343,7 +340,6 @@ import java.util.*;
                 }
 
                 if (args.length == 4) {
-                    arguments = new ArrayList();
                     arguments.add("adddrop");
                     return arguments;
                 }

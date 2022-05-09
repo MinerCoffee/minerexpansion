@@ -7,8 +7,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -23,7 +21,6 @@ public class rtpcmd implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
-        if (sender instanceof Player) {
             Player player = (Player) sender;
             if (plugin.getConfig().getBoolean("rtp")) {
                 if (cooldown.containsKey(player.getUniqueId())) {
@@ -40,10 +37,6 @@ public class rtpcmd implements CommandExecutor {
                         Location randomLocation = teleportutils.findSafeLocation(player);
                         Location spawn = teleportutils.findSafeSpawnLocation(randomLocation);
                         player.teleport(spawn);
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 64, 10, false, false, false));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 64, 10, false, false, false));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 64, 10, false, false, false));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 64 , 10, false, false, false));
                         player.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Teleported to Random Location!");
                         player.sendMessage(ChatColor.AQUA + "New Coordinates: " + ChatColor.LIGHT_PURPLE + randomLocation.getX() + " " + randomLocation.getY() + " " + randomLocation.getZ());
                         cooldown.put(player.getUniqueId(), System.currentTimeMillis());
@@ -55,10 +48,6 @@ public class rtpcmd implements CommandExecutor {
                     Location spawn = teleportutils.findSafeSpawnLocation(randomLocation);
                     if (target != null) {
                         target.teleport(spawn);
-                        target.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 64, 10, false, false, false));
-                        target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 64, 10, false, false, false));
-                        target.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 64, 10, false, false, false));
-                        target.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 64 , 10, false, false, false));
                         target.sendMessage(ChatColor.GREEN + player.getDisplayName() + ChatColor.GOLD + " just Random Teleported you!");
                         target.sendMessage(ChatColor.AQUA + "New Coordinates: " + ChatColor.LIGHT_PURPLE + randomLocation.getX() + " " + randomLocation.getY() + " " + randomLocation.getZ());
                         player.sendMessage(ChatColor.RED + "Player successfully teleported to: " + ChatColor.LIGHT_PURPLE + randomLocation.getX() + " " + randomLocation.getY() + " " + randomLocation.getZ());
@@ -67,8 +56,6 @@ public class rtpcmd implements CommandExecutor {
             } else {
                 System.out.println("You need to be a player to execute this command.");
             }
-        }
-
         return true;
+        }
     }
-}

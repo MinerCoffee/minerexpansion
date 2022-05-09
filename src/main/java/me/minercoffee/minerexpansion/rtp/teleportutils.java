@@ -1,11 +1,13 @@
 package me.minercoffee.minerexpansion.rtp;
 
-import me.minercoffee.minerexpansion.MinerExpansion;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Random;
@@ -15,6 +17,7 @@ import static me.minercoffee.minerexpansion.MinerExpansion.plugin;
 public class teleportutils {
     public static HashSet<Material> bad_blocks = new HashSet<>();
     static{
+        bad_blocks.add(Material.AIR);
         bad_blocks.add(Material.LAVA);
         bad_blocks.add(Material.FIRE);
         bad_blocks.add(Material.CACTUS);
@@ -45,7 +48,6 @@ public class teleportutils {
         }
         return randomLocation;
     }
-
     public static Location findSafeLocation(Player player){
 
         Location randomLocation = generateLocation(player);
@@ -53,6 +55,11 @@ public class teleportutils {
         while (!isLocationSafe(randomLocation)){
             //Keep looking for a safe location
             randomLocation = generateLocation(player);
+
+            player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 64, 10, false, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 64, 10, false, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 64, 10, false, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 64 , 10, false, false, false));
         }
         return randomLocation;
     }

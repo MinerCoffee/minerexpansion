@@ -124,6 +124,7 @@ public class DoubleDrops implements Listener, CommandExecutor {
     @EventHandler
     public void anvilEvent(PrepareAnvilEvent e){
         Player player = (Player) e.getView().getPlayer();
+
         if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
         if (Objects.requireNonNull(e.getInventory().getItem(1)).containsEnchantment(DoubleDropsUtils.DoubleDrops)){
             ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
@@ -147,6 +148,7 @@ public class DoubleDrops implements Listener, CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
+            if (p.hasPermission("miner.staff")){
             if (command.getName().equalsIgnoreCase("doubledrops")) {
                 ItemStack book = new ItemStack((Material.ENCHANTED_BOOK), 1);
                 book.addUnsafeEnchantment(TelepathyUtils.TELEPATHY, 1);
@@ -162,6 +164,7 @@ public class DoubleDrops implements Listener, CommandExecutor {
                 p.closeInventory();
                 p.updateInventory();
             }
+        }
         }
 
         return true;

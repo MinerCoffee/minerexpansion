@@ -23,19 +23,14 @@ public class PreventAnvilUse implements Listener {
                     AnvilInventory anvil = (AnvilInventory)inv;
                     InventoryView view = e.getView();
                     int rawSlot = e.getRawSlot();
-                   // System.out.println("test_1");
                     if (rawSlot == view.convertSlot(rawSlot)) {
                         if (rawSlot == 2) {
                             ItemStack[] items = anvil.getContents();
                             ItemStack item = items[0];
                             ItemStack item2 = items[1];
-                                if (item == null)
-                                    return;
-                            if (item2 == null)
-                                return;
-                             //   System.out.println("test_3");
+                                if (item == null) return;
+                            if (item2 == null) return;
                                 if (item.isSimilar(RecipeUtils.getElytra()) || item2.isSimilar(RecipeUtils.getElytra()) ) {
-                                   // System.out.println("test_4");
                                     e.setCancelled(true);
                                     p.closeInventory();
                                     p.sendMessage("You must drop the elytra in order to use the anvil");

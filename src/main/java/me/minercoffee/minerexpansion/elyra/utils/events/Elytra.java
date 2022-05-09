@@ -3,7 +3,6 @@ package me.minercoffee.minerexpansion.elyra.utils.events;
 import me.minercoffee.minerexpansion.elyra.utils.ChargeBar;
 import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
 import me.minercoffee.minerexpansion.elyra.utils.Utils;
-import me.minercoffee.minerexpansion.grapplinghook.GrapplingHookCooldown;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -64,17 +63,21 @@ public class Elytra implements Listener {
     public void launch(PlayerStatisticIncrementEvent e) {
         Player p = e.getPlayer();
         if (Utils.hasElytra(p)) {
-            GrapplingHookCooldown.setCooldown(p, 60);
-            if (e.getStatistic().equals(Statistic.JUMP)) {
-                if (!(p.getLocation().getPitch() < -90.0F)) {
-                    if (this.chargingPlayers.contains(p) && ChargeBar.charged.contains(p)) {
-                        ChargeBar.chargeBar.removePlayer(p);
-                        p.setVelocity(p.getLocation().getDirection().multiply(1).setY(3));
-                        p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 10.0F, 1.0F);
+                if (e.getStatistic().equals(Statistic.JUMP)) {
+                    if (ElytraCooldown.checkCooldown(p)) {
+                        if (!(p.getLocation().getPitch() < -90.0F)) {
+                            ElytraCooldown.setCooldown(p, 5);
+                            if (this.chargingPlayers.contains(p) && ChargeBar.charged.contains(p)) {
+                                ChargeBar.chargeBar.removePlayer(p);
+                                p.setVelocity(p.getLocation().getDirection().multiply(1).setY(3));
+                                p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 10.0F, 1.0F);
+                            }
+                        }
+                    } else {
+                        p.sendMessage(ChatColor.YELLOW + "Elytra launch is not ready yet");
+                        p.sendMessage(ChatColor.YELLOW + "It will be ready in a five seconds");
                     }
-
                 }
-            }
         }
     }
 
@@ -180,15 +183,12 @@ public class Elytra implements Listener {
             ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
             ItemMeta meta = a.getItemMeta();
             List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.GRAY + "Miner's Plane!");
+            lore.add(ChatColor.GRAY + "IllusiveMC's Owner!");
             assert meta != null;
-            if (meta.hasLore())
-                lore.addAll(Objects.requireNonNull(meta.getLore()));
+            if (meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
             meta.setLore(lore);
             a.setItemMeta(meta);
-            //e.getInventory().setRepairCost(999999);
             e.setResult(null);
             player.updateInventory();
-         //   plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(999999));
         }
 }

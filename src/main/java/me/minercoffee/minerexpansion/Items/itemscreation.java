@@ -64,13 +64,13 @@ public class itemscreation implements Listener {
         if (meta != null) {
             meta.setDisplayName((ChatUtils.colour("§6Throwing Axe!")));
             List<String> lore = new ArrayList<>();
-            lore.add("§7Damage: §c+70");
+            lore.add("§7Damage: §c+5");
             lore.add("");
             lore.add("§6Item Ability: Throw §eRIGHT CLICK");
             lore.add("§7Throw your axe and deal");
-            lore.add("§c1,000 §7damage.");
+            lore.add("§c5 §7damage.");
             meta.setLore(lore);
-            AttributeModifier damage = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 70, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+            AttributeModifier damage = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
             meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, damage);
             item.setItemMeta(meta);
             ThrowingAxe = item;

@@ -14,7 +14,7 @@ public class RecipeUtils {
         ItemStack Elytra = new ItemStack(Material.ELYTRA, 1);
         Damageable meta = (Damageable) Elytra.getItemMeta();
         ArrayList<String> lore = new ArrayList<>();
-        lore.add (ChatColor.GRAY + "Miner's Plane!");
+        lore.add (ChatColor.GRAY + "IllusiveMC's Owner!");
         if (meta != null) {
             meta.setDamage(100);
             meta.setCustomModelData(1234567);

@@ -66,7 +66,6 @@ commands:
   chunkvisualizer:
     description: Set yourself on fire.
     aliases: [ cv, sc, seechunks ]
-    permission: chunkvisualizer.view
     usage: type /<command> to see chunk borders.
   staffhome:
     description: The main command for staff homes!

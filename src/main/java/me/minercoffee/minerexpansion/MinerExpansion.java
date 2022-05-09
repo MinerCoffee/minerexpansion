@@ -8,9 +8,9 @@ import me.minercoffee.minerexpansion.Items.ThrowingAxe;
 import me.minercoffee.minerexpansion.Items.itemscreation;
 import me.minercoffee.minerexpansion.chuck.seechucks;
 import me.minercoffee.minerexpansion.commands.*;
-import me.minercoffee.minerexpansion.elyra.utils.Bar;
 import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
 import me.minercoffee.minerexpansion.elyra.utils.events.Elytra;
+import me.minercoffee.minerexpansion.elyra.utils.events.ElytraCooldown;
 import me.minercoffee.minerexpansion.elyra.utils.events.PreventAnvilUse;
 import me.minercoffee.minerexpansion.enchantments.*;
 import me.minercoffee.minerexpansion.grapplinghook.GrapplingHook;
@@ -40,7 +40,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,8 +64,6 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     public EnvoysDataManager envoysDataManager;
     public ArrayList<Player> launchpad_players = new ArrayList<>();
     public ArrayList<Player> ore_players = new ArrayList<>();
-    public Bar bar;
-
     public MinerExpansion() {
     }
 
@@ -123,6 +120,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new GrapplingHook(), this);
         Objects.requireNonNull(getCommand("givegrapplinghook")).setExecutor(new GrapplingHookcmd());
         GrapplingHookCooldown.setupCooldown();
+        ElytraCooldown.setupCooldown();
         getServer().getPluginManager().registerEvents(new launchpads(this), this);
         Objects.requireNonNull(this.getCommand("chunkvisualizer")).setExecutor(new seechucks());
         Objects.requireNonNull(getCommand("staffhome")).setExecutor(new staffhomecmd(this));
@@ -134,10 +132,6 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         ShapedRecipe nametagrecipe = new ShapedRecipe(nametagkey, Nametag);
         NamespacedKey leatherkey = new NamespacedKey(this, "leather");
         ShapedRecipe leatherrecipe = new ShapedRecipe(leatherkey, Leather);
-        NamespacedKey throwingaxe = new NamespacedKey(this, "throwingaxe");
-        ShapedRecipe throwingaxerecipe = new ShapedRecipe(throwingaxe, itemscreation.ThrowingAxe);
-        NamespacedKey grappinghook = new NamespacedKey(this, "grappinghook");
-        ShapedRecipe grappinghookrecipe = new ShapedRecipe(grappinghook, itemscreation.GrapplingHook);
         NamespacedKey cobweb = new NamespacedKey(this, "cobweb");
         ShapedRecipe cobwebrecipe = new ShapedRecipe(cobweb, Cobweb);
 
@@ -221,48 +215,6 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
             plugin.saveConfig();
         }
         plugin.getServer().addRecipe(nametagrecipe);
-        //next custom recipe item starts here //
-        List<String> shape4 = config.isSet("throwingaxerecipe.shape4") ? config.getStringList("throwingaxerecipe.shape4")
-                : Arrays.asList("WW ", "WS ", "GGG");
-        throwingaxerecipe.shape(shape4.toArray(new String[3]));
-        if (config.isSet("throwingaxerecipe")) {
-            for (String key : Objects.requireNonNull(config.getConfigurationSection("throwingaxerecipe")).getKeys(false)) {
-                if (config.get("throwingaxerecipe" + key) instanceof String) {
-                    throwingaxerecipe.setIngredient(key.charAt(0), Material.valueOf(config.getString("throwingaxerecipe" + key)));
-                } else {
-                    throwingaxerecipe.setIngredient(key.charAt(0),
-                            new RecipeChoice.MaterialChoice(config.getStringList("throwingaxerecipe" + key).stream()
-                                    .map(Material::valueOf).collect(Collectors.toList())));
-                }
-            }
-        } else {
-            throwingaxerecipe.setIngredient('W', Material.valueOf(plugin.getConfig().getString("throwingaxe_ingredient_1")));
-            throwingaxerecipe.setIngredient('S', Material.valueOf(plugin.getConfig().getString("throwingaxe_ingredient_2")));
-            throwingaxerecipe.setIngredient('G', Material.valueOf(plugin.getConfig().getString("throwingaxe_ingredient_3")));
-            plugin.saveConfig();
-        }
-        plugin.getServer().addRecipe(throwingaxerecipe);
-        //next custom recipe item starts here //
-        List<String> shape5 = config.isSet("grappinghookrecipe.shape5") ? config.getStringList("grappinghookrecipe.shape5")
-                : Arrays.asList("SS ", "SW ", "  I");
-        grappinghookrecipe.shape(shape5.toArray(new String[3]));
-        if (config.isSet("grappinghookrecipe")) {
-            for (String key : Objects.requireNonNull(config.getConfigurationSection("grappinghookrecipe")).getKeys(false)) {
-                if (config.get("grappinghookrecipe" + key) instanceof String) {
-                    grappinghookrecipe.setIngredient(key.charAt(0), Material.valueOf(config.getString("grappinghookrecipe" + key)));
-                } else {
-                    grappinghookrecipe.setIngredient(key.charAt(0),
-                            new RecipeChoice.MaterialChoice(config.getStringList("grappinghookrecipe" + key).stream()
-                                    .map(Material::valueOf).collect(Collectors.toList())));
-                }
-            }
-        } else {
-            grappinghookrecipe.setIngredient('W', Material.valueOf(plugin.getConfig().getString("grappinghook_ingredient_1")));
-            grappinghookrecipe.setIngredient('S', Material.valueOf(plugin.getConfig().getString("grappinghook_ingredient_2")));
-            grappinghookrecipe.setIngredient('I', Material.valueOf(plugin.getConfig().getString("grappinghook_ingredient_3")));
-            plugin.saveConfig();
-        }
-        plugin.getServer().addRecipe(grappinghookrecipe);
         //next custom recipe item starts here //
         List<String> shape6 = config.isSet("cobwebrecipe.shape6") ? config.getStringList("cobwebrecipe.shape6")
                 : Arrays.asList("SSS", "SSS", "SSS");

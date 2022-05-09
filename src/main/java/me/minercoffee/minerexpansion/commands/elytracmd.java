@@ -1,32 +1,64 @@
 package me.minercoffee.minerexpansion.commands;
 
+import me.kodysimpson.simpapi.command.SubCommand;
 import me.minercoffee.minerexpansion.elyra.utils.RecipeUtils;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static me.minercoffee.minerexpansion.MinerExpansion.plugin;
 
 
-public class elytracmd implements CommandExecutor {
+public class elytracmd extends SubCommand {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public String getName() {
+        return "charcoal-elytra";
+    }
+
+    @Override
+    public List<String> getAliases() {
+        return null;
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
+
+    @Override
+    public String getSyntax() {
+        return "/admin charcoal-elytra";
+    }
+
+    @Override
+    public void perform(CommandSender sender, String[] args) {
         if (plugin.getConfig().getBoolean("elytra")) {
             if (!(sender instanceof Player)) {
                 sender.sendMessage("Only players can run this command.");
             } else {
                 Player p = (Player) sender;
                 if (p.isOp()) {
-                    if (command.getName().equalsIgnoreCase("giveelytra")) {
-                        p.getInventory().addItem(RecipeUtils.getElytra());
-                    }
+                    p.getInventory().addItem(RecipeUtils.getElytra());
                 } else {
                     sender.sendMessage("You are not allowed to use this command.");
                 }
             }
         }
-        return true;
+    }
+    @Override
+    public List<String> getSubcommandArguments(Player player, String[] args) {
+        if (args.length == 2){
+            List<String> playerNames = new ArrayList<>();
+            Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
+            Bukkit.getServer().getOnlinePlayers().toArray(players);
+            for (Player value : players) {
+                playerNames.add(value.getName());
+            }
+            return playerNames;
+        }
+        return null;
     }
 }
