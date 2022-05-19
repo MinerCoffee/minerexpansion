@@ -1,9 +1,11 @@
 package me.minercoffee.minerexpansion.enchantments;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import static org.bukkit.Bukkit.getLogger;

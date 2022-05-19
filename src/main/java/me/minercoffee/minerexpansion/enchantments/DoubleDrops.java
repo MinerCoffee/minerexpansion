@@ -17,16 +17,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static me.minercoffee.minerexpansion.MinerExpansion.plugin;
 
 public class DoubleDrops implements Listener, CommandExecutor {
+    MinerExpansion plugin;
     public DoubleDrops(MinerExpansion plugin){
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+       this.plugin = plugin;
     }
     @EventHandler
     public void onPlayerBreakBlock(BlockBreakEvent e){
@@ -40,7 +39,7 @@ public class DoubleDrops implements Listener, CommandExecutor {
             return;
         if (inventory.firstEmpty() == -1)
             return;
-        if (!iteminhand.hasItemMeta() || !Objects.requireNonNull(iteminhand.getItemMeta()).hasEnchant(TelepathyUtils.TELEPATHY))
+        if (!iteminhand.hasItemMeta() || !Objects.requireNonNull(iteminhand.getItemMeta()).hasEnchant(DoubleDropsUtils.DoubleDrops))
             return;
         if(blockBroken.getType() == Material.DIAMOND_ORE){
             e.setCancelled(true);
@@ -124,7 +123,6 @@ public class DoubleDrops implements Listener, CommandExecutor {
     @EventHandler
     public void anvilEvent(PrepareAnvilEvent e){
         Player player = (Player) e.getView().getPlayer();
-
         if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
         if (Objects.requireNonNull(e.getInventory().getItem(1)).containsEnchantment(DoubleDropsUtils.DoubleDrops)){
             ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
@@ -132,15 +130,15 @@ public class DoubleDrops implements Listener, CommandExecutor {
             ItemMeta meta = a.getItemMeta();
             List<String> lore = new ArrayList<>();
             lore.add (ChatColor.GRAY + "DoubleDrops I");
-            assert meta != null;
-            if (meta.hasLore())
-                lore.addAll(Objects.requireNonNull(meta.getLore()));
-            meta.setLore(lore);
-            a.setItemMeta(meta);
+            if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
+            if (meta != null) {
+                meta.setLore(lore);
+                a.setItemMeta(meta);
+            }
             e.getInventory().setRepairCost(35);
             e.setResult(a);
-            player.updateInventory();
             plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(35));
+            player.updateInventory();
         }
     }
 
@@ -148,25 +146,24 @@ public class DoubleDrops implements Listener, CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            if (p.hasPermission("miner.staff")){
-            if (command.getName().equalsIgnoreCase("doubledrops")) {
-                ItemStack book = new ItemStack((Material.ENCHANTED_BOOK), 1);
-                book.addUnsafeEnchantment(TelepathyUtils.TELEPATHY, 1);
-                List<String> lore = new ArrayList<>();
-                lore.add(ChatColor.GRAY + "DoubleDrops I");
-                ItemMeta meta = book.getItemMeta();
-                if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
-                if (meta != null) {
-                    meta.setLore(lore);
+            if (p.isOp()) {
+                if (command.getName().equalsIgnoreCase("doubledrops")) {
+                    ItemStack book = new ItemStack((Material.ENCHANTED_BOOK), 1);
+                    book.addUnsafeEnchantment(DoubleDropsUtils.DoubleDrops, 1);
+                    List<String> lore = new ArrayList<>();
+                    lore.add(ChatColor.GRAY + "DoubleDrops I");
+                    ItemMeta meta = book.getItemMeta();
+                    if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
+                    if (meta != null) {
+                        meta.setLore(lore);
+                    }
+                    book.setItemMeta(meta);
+                    p.getInventory().addItem(book);
+                    p.closeInventory();
+                    p.updateInventory();
                 }
-                book.setItemMeta(meta);
-                p.getInventory().addItem(book);
-                p.closeInventory();
-                p.updateInventory();
             }
         }
-        }
-
         return true;
     }
 }

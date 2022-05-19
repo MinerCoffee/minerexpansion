@@ -1,18 +1,23 @@
-package me.minercoffee.minerexpansion.elyra.utils.events;
+package me.minercoffee.minerexpansion.elyra.fuctions;
 
-import me.minercoffee.minerexpansion.elyra.utils.ChargeBar;
-import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
-import me.minercoffee.minerexpansion.elyra.utils.Utils;
+import me.minercoffee.minerexpansion.elyra.CharcoalElytra;
+import me.minercoffee.minerexpansion.utils.ColorMsg;
 import org.bukkit.*;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerStatisticIncrementEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.AnvilInventory;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -22,7 +27,7 @@ import java.util.*;
 
 import static me.minercoffee.minerexpansion.MinerExpansion.plugin;
 
-public class Elytra implements Listener {
+public class CharcoalElytraListener implements Listener {
     private final List<Player> sneakingPlayers = new ArrayList<>();
     private final List<Player> chargingPlayers = new ArrayList<>();
     private final HashMap<Player, Long> cooldowns = new HashMap<>();
@@ -36,7 +41,7 @@ public class Elytra implements Listener {
     }
 
     private float getVelocityMultiplier() {
-        return 1.9F;
+        return 2.3F;
     }
 
     @EventHandler
@@ -44,9 +49,9 @@ public class Elytra implements Listener {
         Player p = e.getPlayer();
         if (p.isGliding()) {
             if (this.isHoldingSneak(p)) {
-                if (Utils.hasElytra(p)) {
+                if (CharcoalElytra.hasElytra(p)) {
                     if (this.cooldowns.containsKey(p) && this.cooldowns.get(p) > System.currentTimeMillis()) {
-                        p.sendMessage(ChatUtils.colour("&5You cannot boost yet"));
+                        p.sendMessage(ColorMsg.color("&5You cannot boost yet"));
                     } else {
                         this.cooldowns.put(p, System.currentTimeMillis() + (long) getCooldown());
                         p.playSound(p.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_CHARGE, 10.0F, 3.0F);
@@ -62,32 +67,26 @@ public class Elytra implements Listener {
     @EventHandler
     public void launch(PlayerStatisticIncrementEvent e) {
         Player p = e.getPlayer();
-        if (Utils.hasElytra(p)) {
-                if (e.getStatistic().equals(Statistic.JUMP)) {
-                    if (ElytraCooldown.checkCooldown(p)) {
-                        if (!(p.getLocation().getPitch() < -90.0F)) {
-                            ElytraCooldown.setCooldown(p, 5);
-                            if (this.chargingPlayers.contains(p) && ChargeBar.charged.contains(p)) {
-                                ChargeBar.chargeBar.removePlayer(p);
-                                p.setVelocity(p.getLocation().getDirection().multiply(1).setY(3));
-                                p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 10.0F, 1.0F);
-                            }
+        if (CharcoalElytra.hasElytra(p)) {
+            if (e.getStatistic().equals(Statistic.JUMP)) {
+                    if (!(p.getLocation().getPitch() < -90.0F)) {
+                        if (this.chargingPlayers.contains(p) && ChargeBar.charged.contains(p)) {
+                            ChargeBar.chargeBar.removePlayer(p);
+                            p.setVelocity(p.getLocation().getDirection().multiply(1).setY(3));
+                            p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 10.0F, 1.0F);
                         }
-                    } else {
-                        p.sendMessage(ChatColor.YELLOW + "Elytra launch is not ready yet");
-                        p.sendMessage(ChatColor.YELLOW + "It will be ready in a five seconds");
                     }
                 }
+            }
         }
-    }
 
     @EventHandler
     public void sneak(PlayerToggleSneakEvent e) {
         final Player p = e.getPlayer();
-        if (Utils.hasElytra(p)) {
+        if (CharcoalElytra.hasElytra(p)) {
             if (e.isSneaking()) {
                 this.sneakingPlayers.add(p);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> Elytra.this.sneakingPlayers.remove(p), 1L);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> CharcoalElytraListener.this.sneakingPlayers.remove(p), 1L);
                 if (!p.getLocation().subtract(0.0D, 1.0D, 0.0D).getBlock().getType().isAir()) {
                     p.getLocation().getBlock();
                     if (p.getLocation().getBlock().getType() != Material.WATER) {
@@ -112,16 +111,15 @@ public class Elytra implements Listener {
     public void damage(EntityDamageEvent e) {
         if (e.getEntity() instanceof Player) {
             Player p = (Player) e.getEntity();
-            if (Utils.hasElytra(p)) {
+            if (CharcoalElytra.hasElytra(p)) {
                 if (e.getCause().equals(EntityDamageEvent.DamageCause.FLY_INTO_WALL) || (e.getCause().equals(EntityDamageEvent.DamageCause.FALL))) {
                     e.setCancelled(true);
                 }
             }
         }
     }
-
-    @EventHandler
-    public void onPrepareAnvil(PrepareAnvilEvent event) {
+   @EventHandler
+    public void NoRename(PrepareAnvilEvent event) {
         AnvilInventory inventory = event.getInventory();
         ItemStack input = inventory.getItem(0);
         boolean cantBeRenamed = false;
@@ -152,7 +150,6 @@ public class Elytra implements Listener {
                 }
             }
         }
-
         if (cantBeRenamed) {
             ItemStack result = event.getResult();
             if (result != null) {
@@ -177,18 +174,68 @@ public class Elytra implements Listener {
     }
 
     @EventHandler
-    public void canEnchant(PrepareAnvilEvent e) {
-        Player player = (Player) e.getView().getPlayer();
+    public void NoEnchantments(PrepareAnvilEvent e) {
         if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
-            ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
-            ItemMeta meta = a.getItemMeta();
+        Player player = (Player) e.getView().getPlayer();
+        ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(1)));
+        ItemMeta meta = a.getItemMeta();
+        if (a.isSimilar(CharcoalElytra.getElytra())) {
             List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.GRAY + "IllusiveMC's Owner!");
-            assert meta != null;
-            if (meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
-            meta.setLore(lore);
-            a.setItemMeta(meta);
+            lore.add(ChatColor.GREEN + "Crouch" + ChatColor.GRAY + "&" + ChatColor.GREEN + " Jump" + ChatColor.GRAY + " to Launch into the Air.");
+            lore.add(ChatColor.GRAY + " Press" + ChatColor.GREEN + " Shift" + ChatColor.GRAY + " while Flying to Boost.");
+            if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
+            if (meta != null) {
+                meta.setLore(lore);
+
+                a.setItemMeta(meta);
+            }
             e.setResult(null);
             player.updateInventory();
         }
+    }
+    @EventHandler
+    public void AnvilUse(InventoryClickEvent e) {
+        if (!e.isCancelled()) {
+            HumanEntity ent = e.getWhoClicked();
+            if (ent instanceof Player) {
+                Player p = (Player) ent;
+                Inventory inv = e.getInventory();
+                if (inv instanceof AnvilInventory) {
+                    AnvilInventory anvil = (AnvilInventory) inv;
+                    InventoryView view = e.getView();
+                    int rawSlot = e.getRawSlot();
+                    if (rawSlot == view.convertSlot(rawSlot)) {
+                        if (rawSlot == 2) {
+                            ItemStack[] items = anvil.getContents();
+                            ItemStack item = items[0];
+                            ItemStack item2 = items[1];
+                            if (item == null) return;
+                            if (item2 == null) return;
+                            if (item.isSimilar(CharcoalElytra.getElytra()) || item2.isSimilar(CharcoalElytra.getElytra())) {
+                                e.setCancelled(true);
+                                p.closeInventory();
+                                p.sendMessage("You cannot add custom enchantments or rename the Charcoal Elytra");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+        ClickType clickType = e.getClick();
+        Player player = (Player) e.getWhoClicked();
+        if (clickType != ClickType.RIGHT) { // alternatively: if (!e.isRightClick()) ....
+            return;
+        }
+
+        if (e.getCurrentItem() == null || e.getCurrentItem().isSimilar(CharcoalElytra.getElytra())) {
+            return;
+        }
+        if(player.getItemInUse().equals(Material.ENCHANTED_BOOK) && e.getAction().equals(Action.RIGHT_CLICK_AIR) && e.getAction().equals(CharcoalElytra.getElytra())){
+            e.setCancelled(true);
+        }
+    }
 }

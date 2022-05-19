@@ -8,14 +8,12 @@ import java.util.stream.Collectors;
 
 import static org.bukkit.Bukkit.getLogger;
 
-public class VeinMinerUtilsII {
-
-    public static final Enchantment VEINMINERII = new EnchantmentWrapper("veinminerii", "VEINMINERII", 2);
-
+public class MobdropsUtils {
+    public static final Enchantment MobDrops = new EnchantmentWrapper("mobdrops", "MobDrops", 1);
     public static void register() {
-        boolean registered = Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(VEINMINERII);
-        if (!registered)
-            registerEnchantment(VEINMINERII);
+        boolean registered = Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(MobDrops);
+        if(!registered)
+            registerEnchantment(MobDrops);
     }
 
     public static void registerEnchantment(Enchantment enchantment) {
@@ -26,14 +24,13 @@ public class VeinMinerUtilsII {
             f.set(null, true);
             Enchantment.registerEnchantment(enchantment);
 
-        } catch (Exception e) {
+        } catch(Exception e) {
             registered = false;
             e.printStackTrace();
         }
-        if (registered) {
+        if(registered){
             //send message to console
-            getLogger().info("Veinminer II Enchantment has loaded in!");
+            getLogger().info("MobDrops Enchantment has loaded in!");
         }
     }
-
 }

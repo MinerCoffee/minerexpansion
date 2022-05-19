@@ -1,6 +1,6 @@
 package me.minercoffee.minerexpansion.Items;
 
-import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
+import me.minercoffee.minerexpansion.utils.ColorMsg;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -26,6 +26,7 @@ public class itemscreation implements Listener {
         createGrapplingHook();
         createflare();
         createcobweb();
+        CreateVindicatorAxe();
     }
 
     public static ItemStack Nametag;
@@ -62,7 +63,7 @@ public class itemscreation implements Listener {
         ItemStack item = new ItemStack(Material.NETHERITE_AXE, 1);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName((ChatUtils.colour("§6Throwing Axe!")));
+            meta.setDisplayName((ColorMsg.color("§6Throwing Axe!")));
             List<String> lore = new ArrayList<>();
             lore.add("§7Damage: §c+5");
             lore.add("");
@@ -74,6 +75,16 @@ public class itemscreation implements Listener {
             meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, damage);
             item.setItemMeta(meta);
             ThrowingAxe = item;
+        }
+    }
+    public static ItemStack Vindicatoraxe;
+    public static void CreateVindicatorAxe() {
+        ItemStack item = new ItemStack(Material.IRON_AXE, 1);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.addEnchant(Enchantment.DURABILITY, 1, true);
+            item.setItemMeta(meta);
+            Vindicatoraxe = item;
         }
     }
 

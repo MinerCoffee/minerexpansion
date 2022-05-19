@@ -1,7 +1,7 @@
 package me.minercoffee.minerexpansion.commands;
 
 import me.minercoffee.minerexpansion.MinerExpansion;
-import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
+import me.minercoffee.minerexpansion.utils.ColorMsg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -42,18 +42,18 @@ public class Slots implements CommandExecutor, Listener {
                 return true;
             }
             Player player = (Player) sender;
-            if(plugin.getConfig().getBoolean("slots")) {
+            if(plugin.getConfig().getBoolean("megamillion")) {
                 ItemStack fee = new ItemStack((Material.valueOf(plugin.getConfig().getString("fee"))));
                 fee.setAmount(plugin.getConfig().getInt("fee_amount",5));
                 if (player.getItemInHand().getAmount() < (plugin.getConfig().getInt("fee_amount",5))) {
-                    player.sendMessage(ChatUtils.colour("&cYou need" + " " + fee + " to play!"));
+                    player.sendMessage(ColorMsg.color("&cYou need" + " " + fee + " to play!"));
                     return false;
                 }
                 if  (player.getInventory().getItemInMainHand().isSimilar(fee) && (player.getInventory().contains((Material.valueOf(plugin.getConfig().getString("fee")))))){
                     player.getInventory().remove(fee);
                     // spin that GUI
                     spin(player);
-                    player.sendMessage(ChatUtils.colour("&l&bThank you for playing come again!" + " " + "&d<3"));
+                    player.sendMessage(ColorMsg.color("&l&bThank you for playing come again!" + " " + "&d<3"));
 
                     ItemStack air = new ItemStack(Material.AIR);
                     if (player.getItemInHand().getAmount() > (plugin.getConfig().getInt("fee_amount",5))) {
@@ -63,7 +63,7 @@ public class Slots implements CommandExecutor, Listener {
                     }
                     return true;
                 }
-                player.sendMessage(ChatUtils.colour("&cYou need" + " " + fee + " to play!"));
+                player.sendMessage(ColorMsg.color("&cYou need" + " " + fee + " to play!"));
                 return true;
             }
         }
@@ -110,7 +110,7 @@ public class Slots implements CommandExecutor, Listener {
 
     public void spin(final Player player) {
 
-        Inventory inv = Bukkit.createInventory(null, 27, ChatUtils.colour("&l&6Lucky slots"));
+        Inventory inv = Bukkit.createInventory(null, 27, ColorMsg.color("&l&6Lucky slots"));
         shuffle(inv);
         invs.add(inv);
         player.openInventory(inv);

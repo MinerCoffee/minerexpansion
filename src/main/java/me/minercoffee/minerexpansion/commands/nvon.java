@@ -1,7 +1,7 @@
 package me.minercoffee.minerexpansion.commands;
 
 import me.kodysimpson.simpapi.command.SubCommand;
-import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
+import me.minercoffee.minerexpansion.utils.ColorMsg;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -43,7 +43,7 @@ public class nvon extends SubCommand implements Listener {
             if(cooldowns.containsKey(p.getName())){
                 if(cooldowns.get(p.getName()) > System.currentTimeMillis()){
                     long timeleft = (cooldowns.get(p.getName()) - System.currentTimeMillis() / 1000);
-                    p.sendMessage(ChatUtils.colour( "&3The ability will be ready in " + timeleft + " second(s)"));
+                    p.sendMessage(ColorMsg.color( "&3The ability will be ready in " + timeleft + " second(s)"));
                     return;
                 }
             }

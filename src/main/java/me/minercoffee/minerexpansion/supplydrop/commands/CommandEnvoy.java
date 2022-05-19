@@ -1,8 +1,8 @@
 package me.minercoffee.minerexpansion.supplydrop.commands;
 
 import me.minercoffee.minerexpansion.MinerExpansion;
-import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
 import me.minercoffee.minerexpansion.supplydrop.utils.*;
+import me.minercoffee.minerexpansion.utils.ColorMsg;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -73,27 +73,29 @@ import java.util.*;
                                 SendInfoMessages.sendInfoMessage(p, "SpecifyEnvoyName");
                                 return false;
                             }
-
-                            if (this.envoyCfg.get("envoys." + args[1]) == null) {
-                                SendInfoMessages.sendInfoMessage(p, "SpecifyValidEnvoyName");
+                            if (this.envoyCfg != null) {
+                                if (this.envoyCfg.get("envoys." + args[1]) == null) {
+                                    SendInfoMessages.sendInfoMessage(p, "SpecifyValidEnvoyName");
+                                    return false;
+                                }
+                            }
+                            if (this.envoyCfg != null) {
+                                this.envoyCfg.set("envoys." + args[1], null);
+                                EnvoysDataManager.saveEnvoysData();
+                                SendInfoMessages.sendInfoMessage(p, "DeletedEnvoy", "", args[1]);
                                 return false;
                             }
-
-                            this.envoyCfg.set("envoys." + args[1], null);
-                            EnvoysDataManager.saveEnvoysData();
-                            SendInfoMessages.sendInfoMessage(p, "DeletedEnvoy", "", args[1]);
-                            return false;
                         case "adddrop":
                             if (args.length != 4) {
                                 SendInfoMessages.sendInfoMessage(p, "SpecifyAddDropArgs");
                                 return false;
                             }
-
-                            if (this.envoyCfg.get("envoys." + args[1]) == null) {
-                                SendInfoMessages.sendInfoMessage(p, "SpecifyValidEnvoyName");
-                                return false;
+                            if (this.envoyCfg != null) {
+                                if (this.envoyCfg.get("envoys." + args[1]) == null) {
+                                    SendInfoMessages.sendInfoMessage(p, "SpecifyValidEnvoyName");
+                                    return false;
+                                }
                             }
-
                             if (this.dropsCfg.getString("drops." + args[2]) == null) {
                                 SendInfoMessages.sendInfoMessage(p, "SpecifyValidDropName");
                                 return false;
@@ -114,10 +116,11 @@ import java.util.*;
                                 SendInfoMessages.sendInfoMessage(p, "SpecifyDropCountArgs");
                                 return false;
                             }
-
-                            if (this.envoyCfg.get("envoys." + args[1]) == null) {
-                                SendInfoMessages.sendInfoMessage(p, "SpecifyValidEnvoyName");
-                                return false;
+                            if (this.envoyCfg != null) {
+                                if (this.envoyCfg.get("envoys." + args[1]) == null) {
+                                    SendInfoMessages.sendInfoMessage(p, "SpecifyValidEnvoyName");
+                                    return false;
+                                }
                             }
 
                             try {
@@ -131,38 +134,44 @@ import java.util.*;
                                 return false;
                             }
                         case "help":
-                            p.sendMessage(ChatUtils.colour("&8-=========================================-\n&7=> &e/envoy create &oenvoyname  &7-&eCreate a new envoy\n&7=> &eenvoy pos1 &oenvoyname &7- &eSet first envoy boundary position\n&7=> &e/envoy pos2 &oenvoyname &7- &eSet second envoy boundary position\n&7=> &e/envoy  adddrop &oenvoyname dropname chance &7- &eAdd a drop chance to an envoy\n&7=> &e/envoy removedrop &oenvoyname dropname &7- &eRemoves a drop from an envoy\n&7=> &e/envoy setlength &oenvoyname &7- &eSet the length of an envoy\n&7=> &e/envoy setdropcount &oenvoyname &7- &eSet the drop count of an envoy\n&7=> &e/envoy  start &oenvoyname &7- &eStart an envoy\n&7=> &e/envoy delete &oenvoyname &7- &eDelete an envoy"));
+                            p.sendMessage(ColorMsg.color("&8-=========================================-\n&7=> &e/envoy create &oenvoyname  &7-&eCreate a new envoy\n&7=> &eenvoy pos1 &oenvoyname &7- &eSet first envoy boundary position\n&7=> &e/envoy pos2 &oenvoyname &7- &eSet second envoy boundary position\n&7=> &e/envoy  adddrop &oenvoyname dropname chance &7- &eAdd a drop chance to an envoy\n&7=> &e/envoy removedrop &oenvoyname dropname &7- &eRemoves a drop from an envoy\n&7=> &e/envoy setlength &oenvoyname &7- &eSet the length of an envoy\n&7=> &e/envoy setdropcount &oenvoyname &7- &eSet the drop count of an envoy\n&7=> &e/envoy  start &oenvoyname &7- &eStart an envoy\n&7=> &e/envoy delete &oenvoyname &7- &eDelete an envoy"));
                             return false;
                         case "pos1":
-                            if (args.length == 1) {
-                                SendInfoMessages.sendInfoMessage(p, "SpecifyEnvoyName");
+                            if (this.envoyCfg != null) {
+                                if (args.length == 1) {
+                                    SendInfoMessages.sendInfoMessage(p, "SpecifyEnvoyName");
+                                    return false;
+                                }
+
+                                if (this.envoyCfg.get("envoys." + args[1]) == null) {
+                                    SendInfoMessages.sendInfoMessage(p, "SpecifyValidEnvoyName");
+                                    return false;
+                                }
+
+                                this.envoyCfg.set("envoys." + args[1] + ".world", Objects.requireNonNull(pLoc.getWorld()).getName());
+                                this.envoyCfg.set("envoys." + args[1] + ".pos1.x", x);
+                                this.envoyCfg.set("envoys." + args[1] + ".pos1.z", z);
+                                EnvoysDataManager.saveEnvoysData();
+                                SendInfoMessages.sendInfoMessage(p, "AddedFirstEnvoyPos", "", args[1]);
                                 return false;
                             }
-
-                            if (this.envoyCfg.get("envoys." + args[1]) == null) {
-                                SendInfoMessages.sendInfoMessage(p, "SpecifyValidEnvoyName");
-                                return false;
-                            }
-
-                            this.envoyCfg.set("envoys." + args[1] + ".world", Objects.requireNonNull(pLoc.getWorld()).getName());
-                            this.envoyCfg.set("envoys." + args[1] + ".pos1.x", x);
-                            this.envoyCfg.set("envoys." + args[1] + ".pos1.z", z);
-                            EnvoysDataManager.saveEnvoysData();
-                            SendInfoMessages.sendInfoMessage(p, "AddedFirstEnvoyPos", "", args[1]);
-                            return false;
                         case "pos2":
                             if (args.length == 1) {
                                 SendInfoMessages.sendInfoMessage(p, "SpecifyEnvoyName");
                                 return false;
                             }
 
-                            if (this.envoyCfg.get("envoys." + args[1]) == null) {
+                            if (this.envoyCfg != null && this.envoyCfg.get("envoys." + args[1]) == null) {
                                 SendInfoMessages.sendInfoMessage(p, "SpecifyValidEnvoyName");
                                 return false;
                             }
 
-                            this.envoyCfg.set("envoys." + args[1] + ".pos2.x", x);
-                            this.envoyCfg.set("envoys." + args[1] + ".pos2.z", z);
+                            if (this.envoyCfg != null) {
+                                this.envoyCfg.set("envoys." + args[1] + ".pos2.x", x);
+                            }
+                            if (this.envoyCfg != null) {
+                                this.envoyCfg.set("envoys." + args[1] + ".pos2.z", z);
+                            }
                             EnvoysDataManager.saveEnvoysData();
                             SendInfoMessages.sendInfoMessage(p, "AddedSecondEnvoyPos", "", args[1]);
                             return false;
@@ -254,31 +263,34 @@ import java.util.*;
                                 SendInfoMessages.sendInfoMessage(p, "SpecifyRemoveDropArgs");
                                 return false;
                             }
-
-                            if (this.envoyCfg.get("envoys." + args[1]) == null) {
-                                SendInfoMessages.sendInfoMessage(p, "SpecifyValidEnvoyName");
-                                return false;
+                            if (this.envoyCfg != null) {
+                                if (this.envoyCfg.get("envoys." + args[1]) == null) {
+                                    SendInfoMessages.sendInfoMessage(p, "SpecifyValidEnvoyName");
+                                    return false;
+                                }
                             }
 
                             if (this.dropsCfg.getString("drops." + args[2]) == null) {
                                 SendInfoMessages.sendInfoMessage(p, "SpecifyValidDropName");
                                 return false;
                             }
-
-                            this.envoyCfg.set("envoys." + args[1] + ".drops." + args[2], null);
-                            EnvoysDataManager.saveEnvoysData();
-                            EnvoysDataManager.saveEnvoysData();
-                            SendInfoMessages.sendInfoMessage(p, "RemovedDropFromEnvoy", args[2], args[1]);
-                            return false;
+                            if (this.envoyCfg != null) {
+                                this.envoyCfg.set("envoys." + args[1] + ".drops." + args[2], null);
+                                EnvoysDataManager.saveEnvoysData();
+                                EnvoysDataManager.saveEnvoysData();
+                                SendInfoMessages.sendInfoMessage(p, "RemovedDropFromEnvoy", args[2], args[1]);
+                                return false;
+                            }
                         case "setlength":
                             if (args.length != 3) {
                                 SendInfoMessages.sendInfoMessage(p, "SpecifySetLengthArgs");
                                 return false;
                             }
-
-                            if (this.envoyCfg.get("envoys." + args[1]) == null) {
-                                SendInfoMessages.sendInfoMessage(p, "SpecifyValidEnvoyName");
-                                return false;
+                            if (this.envoyCfg != null) {
+                                if (this.envoyCfg.get("envoys." + args[1]) == null) {
+                                    SendInfoMessages.sendInfoMessage(p, "SpecifyValidEnvoyName");
+                                    return false;
+                                }
                             }
 
                             try {
@@ -344,7 +356,6 @@ import java.util.*;
                     return arguments;
                 }
             }
-
             return null;
         }
     }

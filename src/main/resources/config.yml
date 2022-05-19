@@ -5,7 +5,6 @@ vaultbal: false
 grappinghook: false
 throwingaxe: false
 nightvision: false #nightvision toggle cmd
-requiresop: false #chuck visualizer permissions toggled
 #rtp_settings-------------------------------------------------------------------------------#
 rtp: false
 world-border: true #True if you want to limit how far it teleports players
@@ -24,7 +23,7 @@ shape:
   - 'NEN'
   - 'DND'
 NoRenameLore: #Custom Items that can't be renamed.
-  - IllusiveMC's Owner! #elytra
+  - Crouch & Jump to Launch into the Air. #elytra
 #silk_spawners_settings---------------------------------------------------------------------#
 #set to Air if you don't want to check for that material.
 Ore-alerts: false
@@ -153,7 +152,7 @@ Messages:
   DeletedEnvoy: "&a&lSuccessfully deleted envoy: &2&l&o%envoyName%"
 #Slots_settings-------------------------------------------------------------------------------#
 #Changing the amount requires the server to restart.
-slots: true #lotty system for rewards! It uses diamonds for its currency.
+megamillion: true #lotty system for rewards! It uses diamonds for its currency.
 fee: 'DIAMOND'
 fee_amount: 5
 reward1: 'COARSE_DIRT'
@@ -190,29 +189,3 @@ unfreeze: true
 freeze: true
 beta: true #beta features
 supplydrop_border: 500
-#warp_settings----------------------------------------------------------------------------------#
-warp: true
-warps:
-#warpgui names for your custom names
-warp_1: 'spawn'
-warp_2: 'pvp'
-warp_3: 'shopping_district'
-warp_4: 'lobby'
-warp_5: 'end'
-warp_6: 'a'
-warp_7: 'a'
-warp_8: 'a'
-warp_9: 'a'
-warp_10: 'a'
-warp_11: 'a'
-warp_12: 'a'
-warp_13: 'a'
-warp_14: 'a'
-warp_15: 'a'
-warp_16: 'a'
-warp_17: 'a'
-warp_18: 'a'
-warp_19: 'a'
-warp_20: 'a'
-warp_21: 'a'
-#------------------------------------------------------------------------------------------------#

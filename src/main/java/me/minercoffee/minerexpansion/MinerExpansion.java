@@ -6,12 +6,8 @@ import com.jeff_media.updatechecker.UserAgentBuilder;
 import me.minercoffee.minerexpansion.Files.DataManager;
 import me.minercoffee.minerexpansion.Items.ThrowingAxe;
 import me.minercoffee.minerexpansion.Items.itemscreation;
-import me.minercoffee.minerexpansion.chuck.seechucks;
 import me.minercoffee.minerexpansion.commands.*;
-import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
-import me.minercoffee.minerexpansion.elyra.utils.events.Elytra;
-import me.minercoffee.minerexpansion.elyra.utils.events.ElytraCooldown;
-import me.minercoffee.minerexpansion.elyra.utils.events.PreventAnvilUse;
+import me.minercoffee.minerexpansion.elyra.fuctions.CharcoalElytraListener;
 import me.minercoffee.minerexpansion.enchantments.*;
 import me.minercoffee.minerexpansion.grapplinghook.GrapplingHook;
 import me.minercoffee.minerexpansion.grapplinghook.GrapplingHookCooldown;
@@ -27,12 +23,11 @@ import me.minercoffee.minerexpansion.supplydrop.commands.CommandEnvoy;
 import me.minercoffee.minerexpansion.supplydrop.commands.CommandSupplyDrop;
 import me.minercoffee.minerexpansion.supplydrop.utils.EnvoysDataManager;
 import me.minercoffee.minerexpansion.supplydrop.utils.SupplyDropsDataManager;
+import me.minercoffee.minerexpansion.utils.ColorMsg;
 import me.minercoffee.minerexpansion.utils.UpdateCheckCommand;
 import me.minercoffee.minerexpansion.utils.UpdateCheckListener;
-import me.minercoffee.minerexpansion.warps.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -48,7 +43,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static me.minercoffee.minerexpansion.Items.itemscreation.*;
-import static me.minercoffee.minerexpansion.elyra.utils.RecipeUtils.getElytra;
+import static me.minercoffee.minerexpansion.elyra.CharcoalElytra.getElytra;
 import static org.spigotmc.SpigotConfig.config;
 
 
@@ -58,8 +53,6 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     private static final Logger log = Logger.getLogger("Minecraft");
     private static final Economy economy = null;
     public static MinerExpansion plugin;
-    public static ArrayList<Player> viewers = new ArrayList<>();
-    public static ArrayList<Location> viewerslocs = new ArrayList<>();
     public DataManager data;
     public EnvoysDataManager envoysDataManager;
     public ArrayList<Player> launchpad_players = new ArrayList<>();
@@ -106,13 +99,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         loadConfig();
         loadEnchantment();
         loadEnvoy();
-        new DoubleDrops(this);
-        new Warpgui(this);
-        new warp(this);
-        new setwarps(this);
-        new delwarp(this);
         new UpdateCheckCommand(this);
-        getServer().getPluginManager().registerEvents(new PreventAnvilUse(), this);
         getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
         getServer().getPluginManager().registerEvents(new SpawnerListeners(), this);
         getServer().getPluginManager().registerEvents(new ThrowingAxe(this), this);
@@ -120,9 +107,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new GrapplingHook(), this);
         Objects.requireNonNull(getCommand("givegrapplinghook")).setExecutor(new GrapplingHookcmd());
         GrapplingHookCooldown.setupCooldown();
-        ElytraCooldown.setupCooldown();
         getServer().getPluginManager().registerEvents(new launchpads(this), this);
-        Objects.requireNonNull(this.getCommand("chunkvisualizer")).setExecutor(new seechucks());
         Objects.requireNonNull(getCommand("staffhome")).setExecutor(new staffhomecmd(this));
         NamespacedKey elytra = new NamespacedKey(this, "minerexpansion_elytra");
         ShapedRecipe elytracraft = new ShapedRecipe(elytra, getElytra());
@@ -236,21 +221,23 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         plugin.getServer().addRecipe(cobwebrecipe);
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
         }, 20, 20);
-        getServer().getPluginManager().registerEvents(new Elytra(), this);
+        getServer().getPluginManager().registerEvents(new CharcoalElytraListener(), this);
     }
 
     public void loadEnchantment(){
+        MobdropsUtils.register();
         DoubleDropsUtils.register();
         VeinMinerUtilsII.register();
         VeinMinerUtilsI.register();
         TelepathyUtils.register();
-        Objects.requireNonNull(getCommand("doubledrops")).setExecutor(new DoubleDrops(this));
-        getServer().getPluginManager().registerEvents(new DoubleDrops(this), this);
         Objects.requireNonNull(getCommand("veinminerII")).setExecutor(new VeinMinerII());
-        getServer().getPluginManager().registerEvents(new VeinMinerII(), this);
+        Objects.requireNonNull(getCommand("mobdrops")).setExecutor(new Mobdrops(this));
+        Objects.requireNonNull(getCommand("doubledrops")).setExecutor(new DoubleDrops(this));
         Objects.requireNonNull(getCommand("veinminerI")).setExecutor(new VeinMinerI());
-        getServer().getPluginManager().registerEvents(new VeinMinerI(), this);
         Objects.requireNonNull(this.getCommand("telepathy")).setExecutor(new Telepathy());
+        getServer().getPluginManager().registerEvents(new VeinMinerI(), this);
+        getServer().getPluginManager().registerEvents(new DoubleDrops(this), this);
+        getServer().getPluginManager().registerEvents(new VeinMinerII(), this);
         getServer().getPluginManager().registerEvents(new Telepathy(), this);
     }
 
@@ -273,6 +260,6 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         plugin = null;
-        this.getServer().getConsoleSender().sendMessage(ChatUtils.colour("&9MinerExpansion v1.0 beta has been disabled"));
+        this.getServer().getConsoleSender().sendMessage(ColorMsg.color(("&9MinerExpansion v1.0 beta has been disabled")));
     }
 }

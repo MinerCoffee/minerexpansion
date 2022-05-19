@@ -1,6 +1,6 @@
 package me.minercoffee.minerexpansion.commands;
 
-import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
+import me.minercoffee.minerexpansion.utils.ColorMsg;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,7 +16,7 @@ public class reload implements CommandExecutor {
         Player p = (Player) sender;
         if (p.hasPermission("miner.staff")) {
             plugin.reloadConfig();
-            sender.sendMessage(ChatUtils.colour("&4You have reloaded the config!"));
+            sender.sendMessage(ColorMsg.color("&4You have reloaded the config!"));
         }
         return true;
     }

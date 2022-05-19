@@ -61,14 +61,14 @@ public class Telepathy implements Listener, CommandExecutor {
         if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
         if (Objects.requireNonNull(e.getInventory().getItem(1)).containsEnchantment(TelepathyUtils.TELEPATHY)){
             ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
-            a.addUnsafeEnchantment(TelepathyUtils.TELEPATHY, Objects.requireNonNull(e.getInventory().getItem(1)).getEnchantmentLevel(TelepathyUtils.TELEPATHY));
+            a.addEnchantment(TelepathyUtils.TELEPATHY, Objects.requireNonNull(e.getInventory().getItem(1)).getEnchantmentLevel(TelepathyUtils.TELEPATHY));
             ItemMeta meta = a.getItemMeta();
             List<String> lore = new ArrayList<>();
             lore.add (ChatColor.GRAY + "Telepathy I");
-            assert meta != null;
-            if (meta.hasLore())
-                lore.addAll(Objects.requireNonNull(meta.getLore()));
-            meta.setLore(lore);
+            if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
+            if (meta != null) {
+                meta.setLore(lore);
+            }
             a.setItemMeta(meta);
             e.getInventory().setRepairCost(35);
             e.setResult(a);

@@ -9,6 +9,8 @@ loadbefore: [Vault]
 load: POSTWORLD
 description: All in one plugin. Some it's features are better elytras, custom recipes, nightvision, custom tools, and more.
 commands:
+  mobdrops:
+    description: increases mob drops.
   doubledrops:
     description: gives double drops on ores.
   rtp:
@@ -19,8 +21,6 @@ commands:
     description: custom enchantment
   telepathy:
     description: custom enchantment
-  warpgui:
-    description: Warp gui!
   updatechecker:
     description: "Checks for updates"
     usage: "/<command> [players|all]"
@@ -63,19 +63,9 @@ commands:
     description: Delete a supply drop
   envoy:
     description: Envoy creator and configuration command
-  chunkvisualizer:
-    description: Set yourself on fire.
-    aliases: [ cv, sc, seechunks ]
-    usage: type /<command> to see chunk borders.
   staffhome:
     description: The main command for staff homes!
     usage: /<command>
-  warp:
-    description: Warps the player to a provided warp.
-  setwarp:
-    description: Sets a warp loctions.
-  delwarp:
-    description: Deletes known warps.
 permissions:
   mineractive:
     description: access to the elyta cmd.
@@ -90,9 +80,6 @@ permissions:
     default: op
   miner.staff:
     description: Access to reload config, withdraw, and deposit, freeze, and unfreeze.
-    default: op
-  chunkvisualizer.view:
-    description: Gives/Grant access to chunk visualization.
     default: op
   updatechecker:
     description: Allows to use the command /updatechecker

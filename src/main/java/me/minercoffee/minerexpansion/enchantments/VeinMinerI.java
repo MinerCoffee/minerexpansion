@@ -45,16 +45,16 @@ public class VeinMinerI implements Listener, CommandExecutor {
         if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
         if (Objects.requireNonNull(e.getInventory().getItem(1)).containsEnchantment(VeinMinerUtilsI.VEINMINERI)){
             ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
-            a.addUnsafeEnchantment(VeinMinerUtilsI.VEINMINERI, Objects.requireNonNull(e.getInventory().getItem(1)).getEnchantmentLevel(VeinMinerUtilsI.VEINMINERI));
+            a.addEnchantment(VeinMinerUtilsI.VEINMINERI, Objects.requireNonNull(e.getInventory().getItem(1)).getEnchantmentLevel(VeinMinerUtilsI.VEINMINERI));
             ItemMeta meta = a.getItemMeta();
             List<String> lore = new ArrayList<>();
             lore.add (ChatColor.GRAY + "VeinMiner I");
-            assert meta != null;
-            if (meta.hasLore())
-                lore.addAll(Objects.requireNonNull(meta.getLore()));
-            meta.setLore(lore);
+            if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
+            if (meta != null) {
+                meta.setLore(lore);
+            }
             a.setItemMeta(meta);
-            e.getInventory().setRepairCost(10);
+            e.getInventory().setRepairCost(15);
             e.setResult(a);
             player.updateInventory();
             plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(10));
@@ -93,7 +93,7 @@ public class VeinMinerI implements Listener, CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender instanceof Player) {
             Player p = (Player) commandSender;
-            if (p.hasPermission("miner.staff")) {
+            if (p.isOp()) {
                 if (command.getName().equalsIgnoreCase("veinminerI")) {
                     ItemStack item = new ItemStack((Material.ENCHANTED_BOOK));
                     item.addUnsafeEnchantment(VeinMinerUtilsI.VEINMINERI, 1);

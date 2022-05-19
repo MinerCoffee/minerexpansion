@@ -1,4 +1,4 @@
-package me.minercoffee.minerexpansion.elyra.utils;
+package me.minercoffee.minerexpansion.elyra.fuctions;
 
 import me.minercoffee.minerexpansion.MinerExpansion;
 import org.bukkit.Bukkit;
@@ -39,7 +39,7 @@ public class ChargeBar {
         task = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinerExpansion.plugin, new Runnable() {
             double progress = 1.0D;
             final double time = 0.025D;
-            int count = +1;
+            int count = 1;
 
             public void run() {
                 ChargeBar.chargeBar.setProgress(this.progress);

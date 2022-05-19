@@ -2,7 +2,7 @@ package me.minercoffee.minerexpansion.commands;
 
 import me.kodysimpson.simpapi.command.SubCommand;
 import me.minercoffee.minerexpansion.MinerExpansion;
-import me.minercoffee.minerexpansion.elyra.utils.ChatUtils;
+import me.minercoffee.minerexpansion.utils.ColorMsg;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -43,18 +43,18 @@ public class withdraw extends SubCommand {
 
                     //make sure it is greater than zero
                     if (amount <= 0) {
-                        p.sendMessage(ChatUtils.colour("&4You must withdraw a value greater than zero."));
+                        p.sendMessage(ColorMsg.color("&4You must withdraw a value greater than zero."));
                     } else {
                         EconomyResponse response = MinerExpansion.getEconomy().withdrawPlayer(p, amount);
                         if (response.type == EconomyResponse.ResponseType.SUCCESS) {
-                            p.sendMessage(ChatUtils.colour("&e" + amount + " has been withdrawn from your account. The new total is " + response.balance));
+                            p.sendMessage(ColorMsg.color("&e" + amount + " has been withdrawn from your account. The new total is " + response.balance));
                         } else {
-                            p.sendMessage(ChatUtils.colour("&4Your withdrawal could not be processed. Try again later."));
+                            p.sendMessage(ColorMsg.color("&4Your withdrawal could not be processed. Try again later."));
                         }
                     }
                 } else {
-                    p.sendMessage(ChatUtils.colour("&4You must withdraw a value greater than zero."));
-                    p.sendMessage(ChatUtils.colour("&aExample: &e/admin withdraw 123.4"));
+                    p.sendMessage(ColorMsg.color("&4You must withdraw a value greater than zero."));
+                    p.sendMessage(ColorMsg.color("&aExample: &e/admin withdraw 123.4"));
                 }
             }
         }

@@ -47,14 +47,14 @@ public class VeinMinerII implements Listener, CommandExecutor {
         if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
         if (Objects.requireNonNull(e.getInventory().getItem(1)).containsEnchantment(VeinMinerUtilsII.VEINMINERII)){
             ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
-            a.addUnsafeEnchantment(VeinMinerUtilsII.VEINMINERII, Objects.requireNonNull(e.getInventory().getItem(1)).getEnchantmentLevel(VeinMinerUtilsII.VEINMINERII));
+            a.addEnchantment(VeinMinerUtilsII.VEINMINERII, Objects.requireNonNull(e.getInventory().getItem(1)).getEnchantmentLevel(VeinMinerUtilsII.VEINMINERII));
             ItemMeta meta = a.getItemMeta();
             List<String> lore = new ArrayList<>();
             lore.add (ChatColor.GRAY + "VeinMiner II");
-            assert meta != null;
-            if (meta.hasLore())
-                lore.addAll(Objects.requireNonNull(meta.getLore()));
-            meta.setLore(lore);
+            if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
+            if (meta != null) {
+                meta.setLore(lore);
+            }
             a.setItemMeta(meta);
             e.getInventory().setRepairCost(40);
             e.setResult(a);
@@ -95,7 +95,7 @@ public class VeinMinerII implements Listener, CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender instanceof Player) {
             Player p = (Player) commandSender;
-            if (p.hasPermission("miner.staff")) {
+            if (p.isOp()){
                 if (command.getName().equalsIgnoreCase("veinminerII")) {
                     ItemStack item = new ItemStack((Material.ENCHANTED_BOOK));
                     item.addUnsafeEnchantment(VeinMinerUtilsII.VEINMINERII, 2);
