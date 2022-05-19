@@ -235,6 +235,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         Objects.requireNonNull(getCommand("doubledrops")).setExecutor(new DoubleDrops(this));
         Objects.requireNonNull(getCommand("veinminerI")).setExecutor(new VeinMinerI());
         Objects.requireNonNull(this.getCommand("telepathy")).setExecutor(new Telepathy());
+        getServer().getPluginManager().registerEvents(new Mobdrops(this), this);
         getServer().getPluginManager().registerEvents(new VeinMinerI(), this);
         getServer().getPluginManager().registerEvents(new DoubleDrops(this), this);
         getServer().getPluginManager().registerEvents(new VeinMinerII(), this);

@@ -238,28 +238,26 @@ public class Mobdrops implements Listener, CommandExecutor {
         }
     }
     @EventHandler
-    public void anvilEvent(PrepareAnvilEvent e){
+    public void AddEnchantment(PrepareAnvilEvent e) {
         Player player = (Player) e.getView().getPlayer();
-
         if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
-        if (Objects.requireNonNull(e.getInventory().getItem(1)).containsEnchantment(MobdropsUtils.MobDrops)){
-            ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
-            a.addUnsafeEnchantment(MobdropsUtils.MobDrops, Objects.requireNonNull(e.getInventory().getItem(1)).getEnchantmentLevel(MobdropsUtils.MobDrops));
+        if (e.getInventory().getItem(1).containsEnchantment(MobdropsUtils.MobDrops)) {
+            ItemStack a = new ItemStack(e.getInventory().getItem(0));
+            a.addEnchantment(MobdropsUtils.MobDrops, (e.getInventory().getItem(1)).getEnchantmentLevel(MobdropsUtils.MobDrops));
             ItemMeta meta = a.getItemMeta();
             List<String> lore = new ArrayList<>();
-            lore.add (ChatColor.GRAY + "MobDrops I");
+            lore.add(ChatColor.GRAY + "MobDrops I");
             if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
             if (meta != null) {
                 meta.setLore(lore);
-                a.setItemMeta(meta);
             }
-            e.getInventory().setRepairCost(32);
+            a.setItemMeta(meta);
+            e.getInventory().setRepairCost(40);
             e.setResult(a);
             player.updateInventory();
-            plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(32));
+            plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(40));
         }
     }
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {

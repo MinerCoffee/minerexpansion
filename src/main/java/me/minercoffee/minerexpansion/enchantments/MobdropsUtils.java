@@ -30,7 +30,7 @@ public class MobdropsUtils {
         }
         if(registered){
             //send message to console
-            getLogger().info("MobDrops Enchantment has loaded in!");
+            getLogger().info("MobDrops I Enchantment has loaded in!");
         }
     }
 }
