@@ -56,7 +56,6 @@ public class ChargeBar {
             e.printStackTrace();
         }
     }
-
     private static void runWhenFull(Player p) {
     }
 }

@@ -32,7 +32,7 @@ public class Mobdrops implements Listener, CommandExecutor {
     public void skeletonDeath(EntityDeathEvent e) {
         LivingEntity entity = e.getEntity();
         if (entity instanceof Skeleton){
-            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.BONE, 3));
+            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.BONE, 1));
         }
     }
     @EventHandler
@@ -46,24 +46,24 @@ public class Mobdrops implements Listener, CommandExecutor {
     public void zombieDeath(EntityDeathEvent z) {
         LivingEntity entity = z.getEntity();
         if (entity instanceof Zombie) {
-            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.ROTTEN_FLESH, 2));
+            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.ROTTEN_FLESH, 1));
         }
     }
     @EventHandler
     public void endermanDeath(EntityDeathEvent z) {
         LivingEntity entity = z.getEntity();
         if (entity instanceof Enderman) {
-            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.ENDER_EYE, 2));
+            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.ENDER_EYE, 1));
         }
     }
     @EventHandler
     public void evokerDeath(EntityDeathEvent z) {
         LivingEntity entity = z.getEntity();
         if (entity instanceof Evoker) {
-            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.TOTEM_OF_UNDYING, 1));
-            double chance = 1.0 / 10.0;
+            entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.EMERALD, 1));
+            double chance = 5.0 / 100.0;
             if (random.nextDouble() <= chance) {
-                entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.EMERALD, 1));
+                Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.TOTEM_OF_UNDYING, 1));
             }
         }
     }
@@ -74,7 +74,6 @@ public class Mobdrops implements Listener, CommandExecutor {
             Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.STRING, 1));
         }
     }
-    //-- change drops
     @EventHandler
     public void zombiepigmanDeath(EntityDeathEvent z) {
         LivingEntity entity = z.getEntity();
@@ -82,7 +81,7 @@ public class Mobdrops implements Listener, CommandExecutor {
             Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.ROTTEN_FLESH, 1));
             double chance = 1.0 / 10.0;
             if (random.nextDouble() <= chance) {
-                entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.GOLD_NUGGET, 2)); //needs to add a chance
+                entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.GOLD_NUGGET, 1));
             }
         }
     }
@@ -91,7 +90,7 @@ public class Mobdrops implements Listener, CommandExecutor {
         LivingEntity entity = z.getEntity();
         if (entity instanceof Piglin) {
             Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.ROTTEN_FLESH, 1));
-            double chance = 1.0 / 10.0;
+            double chance = 10.0 / 100.0;
             if (random.nextDouble() <= chance) {
                 entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.GOLDEN_SWORD, 1));  //needs to add a chance
             }
@@ -103,7 +102,7 @@ public class Mobdrops implements Listener, CommandExecutor {
         LivingEntity entity = z.getEntity();
         if (entity instanceof Vindicator) {
             Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.EMERALD, 1)); //needs
-            double chance = 1.0 / 10.0;
+            double chance = 05.0 / 100.0;
             if (random.nextDouble() <= chance) {
                 entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), itemscreation.Vindicatoraxe);
             }
@@ -150,7 +149,10 @@ public class Mobdrops implements Listener, CommandExecutor {
     public void ShulkerDeath(EntityDeathEvent z) {
         LivingEntity entity = z.getEntity();
         if (entity instanceof Shulker) {
-            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.SHULKER_SHELL, 1));
+            double chance = 20.0 / 100.0;
+            if (random.nextDouble() <= chance) {
+                Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.SHULKER_SHELL, 1));
+            }
         }
     }
     @EventHandler
@@ -169,7 +171,7 @@ public class Mobdrops implements Listener, CommandExecutor {
         LivingEntity entity = z.getEntity();
         if (entity instanceof Husk) {
             Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.ROTTEN_FLESH, 1));
-            double chance = 1.0 / 10.0;
+            double chance = 10.0 / 100.0;
             if (random.nextDouble() <= chance) {
                 Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.IRON_INGOT, 1));
             }
@@ -179,21 +181,26 @@ public class Mobdrops implements Listener, CommandExecutor {
     public void StrayDeath(EntityDeathEvent z) {
         LivingEntity entity = z.getEntity();
         if (entity instanceof Stray) {
-            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.SHULKER_SHELL, 1));
+            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.BOW, 1));
+            double chance = 15.0 / 100.0;
+            if (random.nextDouble() <= chance) {
+                Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.BONE, 1));
+                Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.POTION, 1));
+            }
         }
     }
     @EventHandler
     public void phantomDeath(EntityDeathEvent z) {
         LivingEntity entity = z.getEntity();
         if (entity instanceof Phantom) {
-            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.PHANTOM_MEMBRANE, 2));
+            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.PHANTOM_MEMBRANE, 1));
         }
     }
     @EventHandler
     public void BlazeDeath(EntityDeathEvent z) {
         LivingEntity entity = z.getEntity();
         if (entity instanceof Blaze) {
-            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.BLAZE_ROD, 2));
+            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.BLAZE_ROD, 1));
         }
     }
     @EventHandler
@@ -229,9 +236,13 @@ public class Mobdrops implements Listener, CommandExecutor {
         LivingEntity entity = z.getEntity();
         if (entity instanceof Drowned) {
             Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.ROTTEN_FLESH, 1));
-            double chance = 1.0 / 10.0;
+            double chance = 15.0 / 100.0;
             if (random.nextDouble() <= chance) {
                 Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.COPPER_INGOT, 1));
+            }
+            double chance1 = 8.0 / 100.0;
+            if (random.nextDouble() <= chance1) {
+                Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.TRIDENT, 1));
             }
         }
     }
@@ -239,10 +250,10 @@ public class Mobdrops implements Listener, CommandExecutor {
     public void witherskeletonDeath(EntityDeathEvent z) {
         LivingEntity entity = z.getEntity();
         if (entity instanceof WitherSkeleton) {
-            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.ARROW, 1));
-            double chance = 1.0 / 10.0;
-            if (random.nextDouble() <= chance) {
-                entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.WITHER_SKELETON_SKULL, 1));
+            double chance1 = 15.0 / 100.0;
+            if (random.nextDouble() <= chance1) {
+                Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.BONE, 1));
+                Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.COAL, 1));
             }
         }
     }
@@ -250,16 +261,7 @@ public class Mobdrops implements Listener, CommandExecutor {
     public void Witch(EntityDeathEvent z) {
         LivingEntity entity = z.getEntity();
         if (entity instanceof Witch) {
-            double chance = 1.0 / 10.0;
-            if (random.nextDouble() <= chance) {
-                Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.REDSTONE, 1));
-            }
-            entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.ROTTEN_FLESH, 1));
-            entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.GLASS_BOTTLE, 1));
-            entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.GLOWSTONE_DUST, 1));
-            entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.SPIDER_EYE, 1));
-            entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.STRING, 1));
-            entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.SUGAR, 1));
+            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.NETHER_STAR, 1));
         }
     }
     @EventHandler
@@ -280,23 +282,24 @@ public class Mobdrops implements Listener, CommandExecutor {
     public void AddEnchantment(PrepareAnvilEvent e) {
         Player player = (Player) e.getView().getPlayer();
         if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
-        if (e.getInventory().getItem(1).containsEnchantment(MobdropsUtils.MobDrops)) {
-            ItemStack a = new ItemStack(e.getInventory().getItem(0));
-            a.addEnchantment(MobdropsUtils.MobDrops, (e.getInventory().getItem(1)).getEnchantmentLevel(MobdropsUtils.MobDrops));
-            ItemMeta meta = a.getItemMeta();
-            List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.GRAY + "MobDrops I");
-            if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
-            if (meta != null) {
-                meta.setLore(lore);
+
+            if (Objects.requireNonNull(e.getInventory().getItem(1)).containsEnchantment(MobdropsUtils.MobDrops)) {
+                ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
+                a.addEnchantment(MobdropsUtils.MobDrops, (Objects.requireNonNull(e.getInventory().getItem(1))).getEnchantmentLevel(MobdropsUtils.MobDrops));
+                ItemMeta meta = a.getItemMeta();
+                List<String> lore = new ArrayList<>();
+                lore.add(ChatColor.GRAY + "MobDrops I");
+                if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
+                if (meta != null) {
+                    meta.setLore(lore);
+                }
+                a.setItemMeta(meta);
+                e.getInventory().setRepairCost(40);
+                e.setResult(a);
+                player.updateInventory();
+                plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(40));
             }
-            a.setItemMeta(meta);
-            e.getInventory().setRepairCost(40);
-            e.setResult(a);
-            player.updateInventory();
-            plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(40));
         }
-    }
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
