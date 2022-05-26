@@ -1,5 +1,4 @@
 # Miner Expansion
-It depends on vault and Essential X and will no start up unless these plugins are added.
 Miner Expansion offers custom items, recipes, admin commands, simple banning system, rtp, rtp pods, a lottery reward system and so much more.
 __Social Media Links:__ 
 Discord: https://discord.gg/2983WPGmSz

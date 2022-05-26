@@ -1,7 +1,8 @@
 package me.minercoffee.minerexpansion.commands;
 
 import me.kodysimpson.simpapi.command.SubCommand;
-import me.minercoffee.minerexpansion.elyra.CharcoalElytra;
+import me.minercoffee.minerexpansion.Items.itemscreation;
+import me.minercoffee.minerexpansion.MinerExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -9,10 +10,11 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-import static me.minercoffee.minerexpansion.MinerExpansion.plugin;
-
-
 public class elytracmd extends SubCommand {
+   private final MinerExpansion plugin;
+    public elytracmd(MinerExpansion plugin){
+        this.plugin =   plugin;
+    }
     @Override
     public String getName() {
         return "charcoal-elytra";
@@ -41,7 +43,7 @@ public class elytracmd extends SubCommand {
             } else {
                 Player p = (Player) sender;
                 if (p.isOp()) {
-                    p.getInventory().addItem(CharcoalElytra.getElytra());
+                    p.getInventory().addItem(itemscreation.Elytra);
                 } else {
                     sender.sendMessage("You are not allowed to use this command.");
                 }

@@ -1,6 +1,7 @@
 package me.minercoffee.minerexpansion.commands;
 
 import me.kodysimpson.simpapi.command.SubCommand;
+import me.minercoffee.minerexpansion.MinerExpansion;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -15,7 +16,7 @@ public class AdminCommandManager implements TabExecutor {
     private final ArrayList<SubCommand> subCommands = new ArrayList<>();
 
     public AdminCommandManager(){
-        subCommands.add(new elytracmd());
+        subCommands.add(new elytracmd(MinerExpansion.getPlugin()));
         subCommands.add(new UnFreeze());
         subCommands.add(new Freeze());
         subCommands.add(new deposit());

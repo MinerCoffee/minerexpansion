@@ -27,7 +27,7 @@ import static me.minercoffee.minerexpansion.MinerExpansion.plugin;
 
 
 public class Telepathy implements Listener, CommandExecutor {
-
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();

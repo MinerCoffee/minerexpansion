@@ -6,10 +6,12 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import java.util.UUID;
 public class itemscreation implements Listener {
 
     public static void init() {
+        getElytra();
         createNametag();
         createBell();
         createLeather();
@@ -27,6 +30,7 @@ public class itemscreation implements Listener {
         createflare();
         createcobweb();
         CreateVindicatorAxe();
+        createSlimeChuckCompass();
     }
 
     public static ItemStack Nametag;
@@ -135,5 +139,40 @@ public class itemscreation implements Listener {
         ItemMeta meta = item.getItemMeta();
         item.setItemMeta(meta);
         Cobweb = item;
+    }
+    public static ItemStack Elytra;
+    public static void getElytra() {
+        ItemStack item = new ItemStack(Material.ELYTRA, 1);
+        Damageable meta = (Damageable) item.getItemMeta();
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add (ColorMsg.color("&2Crouch &7& &2Jump &7 to Launch into the Air."));
+        lore.add(ColorMsg.color("&7Press &2Shift &7While Flying To Boost."));
+        if (meta != null) {
+            meta.setLore(lore);
+            meta.setUnbreakable(true);
+            meta.setDisplayName(ColorMsg.color("&6&lCharcoal Elytra"));
+ //           AttributeModifier armour = new AttributeModifier(UUID.randomUUID(), "generic.ARMOR", 2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+  //          meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armour);
+    //        meta.hasItemFlag(ItemFlag.HIDE_ATTRIBUTES);
+            item.setItemMeta(meta);
+            Elytra = item;
+        }
+    }
+    public static boolean hasCharcoalElytra(Player p){
+        ItemStack chest = p.getInventory().getChestplate();
+        return chest != null && chest.isSimilar(Elytra);
+    }
+    public static ItemStack SLimeChuckCompass;
+    private static void createSlimeChuckCompass(){
+        ItemStack item = new ItemStack(Material.COMPASS, 1);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName("§Slime Chuck Compass");
+        List<String> lore = new ArrayList<>();
+        lore.add("§6Item Ability: Oreker");
+        lore.add("§7Points to the nearest ore");
+        lore.add("§7until the ore is broken.");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        SLimeChuckCompass = item;
     }
 }

@@ -41,9 +41,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
 import static me.minercoffee.minerexpansion.Items.itemscreation.*;
-import static me.minercoffee.minerexpansion.elyra.CharcoalElytra.getElytra;
 import static org.spigotmc.SpigotConfig.config;
 
 
@@ -110,7 +108,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new launchpads(this), this);
         Objects.requireNonNull(getCommand("staffhome")).setExecutor(new staffhomecmd(this));
         NamespacedKey elytra = new NamespacedKey(this, "minerexpansion_elytra");
-        ShapedRecipe elytracraft = new ShapedRecipe(elytra, getElytra());
+        ShapedRecipe elytracraft = new ShapedRecipe(elytra, Elytra);
         NamespacedKey bellkey = new NamespacedKey(this, "bell");
         ShapedRecipe bellrecipe = new ShapedRecipe(bellkey, Bell);
         NamespacedKey nametagkey = new NamespacedKey(this, "nametag");
@@ -225,6 +223,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     }
 
     public void loadEnchantment(){
+        GlowEffectUtils.register();
         MobdropsUtils.register();
         DoubleDropsUtils.register();
         VeinMinerUtilsII.register();

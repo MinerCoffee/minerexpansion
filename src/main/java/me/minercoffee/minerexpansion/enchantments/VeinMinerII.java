@@ -25,6 +25,7 @@ import java.util.Objects;
 import static me.minercoffee.minerexpansion.MinerExpansion.plugin;
 
 public class VeinMinerII implements Listener, CommandExecutor {
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @EventHandler
     public void onBreakBlock(BlockBreakEvent e) {
         Player player = e.getPlayer();

@@ -52,9 +52,6 @@ commands:
   givegrapplinghook:
     description: grapplinghook to transport.
     usage: /<commmand>
-  giveelytra:
-    description: gives custom elytra to the player.
-    usage: /<command>
   supplydrop:
     description: Request a supply drop
   editsupplydrop:
