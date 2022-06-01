@@ -1,4 +1,4 @@
-package me.minercoffee.minerexpansion.elyra.fuctions;
+package me.minercoffee.minerexpansion.elyra;
 
 import me.minercoffee.minerexpansion.MinerExpansion;
 import org.bukkit.Bukkit;

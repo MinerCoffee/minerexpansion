@@ -30,7 +30,6 @@ public class itemscreation implements Listener {
         createflare();
         createcobweb();
         CreateVindicatorAxe();
-        createSlimeChuckCompass();
     }
 
     public static ItemStack Nametag;
@@ -144,16 +143,19 @@ public class itemscreation implements Listener {
     public static void getElytra() {
         ItemStack item = new ItemStack(Material.ELYTRA, 1);
         Damageable meta = (Damageable) item.getItemMeta();
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add (ColorMsg.color("&2Crouch &7& &2Jump &7 to Launch into the Air."));
-        lore.add(ColorMsg.color("&7Press &2Shift &7While Flying To Boost."));
         if (meta != null) {
-            meta.setLore(lore);
             meta.setUnbreakable(true);
+            meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
             meta.setDisplayName(ColorMsg.color("&6&lCharcoal Elytra"));
- //           AttributeModifier armour = new AttributeModifier(UUID.randomUUID(), "generic.ARMOR", 2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-  //          meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armour);
-    //        meta.hasItemFlag(ItemFlag.HIDE_ATTRIBUTES);
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add (ColorMsg.color("&2Crouch &7& &2Jump &7 to Launch into the Air."));
+            lore.add(ColorMsg.color("&7Press &2Shift &7While Flying To Boost."));
+            lore.add(ColorMsg.color("&7&lUnbreakable"));
+            lore.add(ColorMsg.color("&7&lReinforcement"));
+            meta.setLore(lore);
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            AttributeModifier armour = new AttributeModifier(UUID.randomUUID(), "generic.ARMOR", 6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+            meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armour);
             item.setItemMeta(meta);
             Elytra = item;
         }
@@ -161,18 +163,5 @@ public class itemscreation implements Listener {
     public static boolean hasCharcoalElytra(Player p){
         ItemStack chest = p.getInventory().getChestplate();
         return chest != null && chest.isSimilar(Elytra);
-    }
-    public static ItemStack SLimeChuckCompass;
-    private static void createSlimeChuckCompass(){
-        ItemStack item = new ItemStack(Material.COMPASS, 1);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("§Slime Chuck Compass");
-        List<String> lore = new ArrayList<>();
-        lore.add("§6Item Ability: Oreker");
-        lore.add("§7Points to the nearest ore");
-        lore.add("§7until the ore is broken.");
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        SLimeChuckCompass = item;
     }
 }

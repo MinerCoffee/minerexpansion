@@ -7,7 +7,7 @@ import me.minercoffee.minerexpansion.Files.DataManager;
 import me.minercoffee.minerexpansion.Items.ThrowingAxe;
 import me.minercoffee.minerexpansion.Items.itemscreation;
 import me.minercoffee.minerexpansion.commands.*;
-import me.minercoffee.minerexpansion.elyra.fuctions.CharcoalElytraListener;
+import me.minercoffee.minerexpansion.elyra.CharcoalElytraListener;
 import me.minercoffee.minerexpansion.enchantments.*;
 import me.minercoffee.minerexpansion.grapplinghook.GrapplingHook;
 import me.minercoffee.minerexpansion.grapplinghook.GrapplingHookCooldown;
@@ -119,7 +119,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         ShapedRecipe cobwebrecipe = new ShapedRecipe(cobweb, Cobweb);
 
         //next custom recipe item starts here //
-        List<String> shape = config.isSet("shape") ? config.getStringList("shape")
+/*        List<String> shape = config.isSet("shape") ? config.getStringList("shape")
                 : Arrays.asList("DND", "NEN", "DND");
         elytracraft.shape(shape.toArray(new String[3]));
         if (config.isSet("crafting")) {
@@ -137,7 +137,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
             elytracraft.setIngredient('N', Material.valueOf(plugin.getConfig().getString("N")));
             elytracraft.setIngredient('E', Material.valueOf(plugin.getConfig().getString("E")));
             plugin.saveConfig();
-        }
+        }*/
         plugin.getServer().addRecipe(elytracraft);
         //next custom recipe item starts here //
         List<String> shape1 = config.isSet("leather_recipe.shape1") ? config.getStringList("leather_recipe.shape1")
@@ -223,7 +223,6 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     }
 
     public void loadEnchantment(){
-        GlowEffectUtils.register();
         MobdropsUtils.register();
         DoubleDropsUtils.register();
         VeinMinerUtilsII.register();

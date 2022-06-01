@@ -1,4 +1,4 @@
-package me.minercoffee.minerexpansion.elyra.fuctions;
+package me.minercoffee.minerexpansion.elyra;
 
 import me.minercoffee.minerexpansion.Items.itemscreation;
 import me.minercoffee.minerexpansion.utils.ColorMsg;
@@ -61,18 +61,18 @@ public class CharcoalElytraListener implements Listener {
     @EventHandler
     public void launch(PlayerStatisticIncrementEvent e) {
         Player p = e.getPlayer();
-        if (itemscreation.hasCharcoalElytra(p)){
+        if (itemscreation.hasCharcoalElytra(p)) {
             if (e.getStatistic().equals(Statistic.JUMP)) {
-                    if (!(p.getLocation().getPitch() < -90.0F)) {
-                        if (this.chargingPlayers.contains(p) && ChargeBar.charged.contains(p)) {
-                            ChargeBar.chargeBar.removePlayer(p);
-                            p.setVelocity(p.getLocation().getDirection().multiply(1).setY(3));
-                            p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 5.0F, 4.0F);
-                        }
+                if (!(p.getLocation().getPitch() < -90.0F)) {
+                    if (this.chargingPlayers.contains(p) && ChargeBar.charged.contains(p)) {
+                        ChargeBar.chargeBar.removePlayer(p);
+                        p.setVelocity(p.getLocation().getDirection().multiply(1).setY(3));
+                        p.playSound(p.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 5.0F, 4.0F);
                     }
                 }
             }
         }
+    }
 
     @EventHandler
     public void sneak(PlayerToggleSneakEvent e) {
@@ -112,7 +112,8 @@ public class CharcoalElytraListener implements Listener {
             }
         }
     }
-   @EventHandler
+
+    @EventHandler
     public void NoRename(PrepareAnvilEvent event) {
         AnvilInventory inventory = event.getInventory();
         ItemStack input = inventory.getItem(0);
@@ -168,24 +169,25 @@ public class CharcoalElytraListener implements Listener {
     }
 
     @EventHandler
-    public void NoEnchantments(PrepareAnvilEvent e) {
-        if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
+    public void EnchantmentsBreak(PrepareAnvilEvent e) {
         Player player = (Player) e.getView().getPlayer();
-        ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(1)));
-        ItemMeta meta = a.getItemMeta();
-        if (itemscreation.hasCharcoalElytra(player)) {
+        if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
+            ItemStack elytra = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
+            ItemStack enchantment = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(1)));
+            ItemMeta meta_enchantment = enchantment.getItemMeta();
             List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.GREEN + "Crouch" + ChatColor.GRAY + "&" + ChatColor.GREEN + " Jump" + ChatColor.GRAY + " to Launch into the Air.");
-            lore.add(ChatColor.GRAY + " Press" + ChatColor.GREEN + " Shift" + ChatColor.GRAY + " while Flying to Boost.");
-            if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
-            if (meta != null) {
-                meta.setLore(lore);
-                a.setItemMeta(meta);
+            lore.add(ChatColor.GRAY + "Reinforced I");
+            if (meta_enchantment != null && meta_enchantment.hasLore())
+                lore.addAll(Objects.requireNonNull(meta_enchantment.getLore()));
+            if (meta_enchantment != null) {
+                meta_enchantment.setLore(lore);
+                elytra.setItemMeta(meta_enchantment);
             }
+            e.getInventory().setRepairCost(999999);
             e.setResult(null);
             player.updateInventory();
+            plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(999999));
         }
-    }
     @EventHandler
     public void AnvilUse(InventoryClickEvent e) {
         if (!e.isCancelled()) {
