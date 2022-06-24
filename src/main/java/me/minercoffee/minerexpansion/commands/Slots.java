@@ -54,7 +54,7 @@ public class Slots implements CommandExecutor, Listener {
                     // spin that GUI
                     spin(player);
                     player.sendMessage(ColorMsg.color("&l&bThank you for playing come again!" + " " + "&d<3"));
-
+                    player.closeInventory();   //fixed duping
                     ItemStack air = new ItemStack(Material.AIR);
                     if (player.getItemInHand().getAmount() > (plugin.getConfig().getInt("fee_amount",5))) {
                         player.getItemInHand().setAmount(player.getItemInHand().getAmount()- fee.getAmount());
@@ -144,7 +144,7 @@ public class Slots implements CommandExecutor, Listener {
                                 assert item != null;
                                 player.getInventory().addItem(item);
                                 player.updateInventory();
-                                player.closeInventory();
+                              //  player.closeInventory();
                                 cancel();
                             }
                         }.runTaskLater(MinerExpansion.getPlugin(MinerExpansion.class), 50);

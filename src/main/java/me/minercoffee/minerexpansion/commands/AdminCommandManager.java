@@ -16,7 +16,6 @@ public class AdminCommandManager implements TabExecutor {
     private final ArrayList<SubCommand> subCommands = new ArrayList<>();
 
     public AdminCommandManager(){
-        subCommands.add(new elytracmd(MinerExpansion.getPlugin()));
         subCommands.add(new UnFreeze());
         subCommands.add(new Freeze());
         subCommands.add(new deposit());

@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -33,6 +34,7 @@ public class VeinMinerI implements Listener, CommandExecutor {
 
         if (!item.hasItemMeta() || !Objects.requireNonNull(item.getItemMeta()).hasEnchant(VeinMinerUtilsI.VEINMINERI))
             return;
+        if ((player).getInventory().getItem(EquipmentSlot.HAND).containsEnchantment(VeinMinerUtilsI.VEINMINERI) || (player).getInventory().getItem(EquipmentSlot.OFF_HAND).containsEnchantment(VeinMinerUtilsI.VEINMINERI)) return;
         if (gamemode == GameMode.CREATIVE || gamemode == GameMode.SPECTATOR)
             return;
         List<String> lore = new ArrayList<>();

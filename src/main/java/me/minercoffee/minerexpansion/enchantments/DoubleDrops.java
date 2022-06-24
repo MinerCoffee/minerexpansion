@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -41,6 +42,7 @@ public class DoubleDrops implements Listener, CommandExecutor {
             return;
         if (!iteminhand.hasItemMeta() || !Objects.requireNonNull(iteminhand.getItemMeta()).hasEnchant(DoubleDropsUtils.DoubleDrops))
             return;
+        if ((player).getInventory().getItem(EquipmentSlot.HAND).containsEnchantment(DoubleDropsUtils.DoubleDrops) || (player).getInventory().getItem(EquipmentSlot.OFF_HAND).containsEnchantment(DoubleDropsUtils.DoubleDrops)) return;
         if(blockBroken.getType() == Material.DIAMOND_ORE){
             e.setCancelled(true);
             blockBroken.setType(Material.AIR);

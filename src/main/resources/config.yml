@@ -10,20 +10,6 @@ rtp: false
 world-border: true #True if you want to limit how far it teleports players
 border: 5000 #If no world border, limit is automatically 50,000 blocks
 cooldowntimer: 20 #cooldown timer for the rtp cmd.
-#elytra_settings----------------------------------------------------------------------------#
-elytra: true
-crafting: #You can change the material used.
-#FULL BLOCK NAME LIST: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
-#You may have to restart the server to update ingredients.
-D: 'DRAGON_BREATH'
-N: 'NETHERITE_INGOT'
-E: 'ELYTRA'
-shape:
-  - 'DND'
-  - 'NEN'
-  - 'DND'
-NoRenameLore: #Custom Items that can't be renamed.
-  - Crouch & Jump to Launch into the Air. #elytra
 #silk_spawners_settings---------------------------------------------------------------------#
 #set to Air if you don't want to check for that material.
 Ore-alerts: false
@@ -152,13 +138,13 @@ Messages:
   DeletedEnvoy: "&a&lSuccessfully deleted envoy: &2&l&o%envoyName%"
 #Slots_settings-------------------------------------------------------------------------------#
 #Changing the amount requires the server to restart.
-megamillion: true #lotty system for rewards! It uses diamonds for its currency.
-fee: 'DIAMOND'
+megamillion: false #lotty system for rewards! It uses diamonds for its currency.
+fee: 'NETHERITE_INGOT'
 fee_amount: 5
 reward1: 'COARSE_DIRT'
 reward1_amount: 32
 reward2: 'DIAMOND'
-reward2_amount: 3
+reward2_amount: 1
 reward3: 'NETHERITE_SCRAP'
 reward3_amount: 2
 reward4: 'GOLDEN_APPLE'
@@ -166,7 +152,7 @@ reward4_amount: 1
 reward5: 'IRON_HORSE_ARMOR'
 reward5_amount: 1
 reward6: 'DIAMOND'
-reward6_amount: 3
+reward6_amount: 1
 reward7: 'WITHER_SKELETON_SKULL'
 reward7_amount: 1
 reward8: 'ENCHANTED_GOLDEN_APPLE'

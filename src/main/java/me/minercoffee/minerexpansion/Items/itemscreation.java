@@ -21,7 +21,6 @@ import java.util.UUID;
 public class itemscreation implements Listener {
 
     public static void init() {
-        getElytra();
         createNametag();
         createBell();
         createLeather();
@@ -80,7 +79,9 @@ public class itemscreation implements Listener {
             ThrowingAxe = item;
         }
     }
+
     public static ItemStack Vindicatoraxe;
+
     public static void CreateVindicatorAxe() {
         ItemStack item = new ItemStack(Material.IRON_AXE, 1);
         ItemMeta meta = item.getItemMeta();
@@ -110,7 +111,8 @@ public class itemscreation implements Listener {
     }
 
     public static ItemStack Flare;
-    public static void createflare(){
+
+    public static void createflare() {
         ItemStack item = new ItemStack(Material.BLAZE_ROD, 1);
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta != null) {
@@ -132,36 +134,13 @@ public class itemscreation implements Listener {
             Flare = item;
         }
     }
+
     public static ItemStack Cobweb;
-    public static void  createcobweb(){
+
+    public static void createcobweb() {
         ItemStack item = new ItemStack(Material.COBWEB, 1);
         ItemMeta meta = item.getItemMeta();
         item.setItemMeta(meta);
         Cobweb = item;
-    }
-    public static ItemStack Elytra;
-    public static void getElytra() {
-        ItemStack item = new ItemStack(Material.ELYTRA, 1);
-        Damageable meta = (Damageable) item.getItemMeta();
-        if (meta != null) {
-            meta.setUnbreakable(true);
-            meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-            meta.setDisplayName(ColorMsg.color("&6&lCharcoal Elytra"));
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add (ColorMsg.color("&2Crouch &7& &2Jump &7 to Launch into the Air."));
-            lore.add(ColorMsg.color("&7Press &2Shift &7While Flying To Boost."));
-            lore.add(ColorMsg.color("&7&lUnbreakable"));
-            lore.add(ColorMsg.color("&7&lReinforcement"));
-            meta.setLore(lore);
-            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            AttributeModifier armour = new AttributeModifier(UUID.randomUUID(), "generic.ARMOR", 6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-            meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armour);
-            item.setItemMeta(meta);
-            Elytra = item;
-        }
-    }
-    public static boolean hasCharcoalElytra(Player p){
-        ItemStack chest = p.getInventory().getChestplate();
-        return chest != null && chest.isSimilar(Elytra);
     }
 }

@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -38,6 +39,7 @@ public class Telepathy implements Listener, CommandExecutor {
 
         if (!item.hasItemMeta() || !Objects.requireNonNull(item.getItemMeta()).hasEnchant(TelepathyUtils.TELEPATHY))
             return;
+        if ((player).getInventory().getItem(EquipmentSlot.HAND).containsEnchantment(TelepathyUtils.TELEPATHY) || (player).getInventory().getItem(EquipmentSlot.OFF_HAND).containsEnchantment(TelepathyUtils.TELEPATHY)) return;
         if (gamemode == GameMode.CREATIVE || gamemode == GameMode.SPECTATOR)
             return;
         if (inventory.firstEmpty() == -1)
@@ -48,8 +50,6 @@ public class Telepathy implements Listener, CommandExecutor {
         lore.add(ChatColor.GRAY + "Telepathy I");
         // check for if he dont have the telepathy lore then return
         event.setDropItems(false);
-
-
         Collection<ItemStack> drops = block.getDrops(item);
         if (drops.isEmpty())
             return;
@@ -99,7 +99,6 @@ public class Telepathy implements Listener, CommandExecutor {
                 }
             }
         }
-
         return true;
     }
 }
