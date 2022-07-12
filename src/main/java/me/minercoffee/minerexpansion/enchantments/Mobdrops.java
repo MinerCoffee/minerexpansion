@@ -232,7 +232,7 @@ public class Mobdrops implements Listener, CommandExecutor {
                             damager.playSound(damager.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, 10, 1);
                             Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.EMERALD, 1));
                         }
-                        double chance2 = 10.0 / 100.0;
+                        double chance2 = 5.0 / 100.0;
                         if (random.nextDouble() <= chance2) {
                             damager.playSound(damager.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, 10, 1);
                             entity.getLocation().getWorld().dropItemNaturally(entity.getLocation(), itemscreation.Vindicatoraxe);
@@ -487,7 +487,7 @@ public class Mobdrops implements Listener, CommandExecutor {
                         double chance1 = 10.0 / 100.0;
                         if (random.nextDouble() <= chance1) {
                             damager.playSound(damager.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, 10, 1);
-                            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.BLAZE_ROD, 1));
+                            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.BLAZE_ROD, 2));
                         }
                     }
                 }
@@ -508,7 +508,7 @@ public class Mobdrops implements Listener, CommandExecutor {
                         double chance1 = 10.0 / 100.0;
                         if (random.nextDouble() <= chance1) {
                             damager.playSound(damager.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, 10, 1);
-                            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.GUNPOWDER, 1));
+                            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.GUNPOWDER, 2));
                             }
                         }
                 }
@@ -529,7 +529,7 @@ public class Mobdrops implements Listener, CommandExecutor {
                             double chance1 = 10.0 / 100.0;
                             if (random.nextDouble() <= chance1) {
                                 damager.playSound(damager.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, 10, 1);
-                                Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.GHAST_TEAR, 1));
+                                Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.GHAST_TEAR, 2));
                             }
                         }
                     }
@@ -692,7 +692,42 @@ public class Mobdrops implements Listener, CommandExecutor {
             ex.printStackTrace();
         }
     }
-
+    @EventHandler
+    public void WardenDeath(EntityDamageByEntityEvent e){
+        try {
+            Entity entity = e.getEntity();
+            if (e.getDamager() instanceof Player) {
+                Player damager =  (Player) e.getDamager();
+                if(entity instanceof Warden) {
+                    if (entity.isDead()) return;
+                    if ((damager).getInventory().getItem(EquipmentSlot.HAND).containsEnchantment(MobdropsUtils.MobDrops) || (damager).getInventory().getItem(EquipmentSlot.OFF_HAND).containsEnchantment(MobdropsUtils.MobDrops)) {
+                        double reward1 = 03.0 / 100.0;
+                        if (random.nextDouble() <= reward1) {
+                            damager.playSound(damager.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, 33, 3);
+                            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.GOLDEN_APPLE, 1));
+                        }
+                        double reward2 = 05.0 / 100.0;
+                        if (random.nextDouble() <= reward2) {
+                            damager.playSound(damager.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, 33, 3);
+                            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.BREAD, 2));
+                        }
+                        double reward3 = 08.0 / 100.0;
+                        if (random.nextDouble() <= reward3) {
+                            damager.playSound(damager.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, 33, 3);
+                            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.COAL, 4));
+                        }
+                        double reward4 = 10.0 / 100.0;
+                        if (random.nextDouble() <= reward4) {
+                            damager.playSound(damager.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, 33, 3);
+                            Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.STICK, 3));
+                        }
+                    }
+                }
+            }
+        } catch (ExceptionInInitializerError ex) {
+            ex.printStackTrace();
+        }
+    }
     @EventHandler
     public void AddEnchantment(PrepareAnvilEvent e) {
         Player damager = (Player) e.getView().getPlayer();

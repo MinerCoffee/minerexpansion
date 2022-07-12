@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 
 import static org.bukkit.Bukkit.getLogger;
 
-public class TelepathyUtils {
-    public static final Enchantment TELEPATHY = new EnchantmentWrapper("telepathy", "Telepathy", 1);
+public class ReverseUtils {
+    public static final Enchantment Reverse = new EnchantmentWrapper("reverse", "Reverse", 1);
     public static void register() {
-        boolean registered = Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(TELEPATHY);
+        boolean registered = Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(Reverse);
         if(!registered)
-            registerEnchantment(TELEPATHY);
+            registerEnchantment(Reverse);
     }
 
     public static void registerEnchantment(Enchantment enchantment) {
@@ -30,7 +30,7 @@ public class TelepathyUtils {
         }
         if(registered){
             //send message to console
-            getLogger().info("Telepathy I Enchantment has loaded in!");
+            getLogger().info("Reverse Enchantment has loaded in!");
         }
     }
 }

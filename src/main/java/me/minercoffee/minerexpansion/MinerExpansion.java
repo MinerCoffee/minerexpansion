@@ -82,28 +82,16 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         Objects.requireNonNull(getCommand("mereload")).setExecutor(new reload());
         plugin = this;
         getLogger().info("Miner Expansion has loaded in!");
-        this.getServer().getPluginManager().registerEvents(new BlockAlerts(), this);
-        Objects.requireNonNull(getCommand("rtp")).setExecutor(new rtpcmd());
-        Objects.requireNonNull(getCommand("nv")).setExecutor(new NightVisionManager());
         Objects.requireNonNull(getCommand("admin")).setExecutor(new AdminCommandManager());
-        Objects.requireNonNull(this.getCommand("vaultbal")).setExecutor(new vaultbal());
-        Objects.requireNonNull(this.getCommand("megamillion")).setExecutor(new Slots());
-        this.getServer().getPluginManager().registerEvents(new Slots(), this);
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
         saveConfig();
         itemscreation.init();
         loadConfig();
         loadEnchantment();
-        loadEnvoy();
+       // loadEnvoy();
         new UpdateCheckCommand(this);
-        getServer().getPluginManager().registerEvents(new BreakBlockListener(), this);
-        getServer().getPluginManager().registerEvents(new SpawnerListeners(), this);
-        getServer().getPluginManager().registerEvents(new ThrowingAxe(this), this);
-        Objects.requireNonNull(this.getCommand("givethrowingaxe")).setExecutor(new ThrowingAxeCmd());
-        getServer().getPluginManager().registerEvents(new GrapplingHook(), this);
-        Objects.requireNonNull(getCommand("givegrapplinghook")).setExecutor(new GrapplingHookcmd());
-        GrapplingHookCooldown.setupCooldown();
+        getCommand("tax").setExecutor(new tax());
         getServer().getPluginManager().registerEvents(new launchpads(this), this);
         Objects.requireNonNull(getCommand("staffhome")).setExecutor(new staffhomecmd(this));
         NamespacedKey bellkey = new NamespacedKey(this, "bell");
@@ -197,16 +185,19 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     }
 
     public void loadEnchantment(){
+        ReverseUtils.register();
         MobdropsUtils.register();
         DoubleDropsUtils.register();
         VeinMinerUtilsII.register();
         VeinMinerUtilsI.register();
         TelepathyUtils.register();
+        getCommand("reverse").setExecutor(new Reverse(this));
         Objects.requireNonNull(getCommand("veinminerII")).setExecutor(new VeinMinerII());
         Objects.requireNonNull(getCommand("mobdrops")).setExecutor(new Mobdrops(this));
         Objects.requireNonNull(getCommand("doubledrops")).setExecutor(new DoubleDrops(this));
         Objects.requireNonNull(getCommand("veinminerI")).setExecutor(new VeinMinerI());
         Objects.requireNonNull(this.getCommand("telepathy")).setExecutor(new Telepathy());
+        getServer().getPluginManager().registerEvents(new Reverse(this), this);
         getServer().getPluginManager().registerEvents(new Mobdrops(this), this);
         getServer().getPluginManager().registerEvents(new VeinMinerI(), this);
         getServer().getPluginManager().registerEvents(new DoubleDrops(this), this);
@@ -214,7 +205,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new Telepathy(), this);
     }
 
-    public void loadEnvoy(){
+/*    public void loadEnvoy(){
         Bukkit.getServer().getPluginManager().registerEvents(new CommandEditSupplyDrop(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new CommandEnvoy(), this);
         Objects.requireNonNull(this.getCommand("supplydrop")).setExecutor(new CommandSupplyDrop());
@@ -223,7 +214,7 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         Objects.requireNonNull(this.getCommand("envoy")).setExecutor(new CommandEnvoy());
         SupplyDropsDataManager.saveDefaultConfig();
         EnvoysDataManager.saveDefaultConfig();
-    }
+    }*/
 
     public void loadConfig() {
         getConfig().options().copyDefaults(true);

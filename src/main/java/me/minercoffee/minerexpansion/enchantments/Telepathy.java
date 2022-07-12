@@ -33,27 +33,24 @@ public class Telepathy implements Listener, CommandExecutor {
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         PlayerInventory inventory = player.getInventory();
-        ItemStack item = inventory.getItemInMainHand();
         Block block = event.getBlock();
         GameMode gamemode = player.getGameMode();
-
-        if (!item.hasItemMeta() || !Objects.requireNonNull(item.getItemMeta()).hasEnchant(TelepathyUtils.TELEPATHY))
-            return;
-        if ((player).getInventory().getItem(EquipmentSlot.HAND).containsEnchantment(TelepathyUtils.TELEPATHY) || (player).getInventory().getItem(EquipmentSlot.OFF_HAND).containsEnchantment(TelepathyUtils.TELEPATHY)) return;
-        if (gamemode == GameMode.CREATIVE || gamemode == GameMode.SPECTATOR)
-            return;
-        if (inventory.firstEmpty() == -1)
-            return;
-        if (block.getState() instanceof Container)
-            return;
-        List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "Telepathy I");
-        // check for if he dont have the telepathy lore then return
-        event.setDropItems(false);
-        Collection<ItemStack> drops = block.getDrops(item);
-        if (drops.isEmpty())
-            return;
-        inventory.addItem(drops.iterator().next());
+        if((player).getInventory().getItem(EquipmentSlot.HAND).containsEnchantment(TelepathyUtils.TELEPATHY) || (player).getInventory().getItem(EquipmentSlot.OFF_HAND).containsEnchantment(TelepathyUtils.TELEPATHY)) {
+            if (gamemode == GameMode.SPECTATOR)
+                return;
+            if (inventory.firstEmpty() == -1)
+                return;
+            if (block.getState() instanceof Container)
+                return;
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.GRAY + "Telepathy I");
+            // check for if he dont have the telepathy lore then return
+            event.setDropItems(false);
+            Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand());
+            if (drops.isEmpty())
+                return;
+            inventory.addItem(drops.iterator().next());
+        }
     }
     @EventHandler
     public void anvilEvent(PrepareAnvilEvent e){

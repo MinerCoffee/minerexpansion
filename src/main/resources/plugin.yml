@@ -1,7 +1,7 @@
 name: MinerExpansion
 version: 1.0.5
 main: me.minercoffee.minerexpansion.MinerExpansion
-api-version: 1.18
+api-version: 1.19
 authors: [ MinerCoffee ]
 depend: [Vault]
 softdepend: [PlaceholderAPI]
@@ -9,12 +9,14 @@ loadbefore: [Vault]
 load: POSTWORLD
 description: All in one plugin. Some it's features are better elytras, custom recipes, nightvision, custom tools, and more.
 commands:
+  tax:
+    description: "tax"
+  reverse:
+    description: "reverse damages"
   mobdrops:
     description: increases mob drops.
   doubledrops:
     description: gives double drops on ores.
-  rtp:
-    description: teleports the player to a random location.
   veinminerII:
     description: custom enchantment
   veinminerI:
@@ -25,41 +27,12 @@ commands:
     description: "Checks for updates"
     usage: "/<command> [players|all]"
     permission: updatechecker
-  test:
-    description: test flare
-    usage: /<command>
-  giveflare:
-    description: gives a flare.
-    usage: /<command> <player>
   mereload:
     description: reloads the config.
-    usage: /<command>
-  nv:
-    description: nightvision for player.
-    usage: /<command>
-  megamillion:
-    description: Slots rewards.
-    usage: /<command>
-  vaultbal:
-    description: Player's current balance.
     usage: /<command>
   admin:
     description: Admin cmds
     usage: /<command> args
-  givethrowingaxe:
-    description: gives throwingaxe to the player.
-    usage: /<command>
-  givegrapplinghook:
-    description: grapplinghook to transport.
-    usage: /<commmand>
-  supplydrop:
-    description: Request a supply drop
-  editsupplydrop:
-    description: Edit supply drop contents
-  deletesupplydrop:
-    description: Delete a supply drop
-  envoy:
-    description: Envoy creator and configuration command
   staffhome:
     description: The main command for staff homes!
     usage: /<command>
