@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -509,8 +510,8 @@ public class Mobdrops implements Listener, CommandExecutor {
                         if (random.nextDouble() <= chance1) {
                             damager.playSound(damager.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, 10, 1);
                             Objects.requireNonNull(entity.getLocation().getWorld()).dropItemNaturally(entity.getLocation(), new ItemStack(Material.GUNPOWDER, 2));
-                            }
                         }
+                    }
                 }
             }
         } catch (ExceptionInInitializerError ex) {

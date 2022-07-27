@@ -3,8 +3,8 @@
 # written by: MinerCoffee
 vaultbal: false
 grappinghook: false
-throwingaxe: false
 nightvision: false #nightvision toggle cmd
+telepathy: false
 #rtp_settings-------------------------------------------------------------------------------#
 rtp: false
 world-border: true #True if you want to limit how far it teleports players

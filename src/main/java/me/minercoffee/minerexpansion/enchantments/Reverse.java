@@ -29,14 +29,15 @@ public class Reverse implements Listener, CommandExecutor {
     }
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             ItemStack itemOffHand;
             Damageable damageable;
             LivingEntity livingEntity;
+            if ((player).getInventory().getItem(EquipmentSlot.HAND).containsEnchantment(ReverseUtils.Reverse) || (player).getInventory().getItem(EquipmentSlot.OFF_HAND).containsEnchantment(ReverseUtils.Reverse)) {
+                if (event.getEntity() instanceof Player) {
+                    if (player.isOp()) return;
                 if (player.getInventory().getItemInMainHand().getItemMeta() != null) {
                     itemOffHand = player.getInventory().getItemInMainHand();
-                    if ((player).getInventory().getItem(EquipmentSlot.HAND).containsEnchantment(ReverseUtils.Reverse) || (player).getInventory().getItem(EquipmentSlot.OFF_HAND).containsEnchantment(ReverseUtils.Reverse)) {
                             damageable = (Damageable) itemOffHand.getItemMeta();
                             if (event.getDamager() instanceof LivingEntity) {
                                 livingEntity = (LivingEntity) event.getDamager();

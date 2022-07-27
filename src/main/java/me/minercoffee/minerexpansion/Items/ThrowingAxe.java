@@ -1,14 +1,18 @@
 package me.minercoffee.minerexpansion.Items;
 
 import me.minercoffee.minerexpansion.MinerExpansion;
+import me.minercoffee.minerexpansion.enchantments.MobdropsUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
@@ -24,12 +28,35 @@ public class ThrowingAxe implements Listener {
     public ThrowingAxe(MinerExpansion plugin) {
         this.plugin = plugin;
     }
+    @EventHandler
+    public void AddEnchantment(PrepareAnvilEvent e) {
+        Player damager = (Player) e.getView().getPlayer();
+        if (e.getInventory().getItem(1) == null || e.getInventory().getItem(0) == null) return;
+        if (Objects.requireNonNull(e.getInventory().getItem(0)).isSimilar(itemscreation.ThrowingAxe) || (Objects.requireNonNull(e.getInventory().getItem(1)).isSimilar(itemscreation.ThrowingAxe))){
+            ItemStack a = new ItemStack(Objects.requireNonNull(e.getInventory().getItem(0)));
+            ItemMeta meta = a.getItemMeta();
+            List<String> lore = new ArrayList<>();
+            lore.add("§7Damage: §c+5");
+            lore.add("");
+            lore.add("§6Item Ability: Throw §eRIGHT CLICK");
+            lore.add("§7Throw your axe and deal");
+            lore.add("§c5 §7damage.");
+            if (meta != null && meta.hasLore()) lore.addAll(Objects.requireNonNull(meta.getLore()));
+            if (meta != null) {
+                meta.setLore(lore);
+            }
+            a.setItemMeta(meta);
+            e.getInventory().setRepairCost(40);
+            e.setResult(a);
+            damager.updateInventory();
+            plugin.getServer().getScheduler().runTask(plugin, () -> e.getInventory().setRepairCost(20));
+        }
+    }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInHand();
-        if (plugin.getConfig().getBoolean("throwingaxe")) {
             if (event.getAction().equals(RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
                 if (item.getItemMeta() != null && item.getItemMeta().getLore() != null
                         && item.getItemMeta().getLore().contains("§6Item Ability: Throw §eRIGHT CLICK")) {
@@ -116,4 +143,3 @@ public class ThrowingAxe implements Listener {
             }
         }
     }
-}

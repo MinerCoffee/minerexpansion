@@ -3,25 +3,14 @@ package me.minercoffee.minerexpansion;
 import com.jeff_media.updatechecker.UpdateCheckSource;
 import com.jeff_media.updatechecker.UpdateChecker;
 import com.jeff_media.updatechecker.UserAgentBuilder;
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import me.minercoffee.minerexpansion.Files.DataManager;
 import me.minercoffee.minerexpansion.Items.ThrowingAxe;
 import me.minercoffee.minerexpansion.Items.itemscreation;
 import me.minercoffee.minerexpansion.commands.*;
 import me.minercoffee.minerexpansion.enchantments.*;
-import me.minercoffee.minerexpansion.grapplinghook.GrapplingHook;
-import me.minercoffee.minerexpansion.grapplinghook.GrapplingHookCooldown;
 import me.minercoffee.minerexpansion.rtp.launchpads;
-import me.minercoffee.minerexpansion.rtp.rtpcmd;
-import me.minercoffee.minerexpansion.silktouchspawners.BlockAlerts;
-import me.minercoffee.minerexpansion.silktouchspawners.BreakBlockListener;
-import me.minercoffee.minerexpansion.silktouchspawners.SpawnerListeners;
 import me.minercoffee.minerexpansion.staffhomes.staffhomecmd;
-import me.minercoffee.minerexpansion.supplydrop.commands.CommandDeleteSupplyDrop;
-import me.minercoffee.minerexpansion.supplydrop.commands.CommandEditSupplyDrop;
-import me.minercoffee.minerexpansion.supplydrop.commands.CommandEnvoy;
-import me.minercoffee.minerexpansion.supplydrop.commands.CommandSupplyDrop;
-import me.minercoffee.minerexpansion.supplydrop.utils.EnvoysDataManager;
-import me.minercoffee.minerexpansion.supplydrop.utils.SupplyDropsDataManager;
 import me.minercoffee.minerexpansion.utils.ColorMsg;
 import me.minercoffee.minerexpansion.utils.UpdateCheckCommand;
 import me.minercoffee.minerexpansion.utils.UpdateCheckListener;
@@ -51,7 +40,6 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     private static final Economy economy = null;
     public static MinerExpansion plugin;
     public DataManager data;
-    public EnvoysDataManager envoysDataManager;
     public ArrayList<Player> launchpad_players = new ArrayList<>();
     public ArrayList<Player> ore_players = new ArrayList<>();
     public MinerExpansion() {
@@ -64,9 +52,11 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
     public static MinerExpansion getPlugin() {
         return plugin;
     }
+    private ProtectedCuboidRegion region;
 
     @Override
     public void onEnable() {
+
         this.getServer().getPluginManager().registerEvents(new UpdateCheckListener(this), this);
         new UpdateChecker(this, UpdateCheckSource.CUSTOM_URL, "https://github.com/MinerCoffee/MinerExpansion/blob/master/src/main/resources/latestversion.txt")
                 .setDownloadLink("https://www.spigotmc.org/resources/minerexpansion.100584/")
@@ -77,7 +67,6 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
                 .setColoredConsoleOutput(true)
                 .checkEveryXHours(24)
                 .checkNow();
-        envoysDataManager = new EnvoysDataManager(this);
         this.data = new DataManager(this);
         Objects.requireNonNull(getCommand("mereload")).setExecutor(new reload());
         plugin = this;
@@ -86,10 +75,11 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
         saveConfig();
+        getServer().getPluginManager().registerEvents(new ThrowingAxe(this), this);
+        Objects.requireNonNull(getCommand("givethrowingaxe")).setExecutor(new ThrowingAxeCmd());
         itemscreation.init();
         loadConfig();
         loadEnchantment();
-       // loadEnvoy();
         new UpdateCheckCommand(this);
         getCommand("tax").setExecutor(new tax());
         getServer().getPluginManager().registerEvents(new launchpads(this), this);
@@ -191,30 +181,19 @@ public final class MinerExpansion extends JavaPlugin implements Listener {
         VeinMinerUtilsII.register();
         VeinMinerUtilsI.register();
         TelepathyUtils.register();
-        getCommand("reverse").setExecutor(new Reverse(this));
+      //  getCommand("reverse").setExecutor(new Reverse(this));
         Objects.requireNonNull(getCommand("veinminerII")).setExecutor(new VeinMinerII());
         Objects.requireNonNull(getCommand("mobdrops")).setExecutor(new Mobdrops(this));
         Objects.requireNonNull(getCommand("doubledrops")).setExecutor(new DoubleDrops(this));
         Objects.requireNonNull(getCommand("veinminerI")).setExecutor(new VeinMinerI());
-        Objects.requireNonNull(this.getCommand("telepathy")).setExecutor(new Telepathy());
-        getServer().getPluginManager().registerEvents(new Reverse(this), this);
+        Objects.requireNonNull(this.getCommand("telepathy")).setExecutor(new Telepathy(region));
+       // getServer().getPluginManager().registerEvents(new Reverse(this), this);
         getServer().getPluginManager().registerEvents(new Mobdrops(this), this);
         getServer().getPluginManager().registerEvents(new VeinMinerI(), this);
         getServer().getPluginManager().registerEvents(new DoubleDrops(this), this);
         getServer().getPluginManager().registerEvents(new VeinMinerII(), this);
-        getServer().getPluginManager().registerEvents(new Telepathy(), this);
+        getServer().getPluginManager().registerEvents(new Telepathy(region), this);
     }
-
-/*    public void loadEnvoy(){
-        Bukkit.getServer().getPluginManager().registerEvents(new CommandEditSupplyDrop(), this);
-        Bukkit.getServer().getPluginManager().registerEvents(new CommandEnvoy(), this);
-        Objects.requireNonNull(this.getCommand("supplydrop")).setExecutor(new CommandSupplyDrop());
-        Objects.requireNonNull(this.getCommand("editsupplydrop")).setExecutor(new CommandEditSupplyDrop());
-        Objects.requireNonNull(this.getCommand("deletesupplydrop")).setExecutor(new CommandDeleteSupplyDrop());
-        Objects.requireNonNull(this.getCommand("envoy")).setExecutor(new CommandEnvoy());
-        SupplyDropsDataManager.saveDefaultConfig();
-        EnvoysDataManager.saveDefaultConfig();
-    }*/
 
     public void loadConfig() {
         getConfig().options().copyDefaults(true);

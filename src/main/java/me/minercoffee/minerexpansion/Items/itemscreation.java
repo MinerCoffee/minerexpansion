@@ -74,7 +74,12 @@ public class itemscreation implements Listener {
             lore.add("§c5 §7damage.");
             meta.setLore(lore);
             AttributeModifier damage = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+            AttributeModifier speed = new AttributeModifier(UUID.randomUUID(), "generic.attackSpeed", 5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+            AttributeModifier knock = new AttributeModifier(UUID.randomUUID(), "generic.knockBack", 3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+            meta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, speed);
             meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, damage);
+            meta.addAttributeModifier(Attribute.GENERIC_ATTACK_KNOCKBACK, knock);
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             item.setItemMeta(meta);
             ThrowingAxe = item;
         }

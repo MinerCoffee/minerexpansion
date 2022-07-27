@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,21 +22,34 @@ public class tax implements TabExecutor {
         Player p = (Player) sender;
         if (command.getName().equalsIgnoreCase("tax")) {
             if (p.hasPermission("illusive.staff") || p.isOp()) {
-                if (sender instanceof Player) {
                     if (args.length >= 1) {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null) {
-                            target.playSound(p.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_BUBBLE_POP, 30, 6);
+                            target.playSound(p.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_BUBBLE_POP, 40, 8);
                             target.sendMessage(ColorMsg.color("&l&6You have been taxed!"));
+                            target.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 40, 1, true, false, false));
                         }
                     }
-                }
+
+                    if (args.length == 1 && args[0].equalsIgnoreCase("all")) {
+                        Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
+                        Bukkit.getServer().getOnlinePlayers().toArray(players);
+                        for (Player target : players) {
+                            if (target != null) {
+                                target.playSound(p.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_BUBBLE_POP, 40, 8);
+                                target.sendMessage(ColorMsg.color("&l&6You have been taxed!"));
+                                target.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 40, 1, true, false, false));
+                            }
+                        }
+                    }
+
                 if (sender instanceof ConsoleCommandSender) {
                     if (args.length >= 1) {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null) {
-                            target.playSound(p.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_BUBBLE_POP, 30, 6);
+                            target.playSound(p.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_BUBBLE_POP, 40, 8);
                             target.sendMessage(ColorMsg.color("&l&6You have been taxed!"));
+                            target.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 40, 1, true, false, false));
                         }
                     }
                 }
@@ -47,13 +62,14 @@ public class tax implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> playerNames = new ArrayList<>();
+            ArrayList<String> subcommandsArguements = new ArrayList<>();
             Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
             Bukkit.getServer().getOnlinePlayers().toArray(players);
             for (Player player : players) {
-                playerNames.add(player.getName());
+                subcommandsArguements.add(player.getName());
             }
-            return playerNames;
+            subcommandsArguements.add("all");
+            return subcommandsArguements;
         }
         return null;
     }

@@ -3,12 +3,13 @@ version: 1.0.5
 main: me.minercoffee.minerexpansion.MinerExpansion
 api-version: 1.19
 authors: [ MinerCoffee ]
-depend: [Vault]
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, Vault, WorldGuard]
 loadbefore: [Vault]
 load: POSTWORLD
 description: All in one plugin. Some it's features are better elytras, custom recipes, nightvision, custom tools, and more.
 commands:
+  givethrowingaxe:
+    description: "a"
   tax:
     description: "tax"
   reverse:

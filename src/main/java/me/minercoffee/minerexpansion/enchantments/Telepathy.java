@@ -1,5 +1,6 @@
 package me.minercoffee.minerexpansion.enchantments;
 
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -28,28 +29,38 @@ import static me.minercoffee.minerexpansion.MinerExpansion.plugin;
 
 
 public class Telepathy implements Listener, CommandExecutor {
+    private final ProtectedCuboidRegion region;
+
+    public Telepathy(ProtectedCuboidRegion region) {
+        this.region = region;
+    }
+
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        Player player = event.getPlayer();
-        PlayerInventory inventory = player.getInventory();
-        Block block = event.getBlock();
-        GameMode gamemode = player.getGameMode();
-        if((player).getInventory().getItem(EquipmentSlot.HAND).containsEnchantment(TelepathyUtils.TELEPATHY) || (player).getInventory().getItem(EquipmentSlot.OFF_HAND).containsEnchantment(TelepathyUtils.TELEPATHY)) {
+        if (plugin.getConfig().getBoolean("telepathy")) {
+            Player player = event.getPlayer();
+            PlayerInventory inventory = player.getInventory();
+            Block block = event.getBlock();
+            GameMode gamemode = player.getGameMode();
             if (gamemode == GameMode.SPECTATOR)
                 return;
             if (inventory.firstEmpty() == -1)
                 return;
             if (block.getState() instanceof Container)
                 return;
+            if (!region.isOwner(player.getDisplayName())) return;
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.GRAY + "Telepathy I");
             // check for if he dont have the telepathy lore then return
-            event.setDropItems(false);
+            event.setDropItems(true);
             Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand());
             if (drops.isEmpty())
                 return;
-            inventory.addItem(drops.iterator().next());
+            if ((player).getInventory().getItem(EquipmentSlot.HAND).containsEnchantment(TelepathyUtils.TELEPATHY) || (player).getInventory().getItem(EquipmentSlot.OFF_HAND).containsEnchantment(TelepathyUtils.TELEPATHY)) {
+                inventory.addItem(drops.iterator().next());
+
+            }
         }
     }
     @EventHandler
